@@ -17,10 +17,21 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
+
         if (Auth::guard($guard)->check()) {
-            return redirect('/home');
+            
+            $user=Auth::user(); /** sacar el usuario autenticado */
+            $roleName=$user->roleUser();
+            //dd($roleName);
+            if($roleName=="admin"){
+                return redirect()->route('admin.index');
+            }
+            else if($roleName=="user"){
+                return redirect()->route('user.index');
+            }
+           // return redirect('/home');
         }
 
-        return $next($request);
+    return $next($request);
     }
 }

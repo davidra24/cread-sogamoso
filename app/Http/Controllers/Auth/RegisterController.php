@@ -61,6 +61,8 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
+
+    
     protected function create(array $data)
     {
         $user = User::create([
@@ -73,4 +75,5 @@ class RegisterController extends Controller
         ->attach(Role::where('name', 'user')->first());
         return $user;
     }
+    
 }

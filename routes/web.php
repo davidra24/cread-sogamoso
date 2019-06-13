@@ -11,6 +11,41 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::group(['middleware' => 'web'], function () {
+    Auth::routes();
+    Route::get('/', function () {
+        return redirect()->guest('login');
+    });
 });
+
+Route::group(
+    ['prefix' => 'admin', 'middleware' => ['web', 'auth', 'admin']],
+    function () {
+        Route::get('/', [
+            'uses' => 'AdminController@index',
+            'as' => 'admin.index'
+        ]);
+        
+    }
+);
+Route::group(
+    ['prefix' => 'user', 'middleware' => ['web', 'auth', 'user']],
+    function () {
+        Route::get('/', [
+            'uses' => 'UserController@index',
+            'as' => 'user.index'
+        ]);
+
+       
+    }
+);
+
+Route::get('/', 'WelcomeController@index');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
