@@ -25,7 +25,6 @@ Route::group(
             'uses' => 'AdminController@index',
             'as' => 'admin.index'
         ]);
-        
     }
 );
 Route::group(
@@ -35,16 +34,15 @@ Route::group(
             'uses' => 'UserController@index',
             'as' => 'user.index'
         ]);
-
-       
     }
 );
 
-Route::get('/', 'WelcomeController@index');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/', 'WelcomeController@index');
+Route::get('/{path?}', [
+    'uses' => 'AdminController@index',
+    'as' => 'react',
+    'where' => ['path' => '.*']
+]);
 
 Auth::routes();
 
