@@ -16,3 +16,12 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::apiResource('classrooms', 'ClassroomController');
+Route::apiResource('careers', 'CareerController');
+Route::apiResource('subjects', 'SubjectController');
+Route::apiResource('carrersubjects','CarrersubjectController');
+Route::apiResource('teachers','TeacherController');
+Route::apiResource('semesters','SemesterController');
+Route::apiResource('lessons','LessonController');
+Route::delete('lessons/{id_classroom}/{id_career_subject}/{id_semester}/{id_teacher}','LessonController@destroy');
