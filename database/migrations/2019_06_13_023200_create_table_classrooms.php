@@ -18,6 +18,7 @@ class CreateTableClassrooms extends Migration
             $table->bigIncrements('id')->primary();
             $table->text('name');
             $table->text('location');
+            $table->boolean('enable');
             $table->timestamps();
         });
     }

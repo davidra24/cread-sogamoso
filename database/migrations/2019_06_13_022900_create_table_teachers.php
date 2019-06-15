@@ -19,6 +19,7 @@ class CreateTableTeachers extends Migration
             $table->text('name');
             $table->text('mail');
             $table->text('phone');
+            $table->boolean('enable');
             $table->timestamps();
         });
     }
