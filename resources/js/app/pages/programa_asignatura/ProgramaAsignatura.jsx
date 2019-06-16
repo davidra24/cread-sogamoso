@@ -31,7 +31,6 @@ class ProgramaAsignatura extends Component {
         programas: [],
         subjects: []
     };
-
     semestres() {
         let arr = new Array();
         arr.push(<option key={0} />);
@@ -162,15 +161,10 @@ class ProgramaAsignatura extends Component {
                         showConfirmButton: false,
                         timer: 1500
                     });
-                    this.setState({
-                        loading: false,
-                        error: error
-                    });
                 }
             } catch (error) {
                 this.setState({
-                    loading: false,
-                    error: error
+                    loading: false
                 });
             }
         } else {

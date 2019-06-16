@@ -20,7 +20,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 //import Login from './login/Login';
 import Principal from './principal/Principal';
-import Home from './home/Home';
 import NotFound from './notFound/NotFound';
 import ProgramaAsignatura from './programa_asignatura/ProgramaAsignatura';
 import Programas from '../pages/programas/Programa';
@@ -50,8 +49,28 @@ class Index extends Component {
     render() {
         return (
             <Switch>
-                <Route exact path="/" component={Principal} isLogged="false" />
-                <Route exact path="/admin" component={Home} />
+                <Route
+                    exact
+                    path="/"
+                    component={props => (
+                        <Principal
+                            {...props}
+                            api="/api/lessons"
+                            apiSemester="/api/semesters"
+                        />
+                    )}
+                />
+                <Route
+                    exact
+                    path="/admin"
+                    component={props => (
+                        <Principal
+                            {...props}
+                            api="/api/lessons"
+                            apiSemester="/api/semesters"
+                        />
+                    )}
+                />
                 <Route
                     exact
                     path="/careers"

@@ -84,8 +84,7 @@ class Asignaturas extends Component {
                         timer: 1500
                     });
                     this.setState({
-                        loading: false,
-                        error: error
+                        loading: false
                     });
                     return false;
                 }

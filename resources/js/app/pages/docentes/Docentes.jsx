@@ -90,17 +90,12 @@ class Docentes extends Component {
                         showConfirmButton: false,
                         timer: 1500
                     });
-                    this.setState({
-                        loading: false,
-                        error: error
-                    });
                     return false;
                 }
                 return true;
             } catch (error) {
                 this.setState({
-                    loading: false,
-                    error: error
+                    loading: false
                 });
                 return false;
             }
