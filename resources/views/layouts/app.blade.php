@@ -74,8 +74,8 @@
                                                     Docentes
                                                 </a>
                                             </li>
-                                            <li class="nav-item @if(Request::is('classroms')) active @endif">
-                                                <a class="nav-link" href="/classroms">
+                                            <li class="nav-item @if(Request::is('classrooms')) active @endif">
+                                                <a class="nav-link" href="/classrooms">
                                                     <i class="fas fa-building"></i>
                                                     Salones
                                                 </a>
@@ -145,9 +145,11 @@
             @yield('content')
         </main>
     </div>
-    <script>
-        const user = '{{ $user }}' 
-    </script>
+    @if(Auth::check())
+        <script>    
+            const user = '{{ $user }}' 
+        </script>
+    @endif
     <script src="{{ asset('/js/app.js') }}"> </script>
     <script defer src="https://use.fontawesome.com/releases/v5.9.0/js/all.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.9.0/js/v4-shims.js"></script>

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Carrersubject;
 use Illuminate\Http\Request;
 
-class CarrersubjectController extends Controller
+class SubjectsfromcareerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -50,12 +50,14 @@ class CarrersubjectController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Carrersubject  $carrersubject
+     * @param  \App\Carrersubject
+     * @param  \Illuminate\Http\Request
      * @return \Illuminate\Http\Response
      */
     public function show($carrersubject)
     {
-        $carrS = Carrersubject::find($carrersubject);
+        $id_career = $carrersubject;
+        $carrS = Carrersubject::where('id_career', '=', $id_career)->get();
         return response()->json($carrS);
     }
 

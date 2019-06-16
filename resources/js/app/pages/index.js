@@ -13,6 +13,8 @@ import {
     faBookReader,
     faBrain,
     faBuilding,
+    faEyeSlash,
+    faEye,
     faCalendarWeek,
     faSave
 } from '@fortawesome/free-solid-svg-icons';
@@ -21,7 +23,7 @@ import Principal from './principal/Principal';
 import Home from './home/Home';
 import NotFound from './notFound/NotFound';
 import ProgramaAsignatura from './programa_asignatura/ProgramaAsignatura';
-import Programa from '../pages/programas/Programa';
+import Programas from '../pages/programas/Programa';
 import Asignaturas from '../pages/asignaturas/Asignaturas';
 import Docentes from '../pages/docentes/Docentes';
 import Salones from '../pages/salones/Salones';
@@ -33,6 +35,8 @@ library.add(
     faHome,
     faChalkboardTeacher,
     faBookReader,
+    faEye,
+    faEyeSlash,
     faBrain,
     faEdit,
     faTrash,
@@ -48,15 +52,46 @@ class Index extends Component {
             <Switch>
                 <Route exact path="/" component={Principal} isLogged="false" />
                 <Route exact path="/admin" component={Home} />
-                <Route exact path="/careers" component={Programa} />
-                <Route exact path="/subjects" component={Asignaturas} />
-                <Route exact path="/teachers" component={Docentes} />
-                <Route exact path="/classrooms" component={Salones} />
+                <Route
+                    exact
+                    path="/careers"
+                    component={props => (
+                        <Programas {...props} api="/api/careers" />
+                    )}
+                />
+                <Route
+                    exact
+                    path="/subjects"
+                    component={props => (
+                        <Asignaturas {...props} api="/api/subjects" />
+                    )}
+                />
+                <Route
+                    exact
+                    path="/teachers"
+                    component={props => (
+                        <Docentes {...props} api="/api/teachers" />
+                    )}
+                />
+                <Route
+                    exact
+                    path="/classrooms"
+                    component={props => (
+                        <Salones {...props} api="/api/classrooms" />
+                    )}
+                />
                 <Route exact path="/profile" component={PanelUsuario} />
                 <Route
                     exact
                     path="/careers/:id"
-                    component={ProgramaAsignatura}
+                    component={props => (
+                        <ProgramaAsignatura
+                            {...props}
+                            api="/api/careersubjects"
+                            apiPA="/api/subjectsfromcareer/"
+                            apiAsignatura="/api/subjects"
+                        />
+                    )}
                 />
                 <Route component={NotFound} />
             </Switch>

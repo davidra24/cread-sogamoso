@@ -41,114 +41,94 @@ class LessonController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
-        $create=TRUE;
-        $id_classroom=$request->id_classroom;
-        $id_career_subject=$request->id_career_subject;
-        $id_semester=$request->id_semester;
-        $id_teacher=$request->id_teacher;
-        $schedule=$request->schedule;
-        
-        $class_semester=Lesson::where('id_classroom','=',$id_classroom)->where('id_semester','=',$id_semester)->get();
-        $teacher_semester=Lesson::where('id_teacher','=',$id_teacher)->where('id_semester','=',$id_semester)->get();
+    {
+        $create = true;
+        $id_classroom = $request->id_classroom;
+        $id_career_subject = $request->id_career_subject;
+        $id_semester = $request->id_semester;
+        $id_teacher = $request->id_teacher;
+        $schedule = $request->schedule;
+
+        $class_semester = Lesson::where('id_classroom', '=', $id_classroom)
+            ->where('id_semester', '=', $id_semester)
+            ->get();
+        $teacher_semester = Lesson::where('id_teacher', '=', $id_teacher)
+            ->where('id_semester', '=', $id_semester)
+            ->get();
         /** if verifica salones disponibles en ese año */
-        if($class_semester->isEmpty()){
-
-            if($teacher_semester->isEmpty()){
-
-                  
-            /** se asigna el salon y profesor */
-                $lesson=Lesson::create($request->all());
+        if ($class_semester->isEmpty()) {
+            if ($teacher_semester->isEmpty()) {
+                /** se asigna el salon y profesor */
+                $lesson = Lesson::create($request->all());
                 $lesson->save();
                 return response()->json($lesson);
             }
-        }
-        else{
+        } else {
+            /** si ya se ha asignado el salon en ese año, hay que verificar que no se crucen las horas**/
 
-        /** si ya se ha asignado el salon en ese año, hay que verificar que no se crucen las horas**/
-           
-            $hours=json_decode(json_encode($schedule),true);
-            //dd($hours['start_h']);          
-            $start_h=$hours['start_h'];
-            $end_h=$hours['end_h'];
-            $start_h=strtotime($start_h);
-            $start_h=date("H:i", $start_h);
-            $end_h=strtotime($end_h);
-            $end_h=date("H:i", $end_h);
-           
-            
-            foreach($class_semester as $classr){
-               
-                $classR_H=(array)json_decode(json_encode($classr->schedule));
-                
-                $ClassR_start=$classR_H['start_h'];
-                $ClassR_end=$classR_H['end_h'];
+            $hours = json_decode(json_encode($schedule), true);
+            //dd($hours['start_h']);
+            $start_h = $hours['start_h'];
+            $end_h = $hours['end_h'];
+            $start_h = strtotime($start_h);
+            $start_h = date('H:i', $start_h);
+            $end_h = strtotime($end_h);
+            $end_h = date('H:i', $end_h);
 
-                $ClassR_start=strtotime($ClassR_start);
-                $ClassR_start=date("H:i", $ClassR_start);
-                $ClassR_end=strtotime($ClassR_end);
-                $ClassR_end=date("H:i", $ClassR_end);
-                if(($ClassR_start)==$start_h && ($ClassR_end==$end_h)){
-                    $create=FALSE;
+            foreach ($class_semester as $classr) {
+                $classR_H = (array) json_decode(json_encode($classr->schedule));
+
+                $ClassR_start = $classR_H['start_h'];
+                $ClassR_end = $classR_H['end_h'];
+
+                $ClassR_start = strtotime($ClassR_start);
+                $ClassR_start = date('H:i', $ClassR_start);
+                $ClassR_end = strtotime($ClassR_end);
+                $ClassR_end = date('H:i', $ClassR_end);
+                if ($ClassR_start == $start_h && $ClassR_end == $end_h) {
+                    $create = false;
                     return response()->json($classr);
-                }
-                else if(($start_h>=$ClassR_end)|| ($end_h<=$ClassR_start)){
-                    $create=TRUE;
-                }
-                else{
-                    $create=FALSE;
+                } elseif ($start_h >= $ClassR_end || $end_h <= $ClassR_start) {
+                    $create = true;
+                } else {
+                    $create = false;
                     return response()->json($classr);
                 }
             }
 
+            foreach ($teacher_semester as $classt) {
+                $teacher_H = (array) json_decode(
+                    json_encode($classt->schedule)
+                );
 
-            foreach($teacher_semester as $classt){
-               
-                $teacher_H=(array)json_decode(json_encode($classt->schedule));
-                
-                $ClassT_start=$teacher_H['start_h'];
-                $ClassT_end=$teacher_H['end_h'];
+                $ClassT_start = $teacher_H['start_h'];
+                $ClassT_end = $teacher_H['end_h'];
 
-                $ClassT_start=strtotime($ClassR_start);
-                $ClassT_start=date("H:i", $ClassR_start);
-                $ClassT_end=strtotime($ClassR_end);
-                $ClassT_end=date("H:i", $ClassR_end);
-                if(($ClassT_start)==$start_h && ($ClassT_end==$end_h)){
-                    $create=FALSE;
+                $ClassT_start = strtotime($ClassR_start);
+                $ClassT_start = date('H:i', $ClassR_start);
+                $ClassT_end = strtotime($ClassR_end);
+                $ClassT_end = date('H:i', $ClassR_end);
+                if ($ClassT_start == $start_h && $ClassT_end == $end_h) {
+                    $create = false;
                     return response()->json($classr);
-                }
-                else if(($start_h>=$ClassT_end)|| ($end_h<=$ClassT_start)){
-                    $create=TRUE;
-                }
-                else{
-                    $create=FALSE;
+                } elseif ($start_h >= $ClassT_end || $end_h <= $ClassT_start) {
+                    $create = true;
+                } else {
+                    $create = false;
                     return response()->json($classt);
                 }
-                if($create===TRUE){
-                $lesson=Lesson::create($request->all());
-                $lesson->save();
-                return response()->json($lesson);
+                if ($create === true) {
+                    $lesson = Lesson::create($request->all());
+                    $lesson->save();
+                    return response()->json($lesson);
                 }
             }
-            
-             
-           /**$teacher_H=(array) json_decode($teacher_semester->schedule);
-            
-           
+
+            /**$teacher_H=(array) json_decode($teacher_semester->schedule);           
             $ClassT_start=$teacher_H['start_h'];
             $ClassT_end=$teacher_H['end_h'];
             **/
-            
-            
         }
-
-
-        
-        
-
-
-        
-        
     }
 
     /**
@@ -159,7 +139,7 @@ class LessonController extends Controller
      */
     public function show($lesson)
     {
-        $data=Lesson::find($lesson);
+        $data = Lesson::find($lesson);
         return response()->json($data);
     }
 
@@ -204,17 +184,15 @@ class LessonController extends Controller
     {
         $data = Lesson::where('id_classroom', $request->id_classroom)
             ->where('id_career_subject', $request->id_career_subject)
-            ->where('id_semester',$request->id_semester)
-            ->where('id_teacher',$request->id_teacher)
+            ->where('id_semester', $request->id_semester)
+            ->where('id_teacher', $request->id_teacher)
             ->first();
 
-        
         /**$data->classroom()->detach($request->id_classroom);
         $data->semester()->detach($request->id_semester);
         $data->teacher()->detach($request->id_teacher);
         $data->carrersubject()->detach($request->id_career_subject);**/
 
         $data->delete();
-        
     }
 }

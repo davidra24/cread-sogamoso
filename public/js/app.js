@@ -79911,7 +79911,7 @@ function AgregarAsignatura(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Nombre:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     type: "text",
     className: "form-control",
-    name: "nombre",
+    name: "name",
     onChange: props.handleChange,
     value: props.formNombre
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -79944,12 +79944,12 @@ __webpack_require__.r(__webpack_exports__);
 
 function AsignaturaItem(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "alert color-alert-info "
+    className: "alert alert-info "
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-12 col-md-10"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, props.subject.nombre)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, props.subject.name)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-6 col-md-1"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     className: "btn btn-info",
@@ -80025,7 +80025,7 @@ function AgregarAsignatura(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Nombre:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     type: "text",
     className: "form-control",
-    name: "nombre",
+    name: "name",
     onChange: props.handleChange,
     value: props.formNombre
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -80033,7 +80033,7 @@ function AgregarAsignatura(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Correo:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     type: "text",
     className: "form-control",
-    name: "correo",
+    name: "mail",
     onChange: props.handleChange,
     value: props.formCorreo
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -80041,7 +80041,7 @@ function AgregarAsignatura(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Tel\xE9fono:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     type: "text",
     className: "form-control",
-    name: "telefono",
+    name: "phone",
     onChange: props.handleChange,
     value: props.formTelefono
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -80079,17 +80079,36 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function AsignaturaItem(props) {
+  var renderEnable;
+
+  if (props.teacher.enable) {
+    renderEnable = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      className: "btn btn-danger",
+      onClick: props.handleDisable
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__["FontAwesomeIcon"], {
+      icon: "eye-slash"
+    }));
+  } else {
+    renderEnable = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      className: "btn btn-success",
+      onClick: props.handleEnable
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__["FontAwesomeIcon"], {
+      icon: "eye"
+    }));
+  }
+
+  var color = props.teacher.enable ? 'alert alert-info' : 'alert alert-dark';
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "alert color-alert-info "
+    className: color
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-12 col-md-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, props.teacher.nombre)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, props.teacher.name)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-12 col-md-3"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, props.teacher.correo)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, props.teacher.mail)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-12 col-md-3"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, props.teacher.telefono)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, props.teacher.phone)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-6 col-md-1"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     className: "btn btn-info",
@@ -80098,12 +80117,7 @@ function AsignaturaItem(props) {
     icon: "edit"
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-6 col-md-1"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    className: "btn btn-danger",
-    onClick: props.handleRemove
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__["FontAwesomeIcon"], {
-    icon: "trash"
-  })))));
+  }, renderEnable)));
 }
 
 function ConsultarAsignatura(props) {
@@ -80113,9 +80127,12 @@ function ConsultarAsignatura(props) {
     });
   }
 
+  var teachers = props.teachers.sort(function (a, b) {
+    return b.enable - a.enable;
+  });
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
     className: "list-unstyled"
-  }, props.teachers.map(function (teacher) {
+  }, teachers.map(function (teacher) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
       key: teacher.id,
       style: {
@@ -80125,6 +80142,12 @@ function ConsultarAsignatura(props) {
       teacher: teacher,
       handleRemove: function handleRemove(e) {
         return props.handleRemove(e, teacher);
+      },
+      handleEnable: function handleEnable(e) {
+        return props.handleEnable(e, teacher);
+      },
+      handleDisable: function handleDisable(e) {
+        return props.handleDisable(e, teacher);
       },
       handleEdit: function handleEdit(e) {
         return props.handleEdit(e, teacher);
@@ -80425,166 +80448,57 @@ function NotFound(props) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _loading_Loading__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../loading/Loading */ "./resources/js/app/components/loading/Loading.jsx");
-
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _loading_Loading__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../loading/Loading */ "./resources/js/app/components/loading/Loading.jsx");
 
 
 
-
-var AgregarProgramaAsignatura =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(AgregarProgramaAsignatura, _Component);
-
-  function AgregarProgramaAsignatura(props) {
-    var _this;
-
-    _classCallCheck(this, AgregarProgramaAsignatura);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(AgregarProgramaAsignatura).call(this, props));
-
-    _defineProperty(_assertThisInitialized(_this), "state", {
-      asignaturas: [],
-      loading: true,
-      error: null
-    });
-
-    _defineProperty(_assertThisInitialized(_this), "getAsignaturas",
-    /*#__PURE__*/
-    _asyncToGenerator(
-    /*#__PURE__*/
-    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-      var response, data;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.prev = 0;
-              _context.next = 3;
-              return fetch(_this.props.apiAsignatura, {
-                mode: 'no-cors'
-              });
-
-            case 3:
-              response = _context.sent;
-              _context.next = 6;
-              return response.json();
-
-            case 6:
-              data = _context.sent;
-
-              _this.setState({
-                loading: false,
-                asignaturas: data
-              });
-
-              _context.next = 13;
-              break;
-
-            case 10:
-              _context.prev = 10;
-              _context.t0 = _context["catch"](0);
-
-              _this.setState({
-                loading: false,
-                error: _context.t0
-              });
-
-            case 13:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee, null, [[0, 10]]);
-    })));
-
-    return _this;
-  }
-
-  _createClass(AgregarProgramaAsignatura, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      this.getAsignaturas();
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
-        className: "form-group",
-        onSubmit: this.props.handleSubmit
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "container-fluid"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "alert addBorder"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "col-12 col-md-6 col-lg-3"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Asignatura: "), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("select", {
-        className: "form-control",
-        name: "id_asignatura",
-        onChange: this.props.handleChange,
-        value: this.props.formAsignatura
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
-        key: 0
-      }), this.state.asignaturas.map(function (asignatura) {
-        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
-          key: asignatura.id,
-          value: asignatura.id
-        }, asignatura.nombre);
-      }))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "col-12 col-md-6 col-lg-3"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Semestre: "), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("select", {
-        id: "selectSemestres",
-        className: "form-control",
-        name: "semestre",
-        onChange: this.props.handleChange,
-        value: this.props.formSemestre
-      }, this.props.semestres)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "col-12 col-md-6 col-lg-3"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Cr\xE9ditos: "), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("select", {
-        className: "form-control",
-        name: "creditos",
-        onChange: this.props.handleChange,
-        value: this.props.formCreditos
-      }, this.props.creditos)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "col-12 col-md-6 col-lg-3"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-        className: "btn btn-success btn-block form-control"
-      }, "Guardar")))), this.state.loading && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_loading_Loading__WEBPACK_IMPORTED_MODULE_2__["default"], null)));
-    }
-  }]);
-
-  return AgregarProgramaAsignatura;
-}(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
+function AgregarProgramaAsignatura(props) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+    className: "form-group",
+    onSubmit: props.handleSubmit
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "container-fluid"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "alert addBorder"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-12 col-md-6 col-lg-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Asignatura: "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    className: "form-control",
+    name: "id_subject",
+    onChange: props.handleChange,
+    value: props.formAsignatura
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+    key: 0
+  }), props.subjects.map(function (subject) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+      key: subject.id,
+      value: subject.id
+    }, subject.name);
+  }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-12 col-md-6 col-lg-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Semestre: "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    id: "selectSemestres",
+    className: "form-control",
+    name: "semester",
+    onChange: props.handleChange,
+    value: props.formSemestre
+  }, props.semestres)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-12 col-md-6 col-lg-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Cr\xE9ditos: "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+    className: "form-control",
+    name: "credits",
+    onChange: props.handleChange,
+    value: props.formCreditos
+  }, props.creditos)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-12 col-md-6 col-lg-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    className: "btn btn-success btn-block form-control"
+  }, "Guardar"))))));
+}
 
 /* harmony default export */ __webpack_exports__["default"] = (AgregarProgramaAsignatura);
 
@@ -80599,188 +80513,94 @@ function (_Component) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
-/* harmony import */ var _error_Error__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../error/Error */ "./resources/js/app/components/error/Error.jsx");
-/* harmony import */ var _loading_Loading__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../loading/Loading */ "./resources/js/app/components/loading/Loading.jsx");
-
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
+/* harmony import */ var _error_Error__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../error/Error */ "./resources/js/app/components/error/Error.jsx");
+/* harmony import */ var _loading_Loading__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../loading/Loading */ "./resources/js/app/components/loading/Loading.jsx");
 
 
 
 
 
 function ItemProgramaAsignatura(props) {
-  return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    className: "alert color-alert-info "
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    className: "row"
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    className: "col-12 col-md-3"
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("strong", null, props.nombreAsignatura)), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    className: "col-12 col-md-3"
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("strong", null, props.careerSubject.semestre, " semestre")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    className: "col-12 col-md-3"
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("strong", null, props.careerSubject.creditos, " creditos")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-    className: "col-12 col-md-2"
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
-    className: "btn btn-danger",
-    onClick: props.handleRemove
-  }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__["FontAwesomeIcon"], {
-    icon: "trash"
-  })))));
-}
+  var renderEnable;
 
-var ConsultarProgramaAsignatura =
-/*#__PURE__*/
-function (_Component) {
-  _inherits(ConsultarProgramaAsignatura, _Component);
-
-  function ConsultarProgramaAsignatura(props) {
-    var _this;
-
-    _classCallCheck(this, ConsultarProgramaAsignatura);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(ConsultarProgramaAsignatura).call(this, props));
-
-    _defineProperty(_assertThisInitialized(_this), "state", {
-      asignatura: [],
-      loading: true,
-      error: null
-    });
-
-    _defineProperty(_assertThisInitialized(_this), "getAsignaturas",
-    /*#__PURE__*/
-    _asyncToGenerator(
-    /*#__PURE__*/
-    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-      var response, data;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              _context.prev = 0;
-              _context.next = 3;
-              return fetch(_this.props.apiAsignatura, {
-                mode: 'no-cors'
-              });
-
-            case 3:
-              response = _context.sent;
-              _context.next = 6;
-              return response.json();
-
-            case 6:
-              data = _context.sent;
-
-              _this.setState({
-                loading: false,
-                asignatura: data
-              });
-
-              console.log(data);
-              _context.next = 14;
-              break;
-
-            case 11:
-              _context.prev = 11;
-              _context.t0 = _context["catch"](0);
-
-              _this.setState({
-                loading: false,
-                error: _context.t0
-              });
-
-            case 14:
-            case "end":
-              return _context.stop();
-          }
-        }
-      }, _callee, null, [[0, 11]]);
-    })));
-
-    console.log(_this.props);
-    return _this;
+  if (props.careerSubject.enable) {
+    renderEnable = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      className: "btn btn-danger",
+      onClick: props.handleDisable
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__["FontAwesomeIcon"], {
+      icon: "eye-slash"
+    }));
+  } else {
+    renderEnable = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      className: "btn btn-success",
+      onClick: props.handleEnable
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__["FontAwesomeIcon"], {
+      icon: "eye"
+    }));
   }
 
-  _createClass(ConsultarProgramaAsignatura, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      this.getAsignaturas();
-    }
-  }, {
-    key: "buscarAsignatura",
-    value: function buscarAsignatura(id) {
-      var results = {};
-      this.state.asignatura.forEach(function (element) {
-        if (element.id == id) {
-          results = element;
-        }
-      });
-      return results.nombre;
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this2 = this;
+  var color = props.careerSubject.enable ? 'alert alert-info' : 'alert alert-dark';
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: color
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "row"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-12 col-md-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, props.nombreAsignatura)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-12 col-md-4"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, props.careerSubject.semester, " semestre")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-12 col-md-3"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, props.careerSubject.credits, " creditos")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "col-12 col-md-1"
+  }, renderEnable)));
+}
 
-      if (this.error) {
-        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_error_Error__WEBPACK_IMPORTED_MODULE_3__["default"], {
-          error: this.error.message
-        });
+function buscarAsignatura(id, subjects) {
+  var results = {};
+  subjects.forEach(function (element) {
+    if (element.id == id) {
+      results = element;
+    }
+  });
+  return results.name;
+}
+
+function ConsultarProgramaAsignatura(props) {
+  if (props.error) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_error_Error__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      error: props.error.message
+    });
+  }
+
+  var careersSubjects = props.careersSubjects.sort(function (a, b) {
+    return a.semester - b.semester;
+  });
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+    className: "list-unstyled"
+  }, careersSubjects.map(function (careerSubject) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+      key: careerSubject.id,
+      style: {
+        listStyleType: 'none'
       }
-
-      var careersSubjects = this.props.careersSubjects.sort(function (a, b) {
-        return a.semestre - b.semestre;
-      });
-      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, this.state.loading ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_loading_Loading__WEBPACK_IMPORTED_MODULE_4__["default"], null) : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("ul", {
-        className: "list-unstyled"
-      }, careersSubjects.map(function (careerSubject) {
-        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("li", {
-          key: careerSubject.id,
-          style: {
-            listStyleType: 'none'
-          }
-        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(ItemProgramaAsignatura, {
-          careerSubject: careerSubject,
-          nombreAsignatura: _this2.buscarAsignatura(careerSubject.id_asignatura),
-          handleRemove: function handleRemove(e) {
-            return _this2.props.handleRemove(e, careerSubject);
-          }
-        }));
-      })));
-    }
-  }]);
-
-  return ConsultarProgramaAsignatura;
-}(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ItemProgramaAsignatura, {
+      careerSubject: careerSubject,
+      nombreAsignatura: buscarAsignatura(careerSubject.id_subject, props.subjects),
+      handleRemove: function handleRemove(e) {
+        return props.handleRemove(e, careerSubject);
+      },
+      handleEnable: function handleEnable(e) {
+        return props.handleEnable(e, careerSubject);
+      },
+      handleDisable: function handleDisable(e) {
+        return props.handleDisable(e, careerSubject);
+      }
+    }));
+  })));
+}
 
 /* harmony default export */ __webpack_exports__["default"] = (ConsultarProgramaAsignatura);
 
@@ -80814,14 +80634,14 @@ function AgregarPrograma(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Nombre:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     type: "text",
     className: "form-control",
-    name: "nombre",
+    name: "name",
     onChange: props.handleChange,
     value: props.formNombre
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-12 col-md-6 col-lg-4"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "N\xFAmero de semestres: "), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
     className: "form-control",
-    name: "semestres",
+    name: "semesters",
     onChange: props.handleChange,
     value: props.formSemestres
   }, props.semestres)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -80856,14 +80676,14 @@ __webpack_require__.r(__webpack_exports__);
 
 function ProgramaItem(props) {
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "alert color-alert-info "
+    className: "alert alert-info "
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-12 col-md-6"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, props.career.nombre)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, props.career.name)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-12 col-md-4"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, props.career.semestres, " semestres")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, props.career.semesters, " semestres")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-6 col-md-1"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     className: "btn btn-info",
@@ -80900,9 +80720,7 @@ function ConsultarPrograma(props) {
       to: {
         pathname: "/careers/".concat(career.id),
         state: {
-          semestres: career.semestres,
-          api: '/api/programas_asignaturas',
-          apiPA: "/api/asignaturas_programa/".concat(career.id)
+          semesters: career.semesters
         }
       }
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(ProgramaItem, {
@@ -80949,7 +80767,7 @@ function AgregarSalon(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Nombre:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     type: "text",
     className: "form-control",
-    name: "nombre",
+    name: "name",
     onChange: props.handleChange,
     value: props.formNombre
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -80957,7 +80775,7 @@ function AgregarSalon(props) {
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Ubicaci\xF3n:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
     type: "text",
     className: "form-control",
-    name: "ubicacion",
+    name: "location",
     onChange: props.handleChange,
     value: props.formUbicacion
   })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -80989,15 +80807,34 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function SalonItem(props) {
+  var renderEnable;
+
+  if (props.salon.enable) {
+    renderEnable = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      className: "btn btn-danger",
+      onClick: props.handleDisable
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__["FontAwesomeIcon"], {
+      icon: "eye-slash"
+    }));
+  } else {
+    renderEnable = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+      className: "btn btn-success",
+      onClick: props.handleEnable
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__["FontAwesomeIcon"], {
+      icon: "eye"
+    }));
+  }
+
+  var color = props.salon.enable ? 'alert alert-info' : 'alert alert-dark';
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: "alert color-alert-info "
+    className: color
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "row"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-12 col-md-5"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, props.salon.nombre)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, props.salon.name)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-12 col-md-5"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, props.salon.ubicacion)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("strong", null, props.salon.location)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-6 col-md-1"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     className: "btn btn-info",
@@ -81006,12 +80843,7 @@ function SalonItem(props) {
     icon: "edit"
   }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "col-6 col-md-1"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-    className: "btn btn-danger",
-    onClick: props.handleRemove
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_1__["FontAwesomeIcon"], {
-    icon: "trash"
-  })))));
+  }, renderEnable)));
 }
 
 function ConsultarSalon(props) {
@@ -81021,9 +80853,12 @@ function ConsultarSalon(props) {
     });
   }
 
+  var classrooms = props.classrooms.sort(function (a, b) {
+    return b.enable - a.enable;
+  });
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
     className: "list-unstyled"
-  }, props.salons.map(function (salon) {
+  }, classrooms.map(function (salon) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
       key: salon.id,
       style: {
@@ -81033,6 +80868,12 @@ function ConsultarSalon(props) {
       salon: salon,
       handleRemove: function handleRemove(e) {
         return props.handleRemove(e, salon);
+      },
+      handleEnable: function handleEnable(e) {
+        return props.handleEnable(e, salon);
+      },
+      handleDisable: function handleDisable(e) {
+        return props.handleDisable(e, salon);
       },
       handleEdit: function handleEdit(e) {
         return props.handleEdit(e, salon);
@@ -81141,7 +80982,7 @@ function (_Component) {
       loading: true,
       error: null,
       form: {
-        nombre: ''
+        name: ''
       }
     });
 
@@ -81214,7 +81055,7 @@ function (_Component) {
                 error: null
               });
 
-              if (!(_this.state.form.nombre != '')) {
+              if (!(_this.state.form.name != '')) {
                 _context2.next = 25;
                 break;
               }
@@ -81312,7 +81153,7 @@ function (_Component) {
     _defineProperty(_assertThisInitialized(_this), "clear", function () {
       _this.setState({
         form: {
-          nombre: ''
+          name: ''
         }
       });
     });
@@ -81353,21 +81194,21 @@ function (_Component) {
                 _context3.next = 2;
                 return _this.MySwal.fire({
                   title: 'Editar asignatura',
-                  html: '<label>Nombre:</label>' + "<input id=\"nombre_asignatura\" class=\"swal2-input\" placeholder=\"Nombre\" value=\"".concat(data.nombre, "\"/>"),
+                  html: '<label>Nombre:</label>' + "<input id=\"nombre_asignatura\" class=\"swal2-input\" placeholder=\"Nombre\" value=\"".concat(data.name, "\"/>"),
                   focusConfirm: false,
                   preConfirm: function preConfirm() {
-                    var nombre = document.getElementById('nombre_asignatura').value;
+                    var name = document.getElementById('nombre_asignatura').value;
 
                     _this.setState({
                       form: {
-                        nombre: nombre
+                        name: name
                       }
                     });
                   }
                 });
 
               case 2:
-                if (_this.state.form.nombre != '') {
+                if (_this.state.form.name != '') {
                   _this.edit(data.id);
                 }
 
@@ -81400,7 +81241,7 @@ function (_Component) {
                   error: null
                 });
 
-                if (!(_this.state.form.nombre != '')) {
+                if (!(_this.state.form.name != '')) {
                   _context4.next = 17;
                   break;
                 }
@@ -81442,11 +81283,6 @@ function (_Component) {
                     text: 'No se ha podido editar la asignatura ',
                     showConfirmButton: false,
                     timer: 1500
-                  });
-
-                  _this.setState({
-                    loading: false,
-                    error: error
                   });
                 }
 
@@ -81573,13 +81409,13 @@ function (_Component) {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "container-fluid"
+        className: "container"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "col-12"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_asignaturas_AgregarAsignatura__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        formNombre: this.state.form.nombre,
+        formNombre: this.state.form.name,
         handleSubmit: this.handleSubmit,
         handleChange: this.handleChange
       }), this.state.loading && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_loading_Loading__WEBPACK_IMPORTED_MODULE_4__["default"], null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_asignaturas_ConsultarAsignatura__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -81672,9 +81508,10 @@ function (_Component) {
       loading: true,
       error: null,
       form: {
-        nombre: '',
-        correo: '',
-        telefono: ''
+        name: '',
+        mail: '',
+        phone: '',
+        enable: true
       }
     });
 
@@ -81747,7 +81584,7 @@ function (_Component) {
                 error: null
               });
 
-              if (!(_this.state.form.nombre != '' && _this.state.form.correo != '' && _this.state.form.telefono != '')) {
+              if (!(_this.state.form.name != '' && _this.state.form.mail != '' && _this.state.form.phone != '')) {
                 _context2.next = 25;
                 break;
               }
@@ -81845,9 +81682,10 @@ function (_Component) {
     _defineProperty(_assertThisInitialized(_this), "clear", function () {
       _this.setState({
         form: {
-          nombre: '',
-          correo: '',
-          telefono: ''
+          name: '',
+          mail: '',
+          phone: '',
+          enable: true
         }
       });
     });
@@ -81888,25 +81726,27 @@ function (_Component) {
                 _context3.next = 2;
                 return _this.MySwal.fire({
                   title: 'Editar docente',
-                  html: '<label>Nombre:</label>' + "<input id=\"nombre_docente\" class=\"swal2-input\" placeholder=\"Nombre\" value=\"".concat(data.nombre, "\"/>") + '<label>Correo:</label>' + "<input id=\"correo_docente\" class=\"swal2-input\" placeholder=\"Correo\" value=\"".concat(data.correo, "\"/>") + '<label>Teléfono:</label>' + "<input id=\"telefono_docente\" class=\"swal2-input\" placeholder=\"Tel\xE9fono\" value=\"".concat(data.telefono, "\"/>"),
+                  html: '<label>Nombre:</label>' + "<input id=\"nombre_docente\" class=\"swal2-input\" placeholder=\"Nombre\" value=\"".concat(data.name, "\"/>") + '<label>Correo:</label>' + "<input id=\"correo_docente\" class=\"swal2-input\" placeholder=\"Correo\" value=\"".concat(data.mail, "\"/>") + '<label>Teléfono:</label>' + "<input id=\"telefono_docente\" class=\"swal2-input\" placeholder=\"Tel\xE9fono\" value=\"".concat(data.phone, "\"/>"),
                   focusConfirm: false,
                   preConfirm: function preConfirm() {
-                    var nombre = document.getElementById('nombre_docente').value;
-                    var correo = document.getElementById('correo_docente').value;
-                    var telefono = document.getElementById('telefono_docente').value;
+                    var name = document.getElementById('nombre_docente').value;
+                    var mail = document.getElementById('correo_docente').value;
+                    var phone = document.getElementById('telefono_docente').value;
+                    var enable = _this.state.enable;
 
                     _this.setState({
                       form: {
-                        nombre: nombre,
-                        correo: correo,
-                        telefono: telefono
+                        name: name,
+                        mail: mail,
+                        phone: phone,
+                        enable: enable
                       }
                     });
                   }
                 });
 
               case 2:
-                if (_this.state.form.nombre != '' && _this.state.form.correo != '' && _this.state.form.telefono != '') {
+                if (_this.state.form.name != '' && _this.state.form.mail != '' && _this.state.form.phone != '') {
                   _this.edit(data.id);
                 }
 
@@ -81923,29 +81763,101 @@ function (_Component) {
       };
     }());
 
-    _defineProperty(_assertThisInitialized(_this), "edit",
+    _defineProperty(_assertThisInitialized(_this), "handleEnable",
     /*#__PURE__*/
     function () {
       var _ref4 = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(id) {
-        var response;
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(e, data) {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return _this.setState({
+                  form: {
+                    name: data.name,
+                    mail: data.mail,
+                    phone: data.phone,
+                    enable: true
+                  }
+                });
+
+              case 2:
+                _this.edit(data.id);
+
+              case 3:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }));
+
+      return function (_x3, _x4) {
+        return _ref4.apply(this, arguments);
+      };
+    }());
+
+    _defineProperty(_assertThisInitialized(_this), "handleDisable",
+    /*#__PURE__*/
+    function () {
+      var _ref5 = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5(e, data) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.next = 2;
+                return _this.setState({
+                  form: {
+                    name: data.name,
+                    mail: data.mail,
+                    phone: data.phone,
+                    enable: false
+                  }
+                });
+
+              case 2:
+                _this.edit(data.id);
+
+              case 3:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
+      }));
+
+      return function (_x5, _x6) {
+        return _ref5.apply(this, arguments);
+      };
+    }());
+
+    _defineProperty(_assertThisInitialized(_this), "edit",
+    /*#__PURE__*/
+    function () {
+      var _ref6 = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6(id) {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
               case 0:
                 _this.setState({
                   loading: true,
                   error: null
                 });
 
-                if (!(_this.state.form.nombre != '' && _this.state.form.correo != '' && _this.state.form.telefono != '')) {
-                  _context4.next = 17;
+                if (!(_this.state.form.name != '' && _this.state.form.mail != '' && _this.state.form.phone != '')) {
+                  _context6.next = 17;
                   break;
                 }
 
-                _context4.prev = 2;
-                _context4.next = 5;
+                _context6.prev = 2;
+                _context6.next = 5;
                 return fetch("".concat(_this.props.api, "/").concat(id), {
                   method: 'PUT',
                   body: JSON.stringify(_this.state.form),
@@ -81955,7 +81867,7 @@ function (_Component) {
                 });
 
               case 5:
-                response = _context4.sent;
+                response = _context6.sent;
 
                 _this.setState({
                   loading: true
@@ -81989,20 +81901,20 @@ function (_Component) {
                   });
                 }
 
-                _context4.next = 15;
+                _context6.next = 15;
                 break;
 
               case 12:
-                _context4.prev = 12;
-                _context4.t0 = _context4["catch"](2);
+                _context6.prev = 12;
+                _context6.t0 = _context6["catch"](2);
 
                 _this.setState({
                   loading: false,
-                  error: _context4.t0
+                  error: _context6.t0
                 });
 
               case 15:
-                _context4.next = 18;
+                _context6.next = 18;
                 break;
 
               case 17:
@@ -82010,35 +81922,35 @@ function (_Component) {
                   type: 'error',
                   position: 'top-end',
                   title: 'Oops...',
-                  text: 'No se ha podido editar el docente ',
+                  text: 'No se ha podidos editar el docente ',
                   showConfirmButton: false,
                   timer: 1500
                 });
 
               case 18:
               case "end":
-                return _context4.stop();
+                return _context6.stop();
             }
           }
-        }, _callee4, null, [[2, 12]]);
+        }, _callee6, null, [[2, 12]]);
       }));
 
-      return function (_x3) {
-        return _ref4.apply(this, arguments);
+      return function (_x7) {
+        return _ref6.apply(this, arguments);
       };
     }());
 
     _defineProperty(_assertThisInitialized(_this), "remove",
     /*#__PURE__*/
     function () {
-      var _ref5 = _asyncToGenerator(
+      var _ref7 = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5(id) {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee7(id) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee7$(_context7) {
           while (1) {
-            switch (_context5.prev = _context5.next) {
+            switch (_context7.prev = _context7.next) {
               case 0:
-                _context5.next = 2;
+                _context7.next = 2;
                 return fetch("".concat(_this.props.api, "/").concat(id), {
                   method: 'DELETE',
                   headers: {
@@ -82082,14 +81994,14 @@ function (_Component) {
 
               case 2:
               case "end":
-                return _context5.stop();
+                return _context7.stop();
             }
           }
-        }, _callee5);
+        }, _callee7);
       }));
 
-      return function (_x4) {
-        return _ref5.apply(this, arguments);
+      return function (_x8) {
+        return _ref7.apply(this, arguments);
       };
     }());
 
@@ -82112,22 +82024,24 @@ function (_Component) {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "container-fluid"
+        className: "container"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "col-12"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_docentes_AgregarDocente__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        formNombre: this.state.form.nombre,
-        formCorreo: this.state.form.correo,
-        formTelefono: this.state.form.telefono,
+        formNombre: this.state.form.name,
+        formCorreo: this.state.form.mail,
+        formTelefono: this.state.form.phone,
         handleSubmit: this.handleSubmit,
         handleChange: this.handleChange
       }), this.state.loading && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_loading_Loading__WEBPACK_IMPORTED_MODULE_4__["default"], null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_docentes_ConsultarDocente__WEBPACK_IMPORTED_MODULE_3__["default"], {
         error: this.state.error,
         teachers: this.state.data,
         handleEdit: this.handleEdit,
-        handleRemove: this.handleRemove
+        handleRemove: this.handleRemove,
+        handleEnable: this.handleEnable,
+        handleDisable: this.handleDisable
       }))));
     }
   }]);
@@ -82249,6 +82163,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_panel_usuario_PanelUsuario__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../pages/panel-usuario/PanelUsuario */ "./resources/js/app/pages/panel-usuario/PanelUsuario.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -82281,7 +82197,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_2__["library"].add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faUserCircle"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faCogs"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faHome"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faChalkboardTeacher"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faBookReader"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faBrain"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faEdit"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faTrash"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faBuilding"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faCalendarWeek"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faSave"]);
+_fortawesome_fontawesome_svg_core__WEBPACK_IMPORTED_MODULE_2__["library"].add(_fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faUserCircle"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faCogs"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faHome"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faChalkboardTeacher"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faBookReader"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faEye"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faEyeSlash"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faBrain"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faEdit"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faTrash"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faBuilding"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faCalendarWeek"], _fortawesome_free_solid_svg_icons__WEBPACK_IMPORTED_MODULE_5__["faSave"]);
 
 var Index =
 /*#__PURE__*/
@@ -82312,19 +82228,35 @@ function (_Component) {
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
         exact: true,
         path: "/careers",
-        component: _pages_programas_Programa__WEBPACK_IMPORTED_MODULE_10__["default"]
+        component: function component(props) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_pages_programas_Programa__WEBPACK_IMPORTED_MODULE_10__["default"], _extends({}, props, {
+            api: "/api/careers"
+          }));
+        }
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
         exact: true,
         path: "/subjects",
-        component: _pages_asignaturas_Asignaturas__WEBPACK_IMPORTED_MODULE_11__["default"]
+        component: function component(props) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_pages_asignaturas_Asignaturas__WEBPACK_IMPORTED_MODULE_11__["default"], _extends({}, props, {
+            api: "/api/subjects"
+          }));
+        }
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
         exact: true,
         path: "/teachers",
-        component: _pages_docentes_Docentes__WEBPACK_IMPORTED_MODULE_12__["default"]
+        component: function component(props) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_pages_docentes_Docentes__WEBPACK_IMPORTED_MODULE_12__["default"], _extends({}, props, {
+            api: "/api/teachers"
+          }));
+        }
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
         exact: true,
         path: "/classrooms",
-        component: _pages_salones_Salones__WEBPACK_IMPORTED_MODULE_13__["default"]
+        component: function component(props) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_pages_salones_Salones__WEBPACK_IMPORTED_MODULE_13__["default"], _extends({}, props, {
+            api: "/api/classrooms"
+          }));
+        }
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
         exact: true,
         path: "/profile",
@@ -82332,7 +82264,13 @@ function (_Component) {
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
         exact: true,
         path: "/careers/:id",
-        component: _programa_asignatura_ProgramaAsignatura__WEBPACK_IMPORTED_MODULE_9__["default"]
+        component: function component(props) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_programa_asignatura_ProgramaAsignatura__WEBPACK_IMPORTED_MODULE_9__["default"], _extends({}, props, {
+            api: "/api/careersubjects",
+            apiPA: "/api/subjectsfromcareer/",
+            apiAsignatura: "/api/subjects"
+          }));
+        }
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
         component: _notFound_NotFound__WEBPACK_IMPORTED_MODULE_8__["default"]
       }));
@@ -82642,14 +82580,17 @@ function (_Component) {
       data: [],
       loading: true,
       error: null,
+      loadingS: true,
       form: {
         id: '',
-        id_programa: _this.props.match.params.id,
-        id_asignatura: '',
-        semestre: '',
-        creditos: ''
+        id_career: _this.props.match.params.id,
+        id_subject: '',
+        semester: '',
+        credits: '',
+        enable: true
       },
-      programas: []
+      programas: [],
+      subjects: []
     });
 
     _defineProperty(_assertThisInitialized(_this), "handleRemove", function (e, data) {
@@ -82680,7 +82621,7 @@ function (_Component) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return fetch("".concat(_this.props.location.state.api, "/").concat(id), {
+                return fetch("".concat(_this.props.api, "/").concat(id), {
                   method: 'DELETE',
                   headers: {
                     'Content-Type': 'application/json'
@@ -82738,7 +82679,7 @@ function (_Component) {
       var _objectSpread2;
 
       _this.setState({
-        form: _objectSpread({}, _this.state.form, (_objectSpread2 = {}, _defineProperty(_objectSpread2, e.target.name, e.target.value), _defineProperty(_objectSpread2, "id", "".concat(_this.state.form.id_programa, "0").concat(_this.state.form.id_asignatura)), _objectSpread2))
+        form: _objectSpread({}, _this.state.form, (_objectSpread2 = {}, _defineProperty(_objectSpread2, e.target.name, e.target.value), _defineProperty(_objectSpread2, "id", "".concat(_this.state.form.id_career, "0").concat(_this.state.form.id_subject)), _objectSpread2))
       });
     });
 
@@ -82759,14 +82700,14 @@ function (_Component) {
 
               console.log(_this.state.form);
 
-              if (!(_this.state.form.id != '' && _this.state.form.id_programa != '' && _this.state.form.id_asignatura && _this.state.form.semestre != '' && _this.state.form.creditos != '')) {
+              if (!(_this.state.form.id != '' && _this.state.form.id_career != '' && _this.state.form.id_subject && _this.state.form.semester != '' && _this.state.form.credits != '')) {
                 _context2.next = 18;
                 break;
               }
 
               _context2.prev = 3;
               _context2.next = 6;
-              return fetch(_this.props.location.state.api, {
+              return fetch(_this.props.api, {
                 method: 'POST',
                 body: JSON.stringify(_this.state.form),
                 headers: {
@@ -82847,77 +82788,297 @@ function (_Component) {
       _this.setState({
         form: {
           id: '',
-          id_programa: _this.props.match.params.id,
-          id_asignatura: '',
-          semestre: '',
-          creditos: ''
+          id_career: _this.props.match.params.id,
+          id_subject: '',
+          semester: '',
+          credits: '',
+          enable: true
         }
       });
     });
+
+    _defineProperty(_assertThisInitialized(_this), "getAsignaturas",
+    /*#__PURE__*/
+    _asyncToGenerator(
+    /*#__PURE__*/
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+      var response, subjects;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+        while (1) {
+          switch (_context3.prev = _context3.next) {
+            case 0:
+              _context3.prev = 0;
+              _context3.next = 3;
+              return fetch(_this.props.apiAsignatura, {
+                mode: 'no-cors'
+              });
+
+            case 3:
+              response = _context3.sent;
+              _context3.next = 6;
+              return response.json();
+
+            case 6:
+              subjects = _context3.sent;
+
+              _this.setState({
+                subjects: subjects,
+                loadingS: false
+              });
+
+              _context3.next = 14;
+              break;
+
+            case 10:
+              _context3.prev = 10;
+              _context3.t0 = _context3["catch"](0);
+              console.log(_context3.t0);
+
+              _this.setState({
+                loadingS: false,
+                error: _context3.t0
+              });
+
+            case 14:
+            case "end":
+              return _context3.stop();
+          }
+        }
+      }, _callee3, null, [[0, 10]]);
+    })));
 
     _defineProperty(_assertThisInitialized(_this), "get",
     /*#__PURE__*/
     _asyncToGenerator(
     /*#__PURE__*/
-    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+    _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4() {
       var response, data;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
         while (1) {
-          switch (_context3.prev = _context3.next) {
+          switch (_context4.prev = _context4.next) {
             case 0:
               _this.setState({
                 loading: true,
                 error: null
               });
 
-              _context3.prev = 1;
-              _context3.next = 4;
-              return fetch(_this.props.location.state.apiPA, {
-                mode: 'no-cors'
-              });
+              _context4.prev = 1;
+              _context4.next = 4;
+              return fetch("".concat(_this.props.apiPA).concat(_this.props.match.params.id));
 
             case 4:
-              response = _context3.sent;
-              _context3.next = 7;
+              response = _context4.sent;
+              _context4.next = 7;
               return response.json();
 
             case 7:
-              data = _context3.sent;
+              data = _context4.sent;
 
               _this.setState({
                 loading: false,
                 data: data
               });
 
-              if (!data) {
-                _context3.next = 12;
-                break;
-              }
-
-              _context3.next = 12;
-              return _this.getAsignatura();
-
-            case 12:
-              _context3.next = 17;
+              _context4.next = 14;
               break;
 
-            case 14:
-              _context3.prev = 14;
-              _context3.t0 = _context3["catch"](1);
+            case 11:
+              _context4.prev = 11;
+              _context4.t0 = _context4["catch"](1);
 
               _this.setState({
                 loading: false,
-                error: _context3.t0
+                error: _context4.t0
               });
 
-            case 17:
+            case 14:
             case "end":
-              return _context3.stop();
+              return _context4.stop();
           }
         }
-      }, _callee3, null, [[1, 14]]);
+      }, _callee4, null, [[1, 11]]);
     })));
 
+    _defineProperty(_assertThisInitialized(_this), "handleEnable",
+    /*#__PURE__*/
+    function () {
+      var _ref5 = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5(e, data) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.next = 2;
+                return _this.setState({
+                  form: {
+                    id_career: _this.props.match.params.id,
+                    id_subject: data.id_subject,
+                    semester: data.semester,
+                    credits: data.credits,
+                    enable: true
+                  }
+                });
+
+              case 2:
+                _this.edit(data.id);
+
+              case 3:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
+      }));
+
+      return function (_x2, _x3) {
+        return _ref5.apply(this, arguments);
+      };
+    }());
+
+    _defineProperty(_assertThisInitialized(_this), "handleDisable",
+    /*#__PURE__*/
+    function () {
+      var _ref6 = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6(e, data) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                _context6.next = 2;
+                return _this.setState({
+                  form: {
+                    id_career: _this.props.match.params.id,
+                    id_subject: data.id_subject,
+                    semester: data.semester,
+                    credits: data.credits,
+                    enable: false
+                  }
+                });
+
+              case 2:
+                _this.edit(data.id);
+
+              case 3:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6);
+      }));
+
+      return function (_x4, _x5) {
+        return _ref6.apply(this, arguments);
+      };
+    }());
+
+    _defineProperty(_assertThisInitialized(_this), "edit",
+    /*#__PURE__*/
+    function () {
+      var _ref7 = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee7(id) {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee7$(_context7) {
+          while (1) {
+            switch (_context7.prev = _context7.next) {
+              case 0:
+                _this.setState({
+                  loading: true,
+                  error: null
+                });
+
+                if (!(_this.state.form.id_career != '' && _this.state.form.id_subject != '' && _this.state.form.semester != '' && _this.state.form.credits != '')) {
+                  _context7.next = 17;
+                  break;
+                }
+
+                _context7.prev = 2;
+                _context7.next = 5;
+                return fetch("".concat(_this.props.api, "/").concat(id), {
+                  method: 'PUT',
+                  body: JSON.stringify(_this.state.form),
+                  headers: {
+                    'Content-Type': 'application/json'
+                  }
+                });
+
+              case 5:
+                response = _context7.sent;
+
+                _this.setState({
+                  loading: true
+                });
+
+                _this.clear();
+
+                _this.get();
+
+                if (response.status === 200) {
+                  _this.MySwal.fire({
+                    position: 'top-end',
+                    type: 'success',
+                    title: 'Se ha actualizado la asignatura satsfactoriamente',
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+                } else {
+                  _this.MySwal.fire({
+                    type: 'error',
+                    position: 'top-end',
+                    title: 'Oops...',
+                    text: 'No se ha podido editar la asignatura ',
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+
+                  _this.setState({
+                    loading: false,
+                    error: error
+                  });
+                }
+
+                _context7.next = 15;
+                break;
+
+              case 12:
+                _context7.prev = 12;
+                _context7.t0 = _context7["catch"](2);
+
+                _this.setState({
+                  loading: false,
+                  error: _context7.t0
+                });
+
+              case 15:
+                _context7.next = 18;
+                break;
+
+              case 17:
+                _this.MySwal.fire({
+                  type: 'error',
+                  position: 'top-end',
+                  title: 'Oops...',
+                  text: 'No se ha podidos editar la asignatura ',
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+
+              case 18:
+              case "end":
+                return _context7.stop();
+            }
+          }
+        }, _callee7, null, [[2, 12]]);
+      }));
+
+      return function (_x6) {
+        return _ref7.apply(this, arguments);
+      };
+    }());
+
+    console.log('props... ', props);
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
     return _this;
   }
@@ -82930,7 +83091,7 @@ function (_Component) {
         key: 0
       }));
 
-      for (var i = 1; i <= this.props.location.state.semestres; i++) {
+      for (var i = 1; i <= this.props.location.state.semesters; i++) {
         arr.push(react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
           key: i
         }, i));
@@ -82964,36 +83125,41 @@ function (_Component) {
     key: "componentDidMount",
     value: function componentDidMount() {
       this.get();
-      console.log(this.state.data);
+      this.getAsignaturas();
     }
   }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_navbar_Navbar__WEBPACK_IMPORTED_MODULE_4__["default"], null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "container-fluid"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "row"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "col-12"
-      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_programa_asignatura_AgregarProgramaAsignatura__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        semestres: this.state.semestres,
-        creditos: this.state.creditos,
-        formPrograma: this.state.form.id_programa,
-        formAsignatura: this.state.form.id_asignatura,
-        formSemestre: this.state.form.semestre,
-        formCreditos: this.state.form.creditos,
-        handleSubmit: this.handleSubmit,
-        handleChange: this.handleChange,
-        id: this.props.match.params.id,
-        api: this.props.location.api,
-        apiAsignatura: "/api/asignaturas"
-      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_programa_asignatura_ConsultarProgramaAsignatura__WEBPACK_IMPORTED_MODULE_3__["default"], {
-        error: this.state.error,
-        careersSubjects: this.state.data,
-        programas: this.state.programas,
-        handleRemove: this.handleRemove,
-        apiAsignatura: "/api/asignaturas"
-      }), this.state.loading && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_loading_Loading__WEBPACK_IMPORTED_MODULE_5__["default"], null)))));
+      if (this.state.loading || this.state.loadingS) {
+        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_loading_Loading__WEBPACK_IMPORTED_MODULE_5__["default"], null);
+      } else {
+        return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          className: "container"
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          className: "row"
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+          className: "col-12"
+        }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_programa_asignatura_AgregarProgramaAsignatura__WEBPACK_IMPORTED_MODULE_2__["default"], {
+          semestres: this.state.semestres,
+          creditos: this.state.creditos,
+          formPrograma: this.state.form.id_career,
+          formAsignatura: this.state.form.id_subject,
+          formSemestre: this.state.form.semester,
+          formCreditos: this.state.form.credits,
+          handleSubmit: this.handleSubmit,
+          handleChange: this.handleChange,
+          id: this.props.match.params.id,
+          subjects: this.state.subjects
+        }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_programa_asignatura_ConsultarProgramaAsignatura__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          error: this.state.error,
+          careersSubjects: this.state.data,
+          programas: this.state.programas,
+          handleRemove: this.handleRemove,
+          subjects: this.state.subjects,
+          handleEnable: this.handleEnable,
+          handleDisable: this.handleDisable
+        }))));
+      }
     }
   }]);
 
@@ -83059,17 +83225,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-var Programa =
+var Programas =
 /*#__PURE__*/
 function (_Component) {
-  _inherits(Programa, _Component);
+  _inherits(Programas, _Component);
 
-  function Programa(props) {
+  function Programas(props) {
     var _this;
 
-    _classCallCheck(this, Programa);
+    _classCallCheck(this, Programas);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Programa).call(this, props));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Programas).call(this, props));
 
     _defineProperty(_assertThisInitialized(_this), "MySwal", sweetalert2_react_content__WEBPACK_IMPORTED_MODULE_6___default()(sweetalert2__WEBPACK_IMPORTED_MODULE_5___default.a));
 
@@ -83079,8 +83245,8 @@ function (_Component) {
       loading: false,
       error: null,
       form: {
-        nombre: '',
-        semestres: ''
+        name: '',
+        semesters: ''
       }
     });
 
@@ -83153,7 +83319,7 @@ function (_Component) {
                 error: null
               });
 
-              if (!(_this.state.form.nombre != '')) {
+              if (!(_this.state.form.name != '')) {
                 _context2.next = 25;
                 break;
               }
@@ -83251,8 +83417,8 @@ function (_Component) {
     _defineProperty(_assertThisInitialized(_this), "clear", function () {
       _this.setState({
         form: {
-          nombre: '',
-          semestres: ''
+          name: '',
+          semesters: ''
         }
       });
     });
@@ -83296,23 +83462,23 @@ function (_Component) {
                 _context3.next = 3;
                 return _this.MySwal.fire({
                   title: 'Editar programa',
-                  html: '<label>Nombre:</label>' + "<input id=\"nombre_programa\" class=\"swal2-input\" placeholder=\"Nombre\" value=\"".concat(data.nombre, "\"/>") + '<label>Número de semestres:</label>' + "<input id=\"semestres_programa\" class=\"swal2-input\" placeholder=\"Semestres\" value=\"".concat(data.semestres, "\"/>"),
+                  html: '<label>Nombre:</label>' + "<input id=\"nombre_programa\" class=\"swal2-input\" placeholder=\"Nombre\" value=\"".concat(data.name, "\"/>") + '<label>Número de semestres:</label>' + "<input id=\"semestres_programa\" class=\"swal2-input\" placeholder=\"Semestres\" value=\"".concat(data.semesters, "\"/>"),
                   focusConfirm: false,
                   preConfirm: function preConfirm() {
-                    var nombres = document.getElementById('nombre_programa').value;
-                    var semestres = document.getElementById('semestres_programa').value;
+                    var name = document.getElementById('nombre_programa').value;
+                    var semesters = document.getElementById('semestres_programa').value;
 
                     _this.setState({
                       form: {
-                        nombres: nombres,
-                        semestres: semestres
+                        name: name,
+                        semesters: semesters
                       }
                     });
                   }
                 });
 
               case 3:
-                if (_this.state.form.nombre != '' && !_this.state.form.semestres.isNaN) {
+                if (_this.state.form.name != '' && !_this.state.form.semesters.isNaN) {
                   _this.edit(data.id);
                 }
 
@@ -83345,7 +83511,7 @@ function (_Component) {
                   error: null
                 });
 
-                if (!(_this.state.form.nombre != '')) {
+                if (!(_this.state.form.name != '')) {
                   _context4.next = 17;
                   break;
                 }
@@ -83503,7 +83669,7 @@ function (_Component) {
     return _this;
   }
 
-  _createClass(Programa, [{
+  _createClass(Programas, [{
     key: "semestres",
     value: function semestres() {
       var arr = new Array();
@@ -83534,15 +83700,15 @@ function (_Component) {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "container-fluid"
+        className: "container"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "col-12"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_programas_AgregarPrograma__WEBPACK_IMPORTED_MODULE_2__["default"], {
         semestres: this.state.semestres,
-        formNombre: this.state.form.nombre,
-        formSemestres: this.state.form.semestres,
+        formNombre: this.state.form.name,
+        formSemestres: this.state.form.semesters,
         handleSubmit: this.handleSubmit,
         handleChange: this.handleChange
       }), this.state.loading && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_loading_Loading__WEBPACK_IMPORTED_MODULE_4__["default"], null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_programas_ConsultarPrograma__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -83554,10 +83720,10 @@ function (_Component) {
     }
   }]);
 
-  return Programa;
+  return Programas;
 }(react__WEBPACK_IMPORTED_MODULE_1__["Component"]);
 
-/* harmony default export */ __webpack_exports__["default"] = (Programa);
+/* harmony default export */ __webpack_exports__["default"] = (Programas);
 
 /***/ }),
 
@@ -83635,8 +83801,9 @@ function (_Component) {
       loading: true,
       error: null,
       form: {
-        nombre: '',
-        ubicacion: ''
+        name: '',
+        location: '',
+        enable: true
       }
     });
 
@@ -83709,7 +83876,7 @@ function (_Component) {
                 error: null
               });
 
-              if (!(_this.state.form.nombre != '' && _this.state.form.ubicacion != '')) {
+              if (!(_this.state.form.name != '' && _this.state.form.location != '')) {
                 _context2.next = 25;
                 break;
               }
@@ -83807,8 +83974,9 @@ function (_Component) {
     _defineProperty(_assertThisInitialized(_this), "clear", function () {
       _this.setState({
         form: {
-          nombre: '',
-          ubicacion: ''
+          name: '',
+          location: '',
+          enable: true
         }
       });
     });
@@ -83849,23 +84017,24 @@ function (_Component) {
                 _context3.next = 2;
                 return _this.MySwal.fire({
                   title: 'Editar salón',
-                  html: '<label>Nombre:</label>' + "<input id=\"nombre_salon\" class=\"swal2-input\" placeholder=\"Nombre\" value=\"".concat(data.nombre, "\"/>") + '<label>Ubicacion:</label>' + "<input id=\"ubicacion_salon\" class=\"swal2-input\" placeholder=\"Ubicaci\xF3n\" value=\"".concat(data.ubicacion, "\"/>"),
+                  html: '<label>Nombre:</label>' + "<input id=\"nombre_salon\" class=\"swal2-input\" placeholder=\"Nombre\" value=\"".concat(data.name, "\"/>") + '<label>Ubicacion:</label>' + "<input id=\"ubicacion_salon\" class=\"swal2-input\" placeholder=\"Ubicaci\xF3n\" value=\"".concat(data.location, "\"/>"),
                   focusConfirm: false,
                   preConfirm: function preConfirm() {
-                    var nombre = document.getElementById('nombre_salon').value;
-                    var ubicacion = document.getElementById('ubicacion_salon').value;
+                    var name = document.getElementById('nombre_salon').value;
+                    var location = document.getElementById('ubicacion_salon').value;
 
                     _this.setState({
                       form: {
-                        nombre: nombre,
-                        ubicacion: ubicacion
+                        name: name,
+                        location: location,
+                        enable: _this.state.form.enable
                       }
                     });
                   }
                 });
 
               case 2:
-                if (_this.state.form.nombre != '' && _this.state.form.ubicacion != '') {
+                if (_this.state.form.name != '' && _this.state.form.location != '') {
                   _this.edit(data.id);
                 }
 
@@ -83882,29 +84051,99 @@ function (_Component) {
       };
     }());
 
-    _defineProperty(_assertThisInitialized(_this), "edit",
+    _defineProperty(_assertThisInitialized(_this), "handleEnable",
     /*#__PURE__*/
     function () {
       var _ref4 = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(id) {
-        var response;
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee4(e, data) {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
+              case 0:
+                _context4.next = 2;
+                return _this.setState({
+                  form: {
+                    name: data.name,
+                    location: data.location,
+                    enable: true
+                  }
+                });
+
+              case 2:
+                _this.edit(data.id);
+
+              case 3:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4);
+      }));
+
+      return function (_x3, _x4) {
+        return _ref4.apply(this, arguments);
+      };
+    }());
+
+    _defineProperty(_assertThisInitialized(_this), "handleDisable",
+    /*#__PURE__*/
+    function () {
+      var _ref5 = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5(e, data) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.next = 2;
+                return _this.setState({
+                  form: {
+                    name: data.name,
+                    location: data.location,
+                    enable: false
+                  }
+                });
+
+              case 2:
+                _this.edit(data.id);
+
+              case 3:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5);
+      }));
+
+      return function (_x5, _x6) {
+        return _ref5.apply(this, arguments);
+      };
+    }());
+
+    _defineProperty(_assertThisInitialized(_this), "edit",
+    /*#__PURE__*/
+    function () {
+      var _ref6 = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee6(id) {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
               case 0:
                 _this.setState({
                   loading: true,
                   error: null
                 });
 
-                if (!(_this.state.form.nombre != '' && _this.state.form.ubicacion != '')) {
-                  _context4.next = 17;
+                if (!(_this.state.form.name != '' && _this.state.form.location != '')) {
+                  _context6.next = 17;
                   break;
                 }
 
-                _context4.prev = 2;
-                _context4.next = 5;
+                _context6.prev = 2;
+                _context6.next = 5;
                 return fetch("".concat(_this.props.api, "/").concat(id), {
                   method: 'PUT',
                   body: JSON.stringify(_this.state.form),
@@ -83914,7 +84153,7 @@ function (_Component) {
                 });
 
               case 5:
-                response = _context4.sent;
+                response = _context6.sent;
 
                 _this.setState({
                   loading: true
@@ -83948,20 +84187,20 @@ function (_Component) {
                   });
                 }
 
-                _context4.next = 15;
+                _context6.next = 15;
                 break;
 
               case 12:
-                _context4.prev = 12;
-                _context4.t0 = _context4["catch"](2);
+                _context6.prev = 12;
+                _context6.t0 = _context6["catch"](2);
 
                 _this.setState({
                   loading: false,
-                  error: _context4.t0
+                  error: _context6.t0
                 });
 
               case 15:
-                _context4.next = 18;
+                _context6.next = 18;
                 break;
 
               case 17:
@@ -83976,28 +84215,28 @@ function (_Component) {
 
               case 18:
               case "end":
-                return _context4.stop();
+                return _context6.stop();
             }
           }
-        }, _callee4, null, [[2, 12]]);
+        }, _callee6, null, [[2, 12]]);
       }));
 
-      return function (_x3) {
-        return _ref4.apply(this, arguments);
+      return function (_x7) {
+        return _ref6.apply(this, arguments);
       };
     }());
 
     _defineProperty(_assertThisInitialized(_this), "remove",
     /*#__PURE__*/
     function () {
-      var _ref5 = _asyncToGenerator(
+      var _ref7 = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee5(id) {
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee5$(_context5) {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee7(id) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee7$(_context7) {
           while (1) {
-            switch (_context5.prev = _context5.next) {
+            switch (_context7.prev = _context7.next) {
               case 0:
-                _context5.next = 2;
+                _context7.next = 2;
                 return fetch("".concat(_this.props.api, "/").concat(id), {
                   method: 'DELETE',
                   headers: {
@@ -84041,14 +84280,14 @@ function (_Component) {
 
               case 2:
               case "end":
-                return _context5.stop();
+                return _context7.stop();
             }
           }
-        }, _callee5);
+        }, _callee7);
       }));
 
-      return function (_x4) {
-        return _ref5.apply(this, arguments);
+      return function (_x8) {
+        return _ref7.apply(this, arguments);
       };
     }());
 
@@ -84071,20 +84310,22 @@ function (_Component) {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
-        className: "container-fluid"
+        className: "container"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "row"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
         className: "col-12"
       }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_salones_AgregarSalon__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        formNombre: this.state.form.nombre,
-        formUbicacion: this.state.form.ubicacion,
+        formNombre: this.state.form.name,
+        formUbicacion: this.state.form.location,
         handleSubmit: this.handleSubmit,
         handleChange: this.handleChange
       }), this.state.loading && react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_loading_Loading__WEBPACK_IMPORTED_MODULE_4__["default"], null), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_salones_ConsultarSalon__WEBPACK_IMPORTED_MODULE_3__["default"], {
         error: this.state.error,
-        salons: this.state.data,
+        classrooms: this.state.data,
         handleEdit: this.handleEdit,
+        handleEnable: this.handleEnable,
+        handleDisable: this.handleDisable,
         handleRemove: this.handleRemove
       }))));
     }
@@ -84173,8 +84414,8 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\David\Documents\GitHub\cread-sogamoso\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\David\Documents\GitHub\cread-sogamoso\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! c:\Users\David\Documents\GitHub\cread-sogamoso\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! c:\Users\David\Documents\GitHub\cread-sogamoso\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

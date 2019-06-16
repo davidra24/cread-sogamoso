@@ -6,7 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Carrersubject extends Model
 {
-    protected $fillable = ['id', 'id_career', 'id_subject','credist','semesters','enable'];
+    protected $fillable = [
+        'id',
+        'id_career',
+        'id_subject',
+        'credits',
+        'semester',
+        'enable'
+    ];
     public function subject()
     {
         return $this->hasMany(Subject::class, 'id', 'id_subject');

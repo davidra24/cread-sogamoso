@@ -17,8 +17,8 @@ class CreateTableCareersubjects extends Migration
             $table->integer('id')->primary();
             $table->integer('id_career');
             $table->integer('id_subject');
-            $table->integer('credist');
-            $table->integer('semesters');
+            $table->integer('credits');
+            $table->integer('semester');
             $table->boolean('enable');
             $table->timestamps();
 

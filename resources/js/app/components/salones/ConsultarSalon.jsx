@@ -3,48 +3,64 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Error from '../error/Error';
 
 function SalonItem(props) {
-  return (
-    <div className="alert color-alert-info ">
-      <div className="row">
-        <div className="col-12 col-md-5">
-          <strong>{props.salon.nombre}</strong>
+    var renderEnable;
+    if (props.salon.enable) {
+        renderEnable = (
+            <button className="btn btn-danger" onClick={props.handleDisable}>
+                <FontAwesomeIcon icon="eye-slash" />
+            </button>
+        );
+    } else {
+        renderEnable = (
+            <button className="btn btn-success" onClick={props.handleEnable}>
+                <FontAwesomeIcon icon="eye" />
+            </button>
+        );
+    }
+    const color = props.salon.enable ? 'alert alert-info' : 'alert alert-dark';
+    return (
+        <div className={color}>
+            <div className="row">
+                <div className="col-12 col-md-5">
+                    <strong>{props.salon.name}</strong>
+                </div>
+                <div className="col-12 col-md-5">
+                    <strong>{props.salon.location}</strong>
+                </div>
+                <div className="col-6 col-md-1">
+                    <button className="btn btn-info" onClick={props.handleEdit}>
+                        <FontAwesomeIcon icon="edit" />
+                    </button>
+                </div>
+                <div className="col-6 col-md-1">{renderEnable}</div>
+            </div>
         </div>
-        <div className="col-12 col-md-5">
-          <strong>{props.salon.ubicacion}</strong>
-        </div>
-        <div className="col-6 col-md-1">
-          <button className="btn btn-info" onClick={props.handleEdit}>
-            <FontAwesomeIcon icon="edit" />
-          </button>
-        </div>
-        <div className="col-6 col-md-1">
-          <button className="btn btn-danger" onClick={props.handleRemove}>
-            <FontAwesomeIcon icon="trash" />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+    );
 }
 function ConsultarSalon(props) {
-  if (props.error) {
-    return <Error error={props.error.message} />;
-  }
-  return (
-    <ul className="list-unstyled">
-      {props.salons.map(salon => {
-        return (
-          <li key={salon.id} style={{ listStyleType: 'none' }}>
-            <SalonItem
-              salon={salon}
-              handleRemove={e => props.handleRemove(e, salon)}
-              handleEdit={e => props.handleEdit(e, salon)}
-            />
-          </li>
-        );
-      })}
-    </ul>
-  );
+    if (props.error) {
+        return <Error error={props.error.message} />;
+    }
+    const classrooms = props.classrooms.sort(function(a, b) {
+        return b.enable - a.enable;
+    });
+    return (
+        <ul className="list-unstyled">
+            {classrooms.map(salon => {
+                return (
+                    <li key={salon.id} style={{ listStyleType: 'none' }}>
+                        <SalonItem
+                            salon={salon}
+                            handleRemove={e => props.handleRemove(e, salon)}
+                            handleEnable={e => props.handleEnable(e, salon)}
+                            handleDisable={e => props.handleDisable(e, salon)}
+                            handleEdit={e => props.handleEdit(e, salon)}
+                        />
+                    </li>
+                );
+            })}
+        </ul>
+    );
 }
 
 export default ConsultarSalon;

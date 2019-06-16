@@ -10,6 +10,7 @@ class ProgramaAsignatura extends Component {
     MySwal = withReactContent(Swal);
     constructor(props) {
         super(props);
+        console.log('props... ', props);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     state = {
@@ -18,20 +19,23 @@ class ProgramaAsignatura extends Component {
         data: [],
         loading: true,
         error: null,
+        loadingS: true,
         form: {
             id: '',
-            id_programa: this.props.match.params.id,
-            id_asignatura: '',
-            semestre: '',
-            creditos: ''
+            id_career: this.props.match.params.id,
+            id_subject: '',
+            semester: '',
+            credits: '',
+            enable: true
         },
-        programas: []
+        programas: [],
+        subjects: []
     };
 
     semestres() {
         let arr = new Array();
         arr.push(<option key={0} />);
-        for (let i = 1; i <= this.props.location.state.semestres; i++) {
+        for (let i = 1; i <= this.props.location.state.semesters; i++) {
             arr.push(<option key={i}>{i}</option>);
         }
         return arr;
@@ -61,7 +65,7 @@ class ProgramaAsignatura extends Component {
         });
     };
     remove = async id => {
-        await fetch(`${this.props.location.state.api}/${id}`, {
+        await fetch(`${this.props.api}/${id}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' }
         })
@@ -111,9 +115,7 @@ class ProgramaAsignatura extends Component {
             form: {
                 ...this.state.form,
                 [e.target.name]: e.target.value,
-                id: `${this.state.form.id_programa}0${
-                    this.state.form.id_asignatura
-                }`
+                id: `${this.state.form.id_career}0${this.state.form.id_subject}`
             }
         });
     };
@@ -125,13 +127,13 @@ class ProgramaAsignatura extends Component {
         console.log(this.state.form);
         if (
             this.state.form.id != '' &&
-            this.state.form.id_programa != '' &&
-            this.state.form.id_asignatura &&
-            this.state.form.semestre != '' &&
-            this.state.form.creditos != ''
+            this.state.form.id_career != '' &&
+            this.state.form.id_subject &&
+            this.state.form.semester != '' &&
+            this.state.form.credits != ''
         ) {
             try {
-                const response = await fetch(this.props.location.state.api, {
+                const response = await fetch(this.props.api, {
                     method: 'POST',
                     body: JSON.stringify(this.state.form),
                     headers: {
@@ -186,35 +188,51 @@ class ProgramaAsignatura extends Component {
         this.setState({
             form: {
                 id: '',
-                id_programa: this.props.match.params.id,
-                id_asignatura: '',
-                semestre: '',
-                creditos: ''
+                id_career: this.props.match.params.id,
+                id_subject: '',
+                semester: '',
+                credits: '',
+                enable: true
             }
         });
     };
 
     componentDidMount() {
         this.get();
-        console.log(this.state.data);
+        this.getAsignaturas();
     }
+    getAsignaturas = async () => {
+        try {
+            const response = await fetch(this.props.apiAsignatura, {
+                mode: 'no-cors'
+            });
+            const subjects = await response.json();
+            this.setState({
+                subjects: subjects,
+                loadingS: false
+            });
+        } catch (error) {
+            console.log(error);
+            this.setState({
+                loadingS: false,
+                error: error
+            });
+        }
+    };
     get = async () => {
         this.setState({
             loading: true,
             error: null
         });
         try {
-            const response = await fetch(this.props.location.state.apiPA, {
-                mode: 'no-cors'
-            });
+            const response = await fetch(
+                `${this.props.apiPA}${this.props.match.params.id}`
+            );
             const data = await response.json();
             this.setState({
                 loading: false,
                 data: data
             });
-            if (data) {
-                await this.getAsignatura();
-            }
         } catch (error) {
             this.setState({
                 loading: false,
@@ -222,39 +240,128 @@ class ProgramaAsignatura extends Component {
             });
         }
     };
-
+    handleEnable = async (e, data) => {
+        await this.setState({
+            form: {
+                id_career: this.props.match.params.id,
+                id_subject: data.id_subject,
+                semester: data.semester,
+                credits: data.credits,
+                enable: true
+            }
+        });
+        this.edit(data.id);
+    };
+    handleDisable = async (e, data) => {
+        await this.setState({
+            form: {
+                id_career: this.props.match.params.id,
+                id_subject: data.id_subject,
+                semester: data.semester,
+                credits: data.credits,
+                enable: false
+            }
+        });
+        this.edit(data.id);
+    };
+    edit = async id => {
+        this.setState({
+            loading: true,
+            error: null
+        });
+        if (
+            this.state.form.id_career != '' &&
+            this.state.form.id_subject != '' &&
+            this.state.form.semester != '' &&
+            this.state.form.credits != ''
+        ) {
+            try {
+                const response = await fetch(`${this.props.api}/${id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(this.state.form),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                this.setState({
+                    loading: true
+                });
+                this.clear();
+                this.get();
+                if (response.status === 200) {
+                    this.MySwal.fire({
+                        position: 'top-end',
+                        type: 'success',
+                        title:
+                            'Se ha actualizado la asignatura satsfactoriamente',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else {
+                    this.MySwal.fire({
+                        type: 'error',
+                        position: 'top-end',
+                        title: 'Oops...',
+                        text: 'No se ha podido editar la asignatura ',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    this.setState({
+                        loading: false,
+                        error: error
+                    });
+                }
+            } catch (error) {
+                this.setState({
+                    loading: false,
+                    error: error
+                });
+            }
+        } else {
+            this.MySwal.fire({
+                type: 'error',
+                position: 'top-end',
+                title: 'Oops...',
+                text: 'No se ha podidos editar la asignatura ',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    };
     render() {
-        return (
-            <Navbar>
-                <div className="container-fluid">
+        if (this.state.loading || this.state.loadingS) {
+            return <Loading />;
+        } else {
+            return (
+                <div className="container">
                     <div className="row">
                         <div className="col-12">
                             <AgregarProgramaAsignatura
                                 semestres={this.state.semestres}
                                 creditos={this.state.creditos}
-                                formPrograma={this.state.form.id_programa}
-                                formAsignatura={this.state.form.id_asignatura}
-                                formSemestre={this.state.form.semestre}
-                                formCreditos={this.state.form.creditos}
+                                formPrograma={this.state.form.id_career}
+                                formAsignatura={this.state.form.id_subject}
+                                formSemestre={this.state.form.semester}
+                                formCreditos={this.state.form.credits}
                                 handleSubmit={this.handleSubmit}
                                 handleChange={this.handleChange}
                                 id={this.props.match.params.id}
-                                api={this.props.location.api}
-                                apiAsignatura="/api/asignaturas"
+                                subjects={this.state.subjects}
                             />
                             <ConsultarProgramaAsignatura
                                 error={this.state.error}
                                 careersSubjects={this.state.data}
                                 programas={this.state.programas}
                                 handleRemove={this.handleRemove}
-                                apiAsignatura="/api/asignaturas"
+                                subjects={this.state.subjects}
+                                handleEnable={this.handleEnable}
+                                handleDisable={this.handleDisable}
                             />
-                            {this.state.loading && <Loading />}
                         </div>
                     </div>
                 </div>
-            </Navbar>
-        );
+            );
+        }
     }
 }
 
