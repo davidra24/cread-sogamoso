@@ -96,8 +96,15 @@ class CarrersubjectController extends Controller
      * @param  \App\Carrersubject  $carrersubject
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Carrersubject $carrersubject)
+    public function destroy($carrersubject)
     {
-        //
+        $data = Carrersubject::where('id',$carrersubject)->first();
+        if($data==null){
+        
+        }
+        else{
+        //$data->carrerSubject()->delete();
+        $data->delete();
+        }
     }
 }

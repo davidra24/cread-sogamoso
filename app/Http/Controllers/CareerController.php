@@ -101,7 +101,7 @@ class CareerController extends Controller
      */
     public function destroy($career)
     {
-        $data = Subject::where('id',$career)->first();
+        $data = Career::where('id',$career)->first();
         if($data==null){
         
         }
