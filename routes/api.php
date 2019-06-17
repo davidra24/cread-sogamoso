@@ -25,6 +25,7 @@ Route::apiResource('subjectsfromcareer', 'SubjectsfromcareerController');
 Route::apiResource('teachers', 'TeacherController');
 Route::apiResource('semesters', 'SemesterController');
 Route::apiResource('lessons', 'LessonController');
+Route::apiResource('users', 'UserController');
 
 Route::delete(
     'lessons/{id_classroom}/{id_career_subject}/{id_semester}/{id_teacher}',

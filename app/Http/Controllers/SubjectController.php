@@ -99,8 +99,15 @@ class SubjectController extends Controller
      * @param  \App\Subject  $subject
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Subject $subject)
+    public function destroy($subject)
     {
-        //
+        $data = Subject::where('id',$subject)->first();
+        if($data==null){
+        
+        }
+        else{
+        //$data->carrerSubject()->delete();
+        $data->delete();
+        }
     }
 }

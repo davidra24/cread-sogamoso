@@ -101,7 +101,14 @@ class CareerController extends Controller
      */
     public function destroy($career)
     {
+        $data = Career::where('id',$career)->first();
+        if($data==null){
         
+        }
+        else{
+        //$data->carrerSubject()->delete();
+        $data->delete();
 
     }
+}
 }

@@ -5,18 +5,22 @@ import Index from './pages/index';
 import Client from './pages/Client';
 
 export default class App extends Component {
+    state = {
+        user: {
+            id: user
+        }
+    };
     render() {
-        console.log(user);
-        if (user == 'admin') {
+        if (role == 'admin') {
             return (
                 <BrowserRouter location="/">
-                    <Index user={user} />
+                    <Index user={this.state.user} />
                 </BrowserRouter>
             );
         } else {
             return (
                 <BrowserRouter location="/">
-                    <Client user={user} />
+                    <Client user={this.state.user} />
                 </BrowserRouter>
             );
         }

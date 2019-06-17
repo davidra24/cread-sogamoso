@@ -42,11 +42,31 @@ class SemesterController extends Controller
      */
     public function store(Request $request)
     {
+        $semesters=Semester::all();
+
         $semester=Semester::where('title',$request->title)->first();
         if($semester==null){
-        $semesterC=Semester::create($request->all());
-        $semesterC->save();
-        return response()->json($semesterC);
+            if($semesters->isEmpty()){
+
+                $semesterC=Semester::create($request->all());
+                $semesterC->save();
+                return response()->json($semesterC);
+            }
+            else{
+
+                foreach($semesters as $s){
+                    
+                    if($s->enable==true){
+                        $s->enable=false;
+                        $s->save();
+                    }
+                    
+                    
+                }
+                $semesterC=Semester::create($request->all());
+                $semesterC->save();
+                return response()->json($semesterC);
+            }
         }
     }
 

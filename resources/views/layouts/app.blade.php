@@ -11,6 +11,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/loading.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
     <link href="{{ asset('css/notFound.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/v4-shims.css">
@@ -51,7 +52,10 @@
                                 </li>
                             @endif
                         @else
-                            <?php $role = Auth::user()->roleUser(); ?>
+                            <?php
+                            $role = Auth::user()->roleUser();
+                            $usuario = Auth::user()->id;
+                            ?>
                             @if(Auth::user()->roleUser() == "admin")
                                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
                                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -154,7 +158,8 @@
     </div>
     @if(Auth::check())
         <script>    
-            const user = '{{ $role }}' 
+            const user = '{{ $usuario }}'
+            const role = '{{ $role }}'
         </script>
         <script src="{{ asset('/js/app.js') }}"> </script>
     @endif
