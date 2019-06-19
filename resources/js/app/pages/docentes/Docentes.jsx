@@ -233,7 +233,8 @@ class Docentes extends Component {
                     this.MySwal.fire({
                         position: 'top-end',
                         type: 'success',
-                        title: 'Se ha actualizado el docente satsfactoriamente',
+                        title:
+                            'Se ha actualizado el docente satisfactoriamente',
                         showConfirmButton: false,
                         timer: 1500
                     });

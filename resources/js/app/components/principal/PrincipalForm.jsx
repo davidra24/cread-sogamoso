@@ -24,7 +24,12 @@ function PrincipalForm(props) {
                         {props.careers}
                     </select>
                     <br />
-                    <Link to="/" className="btn btn-block btn-success">
+                    <Link
+                        to={`/addLesson/${props.formSemestre}/${
+                            props.formCareer
+                        }`}
+                        className="btn btn-block btn-success"
+                    >
                         Agregar horarios
                     </Link>
                 </div>

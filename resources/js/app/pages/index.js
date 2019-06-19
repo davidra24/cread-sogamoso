@@ -4,45 +4,24 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import 'bootstrap/dist/css/bootstrap.css';
 import {
-    faUserCircle,
     faEdit,
-    faCogs,
-    faHome,
     faTrash,
-    faChalkboardTeacher,
-    faBookReader,
-    faBrain,
-    faBuilding,
     faEyeSlash,
     faEye,
-    faCalendarWeek,
-    faSave
+    faCalendarWeek
 } from '@fortawesome/free-solid-svg-icons';
 //import Login from './login/Login';
 import Principal from './principal/Principal';
 import NotFound from './notFound/NotFound';
 import ProgramaAsignatura from './programa_asignatura/ProgramaAsignatura';
-import Programas from '../pages/programas/Programa';
-import Asignaturas from '../pages/asignaturas/Asignaturas';
-import Docentes from '../pages/docentes/Docentes';
-import Salones from '../pages/salones/Salones';
-import PanelUsuario from '../pages/panel-usuario/PanelUsuario';
+import Programas from './programas/Programa';
+import Asignaturas from './asignaturas/Asignaturas';
+import Docentes from './docentes/Docentes';
+import Salones from './salones/Salones';
+import PanelUsuario from './panel-usuario/PanelUsuario';
+import AddLesson from './principal/AddLesson';
 
-library.add(
-    faUserCircle,
-    faCogs,
-    faHome,
-    faChalkboardTeacher,
-    faBookReader,
-    faEye,
-    faEyeSlash,
-    faBrain,
-    faEdit,
-    faTrash,
-    faBuilding,
-    faCalendarWeek,
-    faSave
-);
+library.add(faEye, faEyeSlash, faEdit, faTrash, faCalendarWeek);
 class Index extends Component {
     componentDidMount() {}
 
@@ -112,6 +91,11 @@ class Index extends Component {
                             apiAsignatura="/api/subjects"
                         />
                     )}
+                />
+                <Route
+                    exact
+                    path="/addLesson/:id_semester/:id_career"
+                    component={AddLesson}
                 />
                 <Route component={NotFound} />
             </Switch>

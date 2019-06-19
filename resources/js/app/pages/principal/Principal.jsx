@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom';
 import Loading from '../../components/loading/Loading';
 import PrincipalForm from '../../components/principal/PrincipalForm';
 import PrincipalInfo from '../../components/principal/PrincipalInfo';
@@ -197,26 +196,92 @@ class Principal extends Component {
             });
         }
     };
+    updateSemester = async e => {
+        let isUpdated = false;
+        await this.state.semesters.map(semestre => {
+            if (this.state.form.id_semester === semestre.id) {
+                semestre.enable = true;
+                const response = fetch(
+                    `${this.props.apiSemester}/${semestre.id}`,
+                    {
+                        method: 'PUT',
+                        body: JSON.stringify(semestre),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+                console.log(response);
+                if (response.status === 200) {
+                    isUpdated = true;
+                } else {
+                    isUpdated = false;
+                }
+            } else {
+                if (semestre.enable) {
+                    semestre.enable = false;
+                    const response = fetch(
+                        `${this.props.apiSemester}/${semestre.id}`,
+                        {
+                            method: 'PUT',
+                            body: JSON.stringify(semestre),
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        }
+                    );
+                    console.log(response);
+                    if (response.status === 200) {
+                        isUpdated = true;
+                    } else {
+                        isUpdated = false;
+                    }
+                }
+            }
+        });
+        this.setState({
+            loadingSemesters: false
+        });
+        if (isUpdated) {
+            this.MySwal.fire({
+                position: 'top-end',
+                type: 'success',
+                title:
+                    'Se ha actualizado el semestre actual satisfactoriamente',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    };
+
     handleChange = e => {
         const historySemester = this.state.form.id_semester;
+        console.log(e.target.name, ': ', e.target.value);
         this.setState({
             form: {
                 ...this.state.form,
                 [e.target.name]: e.target.value
             }
         });
-        if (e.target.name === 'id_semester' && e.target.value == 0) {
-            this.addSemester();
-            this.setState({
-                form: {
-                    ...this.state.form,
-                    id_semester: historySemester
-                }
-            });
+        if (e.target.name == 'id_semester') {
+            console.log('es id semestre');
+            if (e.target.value == 0) {
+                console.log('es 0');
+                this.addSemester();
+                this.setState({
+                    form: {
+                        ...this.state.form,
+                        id_semester: historySemester
+                    }
+                });
+            } /*else {
+                console.log('no es 0');
+                this.setState({
+                    loadingSemesters: true
+                });
+                this.updateSemester();
+            }*/
         }
-        /*if (e.target.name === 'id_semester' && e.target.value != 0) {
-            this.updateSemester();
-        }*/
         if (
             this.state.form.id_career != 0 &&
             this.state.form.id_semester != 0
@@ -229,30 +294,30 @@ class Principal extends Component {
         }
     };
     render() {
-        if (this.state.loadingSemesters || this.state.loadingCareers) {
-            return <Loading />;
-        } else {
-            return (
-                <div>
+        return (
+            <div>
+                {this.state.loadingSemesters || this.state.loadingCareers ? (
+                    <Loading />
+                ) : (
                     <PrincipalForm
                         semesters={this.state.semes}
                         careers={this.state.caree}
                         formSemestre={this.state.form.id_semester}
                         handleChange={this.handleChange}
                     />
-                    <br />
-                    {this.state.form.id_career ? (
-                        this.loading ? (
-                            <Loading />
-                        ) : (
-                            <PrincipalInfo lessons={this.state.data} />
-                        )
+                )}
+                <br />
+                {this.state.form.id_career ? (
+                    this.loading ? (
+                        <Loading />
                     ) : (
-                        <h2>Seleccione un programa</h2>
-                    )}
-                </div>
-            );
-        }
+                        <PrincipalInfo lessons={this.state.data} />
+                    )
+                ) : (
+                    <h2>Seleccione un programa</h2>
+                )}
+            </div>
+        );
     }
 }
 
