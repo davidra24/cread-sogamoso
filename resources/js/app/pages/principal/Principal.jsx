@@ -33,7 +33,6 @@ class Principal extends Component {
             if (semestre.enable) {
                 this.setState({
                     form: {
-                        ...this.state.form,
                         id_semester: semestre.id
                     }
                 });
@@ -133,7 +132,7 @@ class Principal extends Component {
             caree: arr
         });
     }
-    componentWillMount() {
+    componentDidMount() {
         this.getSemester();
         this.getCareer();
     }
@@ -263,7 +262,7 @@ class Principal extends Component {
                 [e.target.name]: e.target.value
             }
         });
-        if (e.target.name == 'id_semester') {
+        if (e.target.name === 'id_semester') {
             console.log('es id semestre');
             if (e.target.value == 0) {
                 console.log('es 0');
@@ -282,10 +281,7 @@ class Principal extends Component {
                 this.updateSemester();
             }*/
         }
-        if (
-            this.state.form.id_career != 0 &&
-            this.state.form.id_semester != 0
-        ) {
+        if (this.state.form.id_semester && this.state.form.id_career != 0) {
             this.setState({
                 loading: true,
                 error: null
@@ -303,16 +299,15 @@ class Principal extends Component {
                         semesters={this.state.semes}
                         careers={this.state.caree}
                         formSemestre={this.state.form.id_semester}
+                        formCareer={this.state.form.id_career}
                         handleChange={this.handleChange}
                     />
                 )}
                 <br />
-                {this.state.form.id_career ? (
-                    this.loading ? (
-                        <Loading />
-                    ) : (
-                        <PrincipalInfo lessons={this.state.data} />
-                    )
+                {this.loading ? (
+                    <Loading />
+                ) : this.state.form.id_career ? (
+                    <PrincipalInfo lessons={this.state.data} />
                 ) : (
                     <h2>Seleccione un programa</h2>
                 )}

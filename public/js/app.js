@@ -82897,7 +82897,7 @@ function (_Component) {
         form: _objectSpread({}, _this.state.form, _defineProperty({}, e.target.name, e.target.value))
       });
 
-      if (e.target.name == 'id_semester') {
+      if (e.target.name === 'id_semester') {
         console.log('es id semestre');
 
         if (e.target.value == 0) {
@@ -82921,7 +82921,7 @@ function (_Component) {
 
       }
 
-      if (_this.state.form.id_career != 0 && _this.state.form.id_semester != 0) {
+      if (_this.state.form.id_semester && _this.state.form.id_career != 0) {
         _this.setState({
           loading: true,
           error: null
@@ -82943,9 +82943,9 @@ function (_Component) {
       this.state.semesters.map(function (semestre) {
         if (semestre.enable) {
           _this2.setState({
-            form: _objectSpread({}, _this2.state.form, {
+            form: {
               id_semester: semestre.id
-            })
+            }
           });
         }
 
@@ -83111,8 +83111,8 @@ function (_Component) {
       });
     }
   }, {
-    key: "componentWillMount",
-    value: function componentWillMount() {
+    key: "componentDidMount",
+    value: function componentDidMount() {
       this.getSemester();
       this.getCareer();
     }
@@ -83123,8 +83123,9 @@ function (_Component) {
         semesters: this.state.semes,
         careers: this.state.caree,
         formSemestre: this.state.form.id_semester,
+        formCareer: this.state.form.id_career,
         handleChange: this.handleChange
-      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), this.state.form.id_career ? this.loading ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_loading_Loading__WEBPACK_IMPORTED_MODULE_2__["default"], null) : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_principal_PrincipalInfo__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("br", null), this.loading ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_loading_Loading__WEBPACK_IMPORTED_MODULE_2__["default"], null) : this.state.form.id_career ? react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement(_components_principal_PrincipalInfo__WEBPACK_IMPORTED_MODULE_4__["default"], {
         lessons: this.state.data
       }) : react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", null, "Seleccione un programa"));
     }
