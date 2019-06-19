@@ -68,6 +68,7 @@ class Index extends Component {
                             {...props}
                             api="/api/lessons"
                             apiSemester="/api/semesters"
+                            apiCareer="/api/careers"
                         />
                     )}
                 />

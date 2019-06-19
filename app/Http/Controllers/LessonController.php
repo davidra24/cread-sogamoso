@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Lesson;
+use App\ViewLesson;
 use Illuminate\Http\Request;
 use DB;
 class LessonController extends Controller
@@ -55,6 +56,7 @@ class LessonController extends Controller
         $teacher_semester = Lesson::where('id_teacher', '=', $id_teacher)
             ->where('id_semester', '=', $id_semester)
             ->get();
+
         /** if verifica salones disponibles en ese año */
         if ($class_semester->isEmpty()) {
             if ($teacher_semester->isEmpty()) {
@@ -118,9 +120,9 @@ class LessonController extends Controller
                     return response()->json($classt);
                 }
                 if ($create === true) {
-                    $lesson = Lesson::create($request->all());
-                    $lesson->save();
-                    return response()->json($lesson);
+                    $less = Lesson::create($request->all());
+                    $less->save();
+                    return response()->json($less);
                 }
             }
 
@@ -139,8 +141,16 @@ class LessonController extends Controller
      */
     public function show($lesson)
     {
-        $data = Lesson::find($lesson);
-        return response()->json($data);
+        /*$data = Lesson::find($lesson);
+         return response()->json($data);*/
+        $data = ViewLesson::where('id_semester', $lesson)
+            ->where('id_career', $lesson)
+            ->get();
+        $array = array();
+        foreach ($data as $t) {
+            $array[] = $t;
+        }
+        return response()->json($array);
     }
 
     /**

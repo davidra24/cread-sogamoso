@@ -14,13 +14,19 @@ class CreateTableLessons extends Migration
     public function up()
     {
         Schema::create('lessons', function (Blueprint $table) {
-            $table->integer('id');
             $table->integer('id_classroom');
             $table->integer('id_career_subject');
             $table->integer('id_semester');
             $table->integer('id_teacher');
             $table->json('schedule');
             $table->timestamps();
+
+            $table->primary([
+                'id_classroom',
+                'id_career_subject',
+                'id_semester',
+                'id_teacher'
+            ]);
 
             $table
                 ->foreign('id_classroom')

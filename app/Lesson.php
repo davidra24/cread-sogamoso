@@ -6,7 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Lesson extends Model
 {
-    protected $fillable = ['id','id_classroom', 'id_career_subject', 'id_semester','id_teacher','schedule'];
+    protected $primaryKey = null;
+    public $incrementing = false;
+
+    protected $fillable = [
+        'id_classroom',
+        'id_career_subject',
+        'id_semester',
+        'id_teacher',
+        'schedule'
+    ];
     protected $casts = [
         'schedule' => 'array'
     ];
@@ -26,5 +35,4 @@ class Lesson extends Model
     {
         return $this->hasMany(Carrersubject::class, 'id', 'id_career_subject');
     }
-    
 }

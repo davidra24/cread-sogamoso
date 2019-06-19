@@ -98,13 +98,11 @@ class CarrersubjectController extends Controller
      */
     public function destroy($carrersubject)
     {
-        $data = Carrersubject::where('id',$carrersubject)->first();
-        if($data==null){
-        
-        }
-        else{
-        //$data->carrerSubject()->delete();
-        $data->delete();
+        $data = Carrersubject::where('id', $carrersubject)->first();
+        if ($data == null) {
+        } else {
+            //$data->carrerSubject()->delete();
+            $data->delete();
         }
     }
 }

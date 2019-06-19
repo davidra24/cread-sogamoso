@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function PrincipalForm(props) {
     return (
@@ -13,6 +14,19 @@ function PrincipalForm(props) {
                     >
                         {props.semesters}
                     </select>
+                    <br />
+                    <select
+                        name="id_career"
+                        className="form-control"
+                        onChange={props.handleChange}
+                        value={props.formCareer}
+                    >
+                        {props.careers}
+                    </select>
+                    <br />
+                    <Link to="/" className="btn btn-block btn-success">
+                        Agregar horarios
+                    </Link>
                 </div>
             </div>
         </div>

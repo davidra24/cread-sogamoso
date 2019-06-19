@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import AgregarProgramaAsignatura from '../../components/programa_asignatura/AgregarProgramaAsignatura';
 import ConsultarProgramaAsignatura from '../../components/programa_asignatura/ConsultarProgramaAsignatura';
-import Navbar from '../../components/navbar/Navbar';
 import Loading from '../../components/loading/Loading';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -10,7 +9,6 @@ class ProgramaAsignatura extends Component {
     MySwal = withReactContent(Swal);
     constructor(props) {
         super(props);
-        console.log('props... ', props);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     state = {
@@ -172,7 +170,7 @@ class ProgramaAsignatura extends Component {
                 type: 'error',
                 position: 'top-end',
                 title: 'Oops...',
-                text: 'No se ha podido crear la asignatura ',
+                text: 'No se ha podido crear la asignatura',
                 showConfirmButton: false,
                 timer: 1500
             });
