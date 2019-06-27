@@ -12,7 +12,8 @@ SELECT cl.id as id_classroom,
 	   ca.name as name_career, 
 	   su.name as name_subject, 
 	   le.id_career_subject as id_career_subject, 
-	   le.schedule as schedule
+	   le.schedule as schedule,
+	   te.phone as phone_teacher
 FROM  public.lessons AS le
 INNER JOIN public.classrooms AS cl
     ON cl.id = le.id_classroom 

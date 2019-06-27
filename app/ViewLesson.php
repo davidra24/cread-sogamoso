@@ -12,6 +12,7 @@ class ViewLesson extends Model
         'location_classroom',
         'id_teacher',
         'name_teacher',
+        'phone_teacher',
         'id_semester',
         'title_semester',
         'id_career',

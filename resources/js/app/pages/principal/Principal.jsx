@@ -4,6 +4,7 @@ import PrincipalForm from '../../components/principal/PrincipalForm';
 import PrincipalInfo from '../../components/principal/PrincipalInfo';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { DateUtils } from 'react-day-picker';
 import load from '../../images/loading.gif';
 
 class Principal extends Component {
@@ -25,23 +26,36 @@ class Principal extends Component {
         data: [],
         error: null,
         semes: [],
-        caree: []
+        caree: [],
+        responseUpdated: false,
+        modalIsOpen: false,
+        selectedDays: []
+    };
+    handleOpenModal = e => {
+        this.setState({ modalIsOpen: true });
+    };
+    handleCloseModal = e => {
+        this.setState({ modalIsOpen: false });
     };
     fillSemesters() {
         let arr = new Array();
-        this.state.semesters.map(semestre => {
-            if (semestre.enable) {
-                this.setState({
-                    form: {
-                        id_semester: semestre.id
-                    }
-                });
-            }
+        const semestres = this.state.semesters.sort(function(a, b) {
+            return a.id - b.id;
+        });
+        semestres.map(semestre => {
             arr.push(
                 <option key={semestre.id} value={semestre.id}>
                     {semestre.title}
                 </option>
             );
+            if (semestre.enable) {
+                this.setState({
+                    form: {
+                        ...this.state.form,
+                        id_semester: semestre.id
+                    }
+                });
+            }
         });
         arr.push(
             <option key={0} value={0}>
@@ -49,7 +63,8 @@ class Principal extends Component {
             </option>
         );
         this.setState({
-            semes: arr
+            semes: arr,
+            loadingSemesters: false
         });
     }
     async addSemester() {
@@ -120,7 +135,7 @@ class Principal extends Component {
     }
     fillCareers() {
         let arr = new Array();
-        arr.push(<option key={0} />);
+        arr.push(<option key={0} value={0} />);
         this.state.careers.map(career => {
             arr.push(
                 <option key={career.id} value={career.id}>
@@ -129,7 +144,8 @@ class Principal extends Component {
             );
         });
         this.setState({
-            caree: arr
+            caree: arr,
+            loadingCareers: false
         });
     }
     componentDidMount() {
@@ -145,8 +161,7 @@ class Principal extends Component {
             const response = await fetch(this.props.apiSemester);
             const data = await response.json();
             this.setState({
-                semesters: data,
-                loadingSemesters: false
+                semesters: data
             });
             await this.fillSemesters();
         } catch (error) {
@@ -165,8 +180,7 @@ class Principal extends Component {
             const response = await fetch(this.props.apiCareer);
             const data = await response.json();
             this.setState({
-                careers: data,
-                loadingCareers: false
+                careers: data
             });
             await this.fillCareers();
         } catch (error) {
@@ -176,12 +190,10 @@ class Principal extends Component {
             });
         }
     };
-    get = async () => {
+    get = async (id_semester, id_career) => {
         try {
             const response = await fetch(
-                `${this.props.api}/${this.state.form.id_semester}/${
-                    this.state.form.id_career
-                }`
+                `${this.props.api}/${id_semester}/${id_career}`
             );
             const data = await response.json();
             this.setState({
@@ -195,67 +207,49 @@ class Principal extends Component {
             });
         }
     };
-    updateSemester = async e => {
-        let isUpdated = false;
-        await this.state.semesters.map(semestre => {
-            if (this.state.form.id_semester === semestre.id) {
-                semestre.enable = true;
-                const response = fetch(
-                    `${this.props.apiSemester}/${semestre.id}`,
-                    {
-                        method: 'PUT',
-                        body: JSON.stringify(semestre),
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }
-                );
-                console.log(response);
-                if (response.status === 200) {
-                    isUpdated = true;
-                } else {
-                    isUpdated = false;
-                }
+    updateSemester = async semestre => {
+        this.setState({
+            loadingSemesters: true
+        });
+        await fetch(`${this.props.apiSemester}/${semestre.id}`, {
+            method: 'PUT',
+            body: JSON.stringify(semestre),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => {
+            if (parseInt(res.status) === 200) {
+                this.setState({
+                    responseUpdated: true
+                });
+            } else {
+                this.setState({
+                    responseUpdated: false
+                });
+            }
+        });
+    };
+    updateSemesters = id_semestre => {
+        this.state.semesters.map(semestre => {
+            if (parseInt(id_semestre) === parseInt(semestre.id)) {
+                semestre = { ...semestre, enable: true };
+                this.updateSemester(semestre);
+                this.setState({
+                    loadingSemesters: false
+                });
             } else {
                 if (semestre.enable) {
-                    semestre.enable = false;
-                    const response = fetch(
-                        `${this.props.apiSemester}/${semestre.id}`,
-                        {
-                            method: 'PUT',
-                            body: JSON.stringify(semestre),
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        }
-                    );
-                    console.log(response);
-                    if (response.status === 200) {
-                        isUpdated = true;
-                    } else {
-                        isUpdated = false;
-                    }
+                    semestre = { ...semestre, enable: false };
+                    this.updateSemester(semestre);
+                    this.setState({
+                        loadingSemesters: false
+                    });
                 }
             }
         });
-        this.setState({
-            loadingSemesters: false
-        });
-        if (isUpdated) {
-            this.MySwal.fire({
-                position: 'top-end',
-                type: 'success',
-                title:
-                    'Se ha actualizado el semestre actual satisfactoriamente',
-                showConfirmButton: false,
-                timer: 1500
-            });
-        }
     };
-
     handleChange = e => {
         const historySemester = this.state.form.id_semester;
-        console.log(e.target.name, ': ', e.target.value);
         this.setState({
             form: {
                 ...this.state.form,
@@ -263,31 +257,40 @@ class Principal extends Component {
             }
         });
         if (e.target.name === 'id_semester') {
-            console.log('es id semestre');
-            if (e.target.value == 0) {
-                console.log('es 0');
-                this.addSemester();
+            if (parseInt(e.target.value) === 0) {
                 this.setState({
                     form: {
                         ...this.state.form,
                         id_semester: historySemester
                     }
                 });
-            } /*else {
-                console.log('no es 0');
+            } else {
                 this.setState({
-                    loadingSemesters: true
+                    loadingSemesters: true,
+                    form: {
+                        id_semester: e.target.value,
+                        id_career: 0
+                    }
                 });
-                this.updateSemester();
-            }*/
+                this.updateSemesters(e.target.value);
+            }
+        } else {
+            if (
+                parseInt(this.state.form.id_semester) != 0 &&
+                parseInt(e.target.value) != 0
+            ) {
+                this.setState({
+                    loading: true,
+                    error: null
+                });
+                this.get(this.state.form.id_semester, e.target.value);
+            }
         }
-        if (this.state.form.id_semester && this.state.form.id_career != 0) {
-            this.setState({
-                loading: true,
-                error: null
-            });
-            this.get();
-        }
+    };
+    openModal = () => {
+        this.setState({
+            modalIsOpen: !this.state.modalIsOpen
+        });
     };
     render() {
         return (
@@ -307,7 +310,15 @@ class Principal extends Component {
                 {this.loading ? (
                     <Loading />
                 ) : this.state.form.id_career ? (
-                    <PrincipalInfo lessons={this.state.data} />
+                    <PrincipalInfo
+                        lessons={this.state.data}
+                        onCloseModal={this.handleCloseModal}
+                        onOpenModal={this.handleOpenModal}
+                        modalIsOpen={this.state.modalIsOpen}
+                        selectedDays={this.selectedDays}
+                        onDayClick={this.handleDayClick}
+                        openModal={this.openModal}
+                    />
                 ) : (
                     <h2>Seleccione un programa</h2>
                 )}

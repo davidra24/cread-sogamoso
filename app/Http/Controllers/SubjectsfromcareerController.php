@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Carrersubject;
+use App\ViewCareerSubject;
 use Illuminate\Http\Request;
 
 class SubjectsfromcareerController extends Controller
@@ -57,7 +58,7 @@ class SubjectsfromcareerController extends Controller
     public function show($carrersubject)
     {
         $id_career = $carrersubject;
-        $carrS = Carrersubject::where('id_career', '=', $id_career)->get();
+        $carrS = ViewCareerSubject::where('id_career', '=', $id_career)->get();
         return response()->json($carrS);
     }
 

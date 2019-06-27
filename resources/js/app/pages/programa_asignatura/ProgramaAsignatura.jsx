@@ -121,7 +121,6 @@ class ProgramaAsignatura extends Component {
             loading: true,
             error: null
         });
-        console.log(this.state.form);
         if (
             this.state.form.id != '' &&
             this.state.form.id_career != '' &&
@@ -218,7 +217,7 @@ class ProgramaAsignatura extends Component {
         });
         try {
             const response = await fetch(
-                `${this.props.apiPA}${this.props.match.params.id}`
+                `${this.props.apiPA}/${this.props.match.params.id}`
             );
             const data = await response.json();
             this.setState({

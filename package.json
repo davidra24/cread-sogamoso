@@ -7,7 +7,7 @@
         "watch-poll": "npm run watch -- --watch-poll",
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "npm run production",
-        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
         "@babel/plugin-proposal-class-properties": "^7.4.4",
@@ -35,6 +35,9 @@
         "sweetalert2-react-content": "^1.1.0"
     },
     "dependencies": {
-        "react-day-picker": "^7.3.0"
+        "moment": "^2.24.0",
+        "react-collapsible": "^2.6.0",
+        "react-day-picker": "^7.3.0",
+        "react-timekeeper": "^1.1.0"
     }
 }

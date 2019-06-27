@@ -48,7 +48,7 @@ class LessonController extends Controller
         $id_career_subject = $request->id_career_subject;
         $id_semester = $request->id_semester;
         $id_teacher = $request->id_teacher;
-        $schedule = $request->schedule;
+        $schedule = json_decode($request->schedule);
 
         $class_semester = Lesson::where('id_classroom', '=', $id_classroom)
             ->where('id_semester', '=', $id_semester)
@@ -139,12 +139,12 @@ class LessonController extends Controller
      * @param  \App\Lesson  $lesson
      * @return \Illuminate\Http\Response
      */
-    public function show($lesson)
+    public function show(Request $request)
     {
         /*$data = Lesson::find($lesson);
          return response()->json($data);*/
-        $data = ViewLesson::where('id_semester', $lesson)
-            ->where('id_career', $lesson)
+        $data = ViewLesson::where('id_semester', $request->id_semester)
+            ->where('id_career', $request->id_career)
             ->get();
         $array = array();
         foreach ($data as $t) {

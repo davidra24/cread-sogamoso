@@ -125,7 +125,7 @@ class Asignaturas extends Component {
     handleRemove = (e, data) => {
         this.MySwal.fire({
             title: '¿Está seguro?',
-            text: '¿Está seguro que desea eliminar estaa?',
+            text: '¿Está seguro que desea eliminar esta asignatura?',
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',

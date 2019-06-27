@@ -24,14 +24,20 @@ function PrincipalForm(props) {
                         {props.careers}
                     </select>
                     <br />
-                    <Link
-                        to={`/addLesson/${props.formSemestre}/${
-                            props.formCareer
-                        }`}
-                        className="btn btn-block btn-success"
-                    >
-                        Agregar horarios
-                    </Link>
+                    {props.formSemestre != '' && props.formCareer != '' ? (
+                        <Link
+                            to={`/add-lesson/${props.formSemestre}/${
+                                props.formCareer
+                            }`}
+                            className="btn btn-block btn-success"
+                        >
+                            Agregar horarios
+                        </Link>
+                    ) : (
+                        <button className="btn btn-block btn-dark">
+                            Agregar horarios
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
