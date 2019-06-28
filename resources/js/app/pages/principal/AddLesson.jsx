@@ -326,8 +326,11 @@ class AddLesson extends Component {
         return s;
     };
     validateHour = () => {
+        console.log(this.state.form.schedule.start_h.split(':')[0]);
+        console.log(this.state.form.schedule.end_h.split(':')[0]);
         if (
-            this.state.form.schedule.start_h >= this.state.form.schedule.end_h
+            this.state.form.schedule.start_h.split(':')[0] >=
+            this.state.form.schedule.end_h.split(':')[0]
         ) {
             this.MySwal.fire({
                 type: 'error',
