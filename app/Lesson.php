@@ -14,11 +14,10 @@ class Lesson extends Model
         'id_career_subject',
         'id_semester',
         'id_teacher',
-        'schedule'
+        'start_hour',
+        'end_hour'
     ];
-    protected $casts = [
-        'schedule' => 'array'
-    ];
+    
     public function classroom()
     {
         return $this->hasMany(Classroom::class, 'id', 'id_classroom');
