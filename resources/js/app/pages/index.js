@@ -11,6 +11,7 @@ import Docentes from './docentes/Docentes';
 import Salones from './salones/Salones';
 import PanelUsuario from './panel-usuario/PanelUsuario';
 import AddLesson from './principal/AddLesson';
+import Semestres from './semestres/Semestres';
 
 class Index extends Component {
     componentDidMount() {}
@@ -27,6 +28,13 @@ class Index extends Component {
                             api="/api/lessons"
                             apiSemester="/api/semesters"
                         />
+                    )}
+                />
+                <Route
+                    exact
+                    path="/semesters"
+                    component={props => (
+                        <Semestres {...props} api="/api/semesters" />
                     )}
                 />
                 <Route
