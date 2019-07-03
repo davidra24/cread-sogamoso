@@ -6,7 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Semester extends Model
 {
-    protected $fillable = ['title', 'enable'];
+    protected $fillable = ['title', 'enable', 'dates'];
+    protected $casts = [
+        'dates' => 'array'
+    ];
     public function lesson()
     {
         return $this->hasOne(Lesson::class, 'id_semester', 'id');

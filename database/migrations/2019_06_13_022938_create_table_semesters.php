@@ -17,6 +17,7 @@ class CreateTableSemesters extends Migration
             $table->dropPrimary('cart_line_pkey');
             $table->bigIncrements('id')->primary();
             $table->text('title');
+            $table->jsonb('dates');
             $table->boolean('enable');
             $table->timestamps();
         });

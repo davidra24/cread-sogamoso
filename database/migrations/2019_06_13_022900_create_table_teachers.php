@@ -17,7 +17,7 @@ class CreateTableTeachers extends Migration
             $table->dropPrimary('cart_line_pkey');
             $table->bigIncrements('id')->primary();
             $table->text('name');
-            $table->text('mail');
+            $table->text('mail')->unique();
             $table->text('phone');
             $table->boolean('enable');
             $table->timestamps();

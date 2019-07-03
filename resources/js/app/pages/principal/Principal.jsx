@@ -57,17 +57,12 @@ class Principal extends Component {
                 });
             }
         });
-        arr.push(
-            <option key={0} value={0}>
-                Agregar semestre...
-            </option>
-        );
         this.setState({
             semes: arr,
             loadingSemesters: false
         });
     }
-    async addSemester() {
+    /*async addSemester() {
         const { value: semestre } = await this.MySwal.fire({
             title: 'Agregar nuevo semestre',
             input: 'text',
@@ -132,7 +127,7 @@ class Principal extends Component {
                 id_career: ''
             }
         });
-    }
+    }*/
     fillCareers() {
         let arr = new Array();
         arr.push(<option key={0} value={0} />);

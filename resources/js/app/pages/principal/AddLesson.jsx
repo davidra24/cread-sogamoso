@@ -40,11 +40,8 @@ class AddLesson extends Component {
             id_career_subject: '',
             id_teacher: '',
             id_classroom: '',
-            schedule: {
-                start_h: '',
-                end_h: '',
-                days: []
-            }
+            start_hour: '',
+            end_hour: ''
         },
         init_hour: '12:00 pm',
         final_hour: '12:00 pm',
@@ -55,10 +52,7 @@ class AddLesson extends Component {
         this.setState({
             form: {
                 ...this.state.form,
-                schedule: {
-                    ...this.state.form.schedule,
-                    start_h: newTime.formatted24
-                }
+                start_hour: newTime.formatted24
             },
             init_hour: newTime.formatted
         });
@@ -67,10 +61,7 @@ class AddLesson extends Component {
         this.setState({
             form: {
                 ...this.state.form,
-                schedule: {
-                    ...this.state.form.schedule,
-                    end_h: newTime.formatted24
-                }
+                end_hour: newTime.formatted24
             },
             final_hour: newTime.formatted
         });
@@ -218,7 +209,7 @@ class AddLesson extends Component {
             });
         }
     };
-    handleDayClick = (day, { selected }) => {
+    /*handleDayClick = (day, { selected }) => {
         const { days } = this.state.form.schedule;
         if (selected) {
             const selectedIndex = days.findIndex(selectedDay =>
@@ -237,7 +228,7 @@ class AddLesson extends Component {
                 }
             }
         });
-    };
+    };*/
     clear = () => {
         this.setState({
             form: {
@@ -245,11 +236,8 @@ class AddLesson extends Component {
                 id_career_subject: '',
                 id_teacher: '',
                 id_classroom: '',
-                schedule: {
-                    start_h: '',
-                    end_h: '',
-                    days: this.state.form.schedule.days
-                }
+                start_hour: '',
+                end_hour: ''
             },
             init_hour: '12:00 pm',
             final_hour: '12:00 pm'
@@ -326,11 +314,11 @@ class AddLesson extends Component {
         return s;
     };
     validateHour = () => {
-        console.log(this.state.form.schedule.start_h.split(':')[0]);
-        console.log(this.state.form.schedule.end_h.split(':')[0]);
+        console.log(this.state.form.start_hour.split(':')[0]);
+        console.log(this.state.form.end_hour.split(':')[0]);
         if (
-            this.state.form.schedule.start_h.split(':')[0] >=
-            this.state.form.schedule.end_h.split(':')[0]
+            this.state.form.start_hour.split(':')[0] >=
+            this.state.form.end_hour.split(':')[0]
         ) {
             this.MySwal.fire({
                 type: 'error',
@@ -349,9 +337,8 @@ class AddLesson extends Component {
         if (
             this.state.form.id_career_subject != '' &&
             this.state.form.id_teacher != '' &&
-            this.state.form.schedule.days != '' &&
-            this.state.form.schedule.start_h != '' &&
-            this.state.form.schedule.end_h != '' &&
+            this.state.form.start_hour != '' &&
+            this.state.form.end_hour != '' &&
             this.state.form.id_classroom != ''
         ) {
             if (this.validateHour()) {
@@ -374,13 +361,9 @@ class AddLesson extends Component {
             error: null
         });
         try {
-            const form = {
-                ...this.state.form,
-                schedule: JSON.stringify(this.state.form.schedule)
-            };
             const response = await fetch(this.props.api, {
                 method: 'POST',
-                body: JSON.stringify(form),
+                body: JSON.stringify(this.state.form),
                 headers: {
                     'Content-Type': 'application/json'
                 }
@@ -442,7 +425,7 @@ class AddLesson extends Component {
                             {this.state.career.name}
                         </h2>
                         <br />
-                        <div className="col-12">
+                        {/*<div className="col-12">
                             <Collapsible
                                 triggerClassName="col-12 btn btn-block btn-info pointer"
                                 triggerOpenedClassName="col-12 btn btn-block btn-info pointer"
@@ -457,7 +440,7 @@ class AddLesson extends Component {
                                 />
                             </Collapsible>
                             <br />
-                        </div>
+                        </div>*/}
                     </div>
                     <div className="col-12 col-md-6">
                         <ul className="list-group">

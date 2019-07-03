@@ -5,6 +5,7 @@ SELECT cl.id as id_classroom,
 	   te.name as name_teacher, 
 	   se.id as id_semester, 
 	   se.title as title_semester, 
+	   se.dates as dates,
 	   cs.id_career as id_career, 
 	   cs.id_subject as id_subject,
 	   cs.credits as subject_credits, 
@@ -12,7 +13,8 @@ SELECT cl.id as id_classroom,
 	   ca.name as name_career, 
 	   su.name as name_subject, 
 	   le.id_career_subject as id_career_subject, 
-	   le.schedule as schedule,
+	   le.start_hour as start_hour,
+	   le.end_hour as end_hour,
 	   te.phone as phone_teacher
 FROM  public.lessons AS le
 INNER JOIN public.classrooms AS cl
@@ -20,7 +22,7 @@ INNER JOIN public.classrooms AS cl
 INNER JOIN public.teachers AS te
     ON te.id = le.id_teacher
 INNER JOIN public.semesters AS se
-    ON se.id = le.id_classroom
+    ON se.id = le.id_semester
 INNER JOIN public.carrersubjects AS cs
 	ON cs.id = le.id_career_subject
 INNER JOIN public.careers AS ca

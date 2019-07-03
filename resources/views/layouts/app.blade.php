@@ -67,6 +67,13 @@
                                                     <span class="sr-only">(current)</span>
                                                 </a>
                                             </li>
+                                            <li class="nav-item @if(Request::is('semesters')) active @endif">
+                                                <a class="nav-link" href="/semesters">
+                                                    <i class="fas fa-calendar-check"></i>
+                                                    Semestres 
+                                                    <span class="sr-only">(current)</span>
+                                                </a>
+                                            </li>
                                             <li class="nav-item @if(Request::is('careers')) active @endif">
                                                 <a class="nav-link" href="/careers">
                                                     <i class="fas fa-brain"></i>

@@ -14,10 +14,8 @@ class Lesson extends Model
         'id_career_subject',
         'id_semester',
         'id_teacher',
-        'schedule'
-    ];
-    protected $casts = [
-        'schedule' => 'array'
+        'start_hour',
+        'end_hour'
     ];
     public function classroom()
     {

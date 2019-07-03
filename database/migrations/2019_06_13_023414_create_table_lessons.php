@@ -18,7 +18,8 @@ class CreateTableLessons extends Migration
             $table->integer('id_career_subject');
             $table->integer('id_semester');
             $table->integer('id_teacher');
-            $table->json('schedule');
+            $table->text('start_hour');
+            $table->text('end_hour');
             $table->timestamps();
 
             $table->primary([
