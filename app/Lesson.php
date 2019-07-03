@@ -17,6 +17,7 @@ class Lesson extends Model
         'start_hour',
         'end_hour'
     ];
+    
     public function classroom()
     {
         return $this->hasMany(Classroom::class, 'id', 'id_classroom');
