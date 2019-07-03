@@ -106,6 +106,7 @@ class Index extends Component {
                     )}
                 />
                 <Route component={NotFound} />
+                <Route component={NotFound} />
             </Switch>
         );
     }

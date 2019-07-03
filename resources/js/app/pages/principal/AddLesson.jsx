@@ -317,8 +317,8 @@ class AddLesson extends Component {
         console.log(this.state.form.start_hour.split(':')[0]);
         console.log(this.state.form.end_hour.split(':')[0]);
         if (
-            this.state.form.start_hour.split(':')[0] >=
-            this.state.form.end_hour.split(':')[0]
+            parseInt(this.state.form.start_hour.split(':')[0]) >=
+            parseInt(this.state.form.end_hour.split(':')[0])
         ) {
             this.MySwal.fire({
                 type: 'error',

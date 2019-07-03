@@ -29,7 +29,8 @@ class Principal extends Component {
         caree: [],
         responseUpdated: false,
         modalIsOpen: false,
-        selectedDays: []
+        selectedDays: [],
+        selected: {}
     };
     handleOpenModal = e => {
         this.setState({ modalIsOpen: true });
@@ -55,6 +56,7 @@ class Principal extends Component {
                         id_semester: semestre.id
                     }
                 });
+                this.searchSemester(semestre.id);
             }
         });
         this.setState({
@@ -243,6 +245,22 @@ class Principal extends Component {
             }
         });
     };
+    searchSemester = id => {
+        var results = false;
+        for (let i = 0; i < this.state.semesters.length; i++) {
+            if (parseInt(this.state.semesters[i]['id']) === parseInt(id)) {
+                results = true;
+                const arr = [];
+                this.state.semesters[i]['dates'].forEach(element => {
+                    arr.push(new Date(element.split('T')[0]));
+                });
+                this.setState({
+                    selectedDays: arr
+                });
+            }
+        }
+        return results;
+    };
     handleChange = e => {
         const historySemester = this.state.form.id_semester;
         this.setState({
@@ -267,6 +285,7 @@ class Principal extends Component {
                         id_career: 0
                     }
                 });
+                this.searchSemester(e.target.value);
                 this.updateSemesters(e.target.value);
             }
         } else {
@@ -299,6 +318,11 @@ class Principal extends Component {
                         formSemestre={this.state.form.id_semester}
                         formCareer={this.state.form.id_career}
                         handleChange={this.handleChange}
+                        onCloseModal={this.handleCloseModal}
+                        onOpenModal={this.handleOpenModal}
+                        modalIsOpen={this.state.modalIsOpen}
+                        openModal={this.openModal}
+                        selectedDays={this.state.selectedDays}
                     />
                 )}
                 <br />
@@ -307,12 +331,7 @@ class Principal extends Component {
                 ) : this.state.form.id_career ? (
                     <PrincipalInfo
                         lessons={this.state.data}
-                        onCloseModal={this.handleCloseModal}
-                        onOpenModal={this.handleOpenModal}
-                        modalIsOpen={this.state.modalIsOpen}
-                        selectedDays={this.selectedDays}
                         onDayClick={this.handleDayClick}
-                        openModal={this.openModal}
                     />
                 ) : (
                     <h2>Seleccione un programa</h2>
