@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Role;
 use App\ViewUsersRole;
+use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     private $user;
@@ -45,12 +46,26 @@ class UserController extends Controller
     }
     public function update(Request $request, $user)
     {
-        $data = Career::find($user);
+        $data = User::find($user);
         if ($data == null) {
             return null;
         } else {
-            $data->fill($request->all());
-            $data->save();
+           
+            if($request->password===null){
+                $data->name = $request->name;
+                $data->email = $request->email;
+                $data->save();
+            }
+            else{
+                if(Hash::check($request->mypassword,$data->password)){
+                    $data->name = $request->name;
+                    $data->email = $request->email;
+                    $data->password = bcrypt($request->password);
+                    $data->save();
+                }
+            }
+            
+            
             
             return response()->json($data);
         }
