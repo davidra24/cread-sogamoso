@@ -188,6 +188,9 @@ class Principal extends Component {
         }
     };
     get = async (id_semester, id_career) => {
+        this.setState({
+            data: []
+        });
         try {
             const response = await fetch(
                 `${this.props.api}/${id_semester}/${id_career}`

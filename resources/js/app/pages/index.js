@@ -9,7 +9,7 @@ import Programas from './programas/Programa';
 import Asignaturas from './asignaturas/Asignaturas';
 import Docentes from './docentes/Docentes';
 import Salones from './salones/Salones';
-import PanelUsuario from './panel-usuario/PanelUsuario';
+import Perfil from './perfil/Perfil';
 import AddLesson from './principal/AddLesson';
 import Semestres from './semestres/Semestres';
 
@@ -77,7 +77,17 @@ class Index extends Component {
                         <Salones {...props} api="/api/classrooms" />
                     )}
                 />
-                <Route exact path="/profile" component={PanelUsuario} />
+                <Route
+                    exact
+                    path="/profile"
+                    component={props => (
+                        <Perfil
+                            {...props}
+                            api="/api/users"
+                            user={this.props.user}
+                        />
+                    )}
+                />
                 <Route
                     exact
                     path="/careers/:id"
@@ -105,7 +115,6 @@ class Index extends Component {
                         />
                     )}
                 />
-                <Route component={NotFound} />
                 <Route component={NotFound} />
             </Switch>
         );

@@ -3,10 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CalendarModal from './CalendarModal';
 
 function getRows(props) {
-    let arr = new Array();
+    let arr = [];
     props.lessons.map(lesson => {
         arr.push(
-            <tr key={lesson.id_subject}>
+            <tr
+                key={`${lesson.id_subject}0${lesson.start_hour}0${
+                    lesson.end_hour
+                }`}
+            >
                 <th scope="row">{lesson.subject_semster}</th>
                 <td>{lesson.name_subject}</td>
                 <td>{lesson.name_teacher}</td>

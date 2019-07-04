@@ -43,7 +43,7 @@ class LessonController extends Controller
      */
     public function store(Request $request)
     {
-        $contFalse=0;
+        $contFalse = 0;
         $create = true;
         $id_classroom = $request->id_classroom;
         $id_career_subject = $request->id_career_subject;
@@ -51,8 +51,7 @@ class LessonController extends Controller
         $id_teacher = $request->id_teacher;
         //$schedule = json_decode(json_encode($request->schedule), true);
 
-        
-            //dd($hours['start_h']);
+        //dd($hours['start_h']);
         $start_h = $request->start_hour;
         $end_h = $request->end_hour;
         $start_h = strtotime($start_h);
@@ -60,76 +59,79 @@ class LessonController extends Controller
         $end_h = strtotime($end_h);
         $end_h = date('H:i', $end_h);
 
-        $class_semester =  Lesson::where('id_classroom', '=', $id_classroom)
+        $class_semester = Lesson::where('id_classroom', '=', $id_classroom)
             ->where('id_semester', '=', $id_semester)
             ->get();
         $teacher_semester = Lesson::where('id_teacher', '=', $id_teacher)
             ->where('id_semester', '=', $id_semester)
             ->get();
-           
 
         /** if verifica salones disponibles en ese año */
         if ($class_semester->isEmpty()) {
             if ($teacher_semester->isEmpty()) {
-               
                 /** se asigna el salon y profesor */
                 $lesson = Lesson::create($request->all());
                 $lesson->save();
                 return response()->json($lesson);
-            }else{
-                
+            } else {
                 //dd('salon desocupado, profesor no');
-                $resp=$this->enableTeacher($teacher_semester,$start_h,$end_h);
-                $decode=(array)json_decode($resp);
-                $contFalse=$decode['contador'];
-               
-                
+                $resp = $this->enableTeacher(
+                    $teacher_semester,
+                    $start_h,
+                    $end_h
+                );
+                $decode = (array) json_decode($resp);
+                $contFalse = $decode['contador'];
+
                 if ($contFalse == 0) {
                     $less = Lesson::create($request->all());
                     $less->save();
                     return response()->json($less);
-                }
-                else{
-                    return response()->json(["mensaje"=>"El horario del docente se cruza con el horario a asignar "
-                    ,"horario"=>$decode['horarioDocente']]);
+                } else {
+                    return response()->json([
+                        'mensaje' =>
+                            'El horario del docente se cruza con el horario a asignar ',
+                        'horario' => $decode['horarioDocente']
+                    ]);
                     //dd('no se creo');
                 }
-    
             }
         } else {
             //dd("salon ocupado");
-           
+
             /** si ya se ha asignado el salon en ese año, hay que verificar que no se crucen las horas**/
 
-            $respT=$this->enableTeacher($teacher_semester,$start_h,$end_h);
-            $respC=$this->enableClassRoom($class_semester,$start_h,$end_h);
-            $decodeRespT=(array)json_decode($respT);
-            $decodeRespC=(array)json_decode($respC);
-            
-            $cEnableC=$decodeRespC['contador'];
-            $cEnableT=$decodeRespT['contador'];
+            $respT = $this->enableTeacher($teacher_semester, $start_h, $end_h);
+            $respC = $this->enableClassRoom($class_semester, $start_h, $end_h);
+            $decodeRespT = (array) json_decode($respT);
+            $decodeRespC = (array) json_decode($respC);
 
-            $contFalse=$cEnableC+$cEnableT;
-            
+            $cEnableC = $decodeRespC['contador'];
+            $cEnableT = $decodeRespT['contador'];
+
+            $contFalse = $cEnableC + $cEnableT;
+
             if ($contFalse == 0) {
                 $less = Lesson::create($request->all());
                 $less->save();
                 return response()->json($less);
+            } elseif ($cEnableC >= 1 && $cEnableT >= 1) {
+                return response()->json([
+                    'mensaje' =>
+                        'El horario del docente y el salón se cruza con el horario a asignar '
+                ]);
+            } elseif ($cEnableC >= 1) {
+                return response()->json([
+                    'mensaje' =>
+                        'El horario del salón se cruza con el horario a asignar '
+                ]);
+            } else {
+                return response()->json([
+                    'mensaje' =>
+                        'El horario del docente se cruza con el horario a asignar '
+                ]);
             }
-            else if($cEnableC>=1 && $cEnableT>=1){
-                return response()->json(["mensaje"=>"El horario del docente y el salón se cruza con el horario a asignar "]);
-            }
-            else if($cEnableC>=1){
-                return response()->json(["mensaje"=>"El horario del salón se cruza con el horario a asignar "]);
-
-            }
-            else{
-                return response()->json(["mensaje"=>"El horario del docente se cruza con el horario a asignar "]);
-
-            }
-            
         }
-        
     }
 
     /**
@@ -138,12 +140,11 @@ class LessonController extends Controller
      * @param  \App\Lesson  $lesson
      * @return \Illuminate\Http\Response
      */
-    public function enableTeacher($teacher_semester,$start_h,$end_h){
-        $cntFalse=0;
-        $horariosDocente=[];
+    public function enableTeacher($teacher_semester, $start_h, $end_h)
+    {
+        $cntFalse = 0;
+        $horariosDocente = [];
         foreach ($teacher_semester as $classt) {
-           
-            
             $ClassT_start = $classt->start_hour;
             $ClassT_end = $classt->end_hour;
 
@@ -152,30 +153,30 @@ class LessonController extends Controller
             $ClassT_end = strtotime($ClassT_end);
             $ClassT_end = date('H:i', $ClassT_end);
             if ($ClassT_start == $start_h && $ClassT_end == $end_h) {
-                array_push($horariosDocente,$classt);
-                $cntFalse+=1;
+                array_push($horariosDocente, $classt);
+                $cntFalse += 1;
             } elseif ($start_h >= $ClassT_end || $end_h <= $ClassT_start) {
-               
             } else {
-                array_push($horariosDocente,$classt);
-                $cntFalse+=1;
+                array_push($horariosDocente, $classt);
+                $cntFalse += 1;
             }
-            
-            
         }
-        $data=json_encode(['contador'=>$cntFalse,'horarioDocente'=>$horariosDocente]);
+        $data = json_encode([
+            'contador' => $cntFalse,
+            'horarioDocente' => $horariosDocente
+        ]);
         return $data;
     }
-    public function enableClassRoom($class_semester,$start_h,$end_h){
-        $contFalseC=0;
-        $horariosSalon=[];
+    public function enableClassRoom($class_semester, $start_h, $end_h)
+    {
+        $contFalseC = 0;
+        $horariosSalon = [];
         foreach ($class_semester as $classr) {
             //dd($classr->schedule);
             /**$a=$classr->schedule;
             $a=(array) $a;
             $arrayH=implode (",",$a); */
-                                   
-            
+
             $ClassR_start = $classr->start_hour;
             $ClassR_end = $classr->end_hour;
 
@@ -184,16 +185,18 @@ class LessonController extends Controller
             $ClassR_end = strtotime($ClassR_end);
             $ClassR_end = date('H:i', $ClassR_end);
             if ($ClassR_start == $start_h && $ClassR_end == $end_h) {
-                array_push($horariosSalon,$classr);
-                $contFalseC+=1;
+                array_push($horariosSalon, $classr);
+                $contFalseC += 1;
             } elseif ($start_h >= $ClassR_end || $end_h <= $ClassR_start) {
-               
             } else {
-                array_push($horariosSalon,$classr);
-                $contFalseC+=1;
+                array_push($horariosSalon, $classr);
+                $contFalseC += 1;
             }
         }
-        $data=json_encode(['contador'=>$contFalseC,'horarioSalon'=>$horariosSalon]);
+        $data = json_encode([
+            'contador' => $contFalseC,
+            'horarioSalon' => $horariosSalon
+        ]);
         return $data;
     }
     public function show(Request $request)

@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import Loading from '../../components/loading/Loading';
-import DayPicker, { DateUtils } from 'react-day-picker';
-import 'react-day-picker/lib/style.css';
-import MomentLocaleUtils from 'react-day-picker/moment';
 import 'moment/locale/es';
 import Collapsible from 'react-collapsible';
 import TimeKeeper from 'react-timekeeper';
@@ -40,8 +37,8 @@ class AddLesson extends Component {
             id_career_subject: '',
             id_teacher: '',
             id_classroom: '',
-            start_hour: '',
-            end_hour: ''
+            start_hour: '12:00',
+            end_hour: '12:00'
         },
         init_hour: '12:00 pm',
         final_hour: '12:00 pm',
@@ -209,26 +206,6 @@ class AddLesson extends Component {
             });
         }
     };
-    /*handleDayClick = (day, { selected }) => {
-        const { days } = this.state.form.schedule;
-        if (selected) {
-            const selectedIndex = days.findIndex(selectedDay =>
-                DateUtils.isSameDay(selectedDay, day)
-            );
-            days.splice(selectedIndex, 1);
-        } else {
-            days.push(day);
-        }
-        this.setState({
-            form: {
-                ...this.state.form,
-                schedule: {
-                    ...this.state.form.schedule,
-                    days: days
-                }
-            }
-        });
-    };*/
     clear = () => {
         this.setState({
             form: {
@@ -236,8 +213,8 @@ class AddLesson extends Component {
                 id_career_subject: '',
                 id_teacher: '',
                 id_classroom: '',
-                start_hour: '',
-                end_hour: ''
+                start_hour: '12:00',
+                end_hour: '12:00'
             },
             init_hour: '12:00 pm',
             final_hour: '12:00 pm'
@@ -251,39 +228,6 @@ class AddLesson extends Component {
                 id_career_subject: e.target.value
             }
         });
-        /*this.state.data.map(lesson => {
-            if (parseInt(e.target.value) === lesson.id_career_subject) {
-                var start, final;
-                if (lesson.schedule.start_h > '12:00') {
-                    start =
-                        parseInt(lesson.schedule.start_h.split(':')[0]) - 12;
-                    start +=
-                        ':' + lesson.schedule.start_h.split(':')[1] + ' pm';
-                } else {
-                    start = lesson.schedule.start_h + ' am';
-                }
-                if (lesson.schedule.start_h > '12:00') {
-                    final = parseInt(lesson.schedule.end_h.split(':')[0]) - 12;
-                    final += ':' + lesson.schedule.end_h.split(':')[1] + ' pm';
-                } else {
-                    final = lesson.schedule.end_h + ' am';
-                }
-                this.setState({
-                    form: {
-                        ...this.state.form,
-                        id_career_subject: lesson.id_career_subject,
-                        id_teacher: lesson.id_teacher,
-                        schedule: {
-                            start_h: lesson.schedule.start_h,
-                            end_h: lesson.schedule.end_h,
-                            days: lesson.schedule.days
-                        }
-                    },
-                    init_hour: start,
-                    final_hour: final
-                });
-            }
-        });*/
     };
     handleSelectedChange = e => {
         this.setState({
@@ -314,8 +258,6 @@ class AddLesson extends Component {
         return s;
     };
     validateHour = () => {
-        console.log(this.state.form.start_hour.split(':')[0]);
-        console.log(this.state.form.end_hour.split(':')[0]);
         if (
             parseInt(this.state.form.start_hour.split(':')[0]) >=
             parseInt(this.state.form.end_hour.split(':')[0])
@@ -373,14 +315,26 @@ class AddLesson extends Component {
             });
             this.clear();
             this.get();
+            const msg = await response.json();
             if (response.status === 200) {
-                this.MySwal.fire({
-                    position: 'top-end',
-                    type: 'success',
-                    title: 'Se ha guardado la clase satsfactoriamente',
-                    showConfirmButton: false,
-                    timer: 1500
-                });
+                if (msg.hasOwnProperty('mensaje')) {
+                    this.MySwal.fire({
+                        type: 'error',
+                        position: 'top-end',
+                        title: 'Oops...',
+                        text: msg.mensaje,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                } else {
+                    this.MySwal.fire({
+                        position: 'top-end',
+                        type: 'success',
+                        title: 'Se ha guardado la clase satsfactoriamente',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
             } else {
                 this.MySwal.fire({
                     type: 'error',
