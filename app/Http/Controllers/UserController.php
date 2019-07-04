@@ -51,7 +51,7 @@ class UserController extends Controller
         if ($data == null) {
             return null;
         } else {
-            if ($request->password === null) {
+            if ($request->password === null || $request->password === '') {
                 $data->name = $request->name;
                 $data->email = $request->email;
                 $data->save();

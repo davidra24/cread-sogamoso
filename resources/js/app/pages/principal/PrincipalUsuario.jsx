@@ -15,7 +15,11 @@ class PrincipalUsuario extends Component {
         semes: [],
         caree: [],
         modalIsOpen: false,
-        selectedDays: []
+        selectedDays: [],
+        form: {
+            id_semester: '',
+            id_career: 0
+        }
     };
     handleOpenModal = e => {
         this.setState({ modalIsOpen: true });
@@ -142,10 +146,10 @@ class PrincipalUsuario extends Component {
                 });
             }
         }
+        this.setState({ loading: false });
         return results;
     };
     handleChange = e => {
-        const historySemester = this.state.form.id_semester;
         this.setState({
             form: {
                 ...this.state.form,
@@ -153,24 +157,14 @@ class PrincipalUsuario extends Component {
             }
         });
         if (e.target.name === 'id_semester') {
-            if (parseInt(e.target.value) === 0) {
-                this.setState({
-                    form: {
-                        ...this.state.form,
-                        id_semester: historySemester
-                    }
-                });
-            } else {
-                this.setState({
-                    loadingSemesters: true,
-                    form: {
-                        id_semester: e.target.value,
-                        id_career: 0
-                    }
-                });
-                this.searchSemester(e.target.value);
-                this.updateSemesters(e.target.value);
-            }
+            this.setState({
+                form: {
+                    id_semester: e.target.value,
+                    id_career: 0
+                },
+                data: []
+            });
+            this.searchSemester(e.target.value);
         } else {
             if (
                 parseInt(this.state.form.id_semester) != 0 &&
@@ -192,6 +186,8 @@ class PrincipalUsuario extends Component {
     render() {
         const semesters = this.state.semes;
         const careers = this.state.caree;
+        console.log(this.state);
+
         if (
             this.state.loading ||
             this.state.loadingCareers ||
@@ -208,7 +204,7 @@ class PrincipalUsuario extends Component {
                                 name="id_semester"
                                 className="form-control"
                                 onChange={this.handleChange}
-                                value={this.formSemestre}
+                                value={this.state.form.id_semester}
                             >
                                 {semesters}
                             </select>
@@ -234,7 +230,7 @@ class PrincipalUsuario extends Component {
                                 name="id_career"
                                 className="form-control"
                                 onChange={this.handleChange}
-                                value={this.formCareer}
+                                value={this.state.form.id_career}
                             >
                                 {careers}
                             </select>
