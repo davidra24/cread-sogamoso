@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Role;
 use App\ViewUsersRole;
+use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     private $user;
@@ -50,11 +51,21 @@ class UserController extends Controller
             return null;
         } else {
            
+            if($request->password===null){
+                $data->name = $request->name;
+                $data->email = $request->email;
+                $data->save();
+            }
+            else{
+                if(Hash::check($request->mypassword,$data->password)){
+                    $data->name = $request->name;
+                    $data->email = $request->email;
+                    $data->password = bcrypt($request->password);
+                    $data->save();
+                }
+            }
             
-            $data->name = $request->name;
-            $data->email = $request->email;
-            $data->password = bcrypt($request->password);
-            $data->save();
+            
             
             return response()->json($data);
         }
