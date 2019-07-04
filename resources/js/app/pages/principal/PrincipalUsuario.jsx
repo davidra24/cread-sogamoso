@@ -241,7 +241,7 @@ class PrincipalUsuario extends Component {
                 <div className="container">
                     <div className="row">
                         <div className="col-12">
-                            {this.state.data.lenght === 0 ? (
+                            {this.state.data === [] ? (
                                 <h1>Aún no hay horarios asignados</h1>
                             ) : (
                                 <Fragment>
