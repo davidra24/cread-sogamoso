@@ -31,7 +31,7 @@ Route::group(
     ['prefix' => 'user', 'middleware' => ['web', 'auth', 'user']],
     function () {
         Route::get('/', [
-            'uses' => 'UserController@index',
+            'uses' => 'UserController@view',
             'as' => 'user.index'
         ]);
     }

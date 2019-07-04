@@ -310,28 +310,31 @@ class Principal extends Component {
         });
     };
     render() {
+        if (
+            this.state.loading ||
+            this.state.loadingSemesters ||
+            this.state.loadingCareers
+        ) {
+            return <Loading />;
+        }
         return (
             <div>
-                {this.state.loadingSemesters || this.state.loadingCareers ? (
-                    <Loading />
-                ) : (
-                    <PrincipalForm
-                        semesters={this.state.semes}
-                        careers={this.state.caree}
-                        formSemestre={this.state.form.id_semester}
-                        formCareer={this.state.form.id_career}
-                        handleChange={this.handleChange}
-                        onCloseModal={this.handleCloseModal}
-                        onOpenModal={this.handleOpenModal}
-                        modalIsOpen={this.state.modalIsOpen}
-                        openModal={this.openModal}
-                        selectedDays={this.state.selectedDays}
-                    />
-                )}
+                <PrincipalForm
+                    semesters={this.state.semes}
+                    careers={this.state.caree}
+                    formSemestre={this.state.form.id_semester}
+                    formCareer={this.state.form.id_career}
+                    handleChange={this.handleChange}
+                    onCloseModal={this.handleCloseModal}
+                    onOpenModal={this.handleOpenModal}
+                    modalIsOpen={this.state.modalIsOpen}
+                    openModal={this.openModal}
+                    selectedDays={this.state.selectedDays}
+                />
                 <br />
                 {this.loading ? (
                     <Loading />
-                ) : this.state.form.id_career ? (
+                ) : this.state.form.id_career != 0 ? (
                     <PrincipalInfo
                         lessons={this.state.data}
                         onDayClick={this.handleDayClick}

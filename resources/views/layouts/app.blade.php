@@ -127,23 +127,23 @@
                                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                         <ul class="navbar-nav mr-auto">
                                             <li class="nav-item @if(Request::is('user')) active @endif">
-                                                <a class="nav-link" href="/user">Inicio 
+                                                <a class="nav-link" href="/user">
+                                                    <i class="fas fa-home"></i>
+                                                        Inicio 
                                                     <span class="sr-only">(current)</span>
                                                 </a>
                                             </li>
-                                            <li class="nav-item @if(Request::is('user/reportes')) active @endif">
-                                                <a class="nav-link" href="/user/reportes">Reportes</a>
-                                            </li>
                                             <li class="nav-item dropdown">
                                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                                    <i class="fas fa-tools"></i>
                                                     {{ Auth::user()->name }} <span class="caret"></span>
                                                 </a>
 
                                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                                    <a class="dropdown-item" href="/profile">Perfil de usuario</a>
                                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                                     onclick="event.preventDefault();
                                                                     document.getElementById('logout-form').submit();">
+                                                        <i class="fas fa-sign-out-alt"></i>
                                                         {{ __('Cerrar sesión') }}
                                                     </a>
                                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

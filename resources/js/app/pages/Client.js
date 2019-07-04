@@ -1,18 +1,43 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import 'bootstrap/dist/css/bootstrap.css';
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons';
+import PrincipalUsuario from './principal/PrincipalUsuario';
 import NotFound from './notFound/NotFound';
 
-library.add(faUserCircle);
 class Index extends Component {
     componentDidMount() {}
     render() {
         return (
             <Switch>
-                <Route exact path="/user" component={NotFound} />
+                <Route
+                    exact
+                    path="/"
+                    component={props => (
+                        <PrincipalUsuario
+                            {...props}
+                            api="/api/lessons"
+                            apiSemester="/api/semesters"
+                            apiCareer="/api/careers"
+                            apiPA="/api/subjectsfromcareer"
+                            apiDocentes="/api/teachers"
+                            apiClassrooms="/api/classrooms"
+                        />
+                    )}
+                />
+                <Route
+                    exact
+                    path="/user"
+                    component={props => (
+                        <PrincipalUsuario
+                            {...props}
+                            api="/api/lessons"
+                            apiSemester="/api/semesters"
+                            apiCareer="/api/careers"
+                            apiPA="/api/subjectsfromcareer"
+                            apiDocentes="/api/teachers"
+                            apiClassrooms="/api/classrooms"
+                        />
+                    )}
+                />
                 <Route component={NotFound} />
             </Switch>
         );

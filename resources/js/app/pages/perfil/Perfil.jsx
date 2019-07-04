@@ -52,8 +52,7 @@ class Perfil extends Component {
                 data: data,
                 form: {
                     name: data.name,
-                    email: data.email,
-                    password: data.password
+                    email: data.email
                 }
             });
         } catch (error) {
@@ -64,26 +63,17 @@ class Perfil extends Component {
         }
     };
     handleSubmit = () => {
-        console.log(this.state);
-
-        /*if (this.state.form.mypassword === '') {
-            this.put();
-        } else if (
-            this.state.form.password === this.state.repassword &&
-            this.state.form.password != ''
-        ) {
-            this.put();
-        } else {
-            this.MySwal.fire({
-                type: 'error',
-                position: 'top-end',
-                title: 'Oops...',
-                text:
-                    'Verifique que la nueva contraseña coincida con su confirmación',
-                showConfirmButton: false,
-                timer: 1500
-            });
-        }*/
+        this.put();
+    };
+    clear = () => {
+        this.setState({
+            form: {
+                ...this.state.form,
+                mypassword: '',
+                password: ''
+            },
+            repassword: ''
+        });
     };
     put = async () => {
         this.setState({
@@ -127,7 +117,8 @@ class Perfil extends Component {
                 }
             } catch (error) {
                 this.setState({
-                    loading: false
+                    loading: false,
+                    erro: error
                 });
             }
         } else {
