@@ -45,11 +45,15 @@ class UserController extends Controller
     }
     public function update(Request $request, $user)
     {
-        $data = Career::find($user);
+        $data = User::find($user);
         if ($data == null) {
             return null;
         } else {
-            $data->fill($request->all());
+           
+            
+            $data->name = $request->name;
+            $data->email = $request->email;
+            $data->password = bcrypt($request->password);
             $data->save();
             
             return response()->json($data);
