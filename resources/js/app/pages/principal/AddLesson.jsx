@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import Loading from '../../components/loading/Loading';
-import 'moment/locale/es';
-import Collapsible from 'react-collapsible';
-import TimeKeeper from 'react-timekeeper';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
+import React, { Component } from "react";
+import Loading from "../../components/loading/Loading";
+import "moment/locale/es";
+import Collapsible from "react-collapsible";
+import TimeKeeper from "react-timekeeper";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 class AddLesson extends Component {
     MySwal = withReactContent(Swal);
@@ -21,8 +21,8 @@ class AddLesson extends Component {
         classrooms: [],
         career: {},
         semester: {},
-        title_semester: '',
-        name_career: '',
+        title_semester: "",
+        name_career: "",
         loading: false,
         loadingSemester: true,
         loadingCareer: true,
@@ -34,16 +34,16 @@ class AddLesson extends Component {
         id_career: this.props.match.params.id_career,
         form: {
             id_semester: this.props.match.params.id_semester,
-            id_career_subject: '',
-            id_teacher: '',
-            id_classroom: '',
-            start_hour: '12:00',
-            end_hour: '12:00'
+            id_career_subject: "",
+            id_teacher: "",
+            id_classroom: "",
+            start_hour: "12:00",
+            end_hour: "12:00"
         },
-        init_hour: '12:00 pm',
-        final_hour: '12:00 pm',
-        selected: '',
-        locale: 'es'
+        init_hour: "12:00 pm",
+        final_hour: "12:00 pm",
+        selected: "",
+        locale: "es"
     };
     handleInitialTimeChange = newTime => {
         this.setState({
@@ -210,14 +210,14 @@ class AddLesson extends Component {
         this.setState({
             form: {
                 id_semester: this.props.match.params.id_semester,
-                id_career_subject: '',
-                id_teacher: '',
-                id_classroom: '',
-                start_hour: '12:00',
-                end_hour: '12:00'
+                id_career_subject: "",
+                id_teacher: "",
+                id_classroom: "",
+                start_hour: "12:00",
+                end_hour: "12:00"
             },
-            init_hour: '12:00 pm',
-            final_hour: '12:00 pm'
+            init_hour: "12:00 pm",
+            final_hour: "12:00 pm"
         });
     };
     handleItem = e => {
@@ -246,7 +246,7 @@ class AddLesson extends Component {
         });
     };
     getSubjectInfo = () => {
-        var s = '';
+        var s = "";
         this.state.subjects.map(subject => {
             if (
                 parseInt(subject.id) ===
@@ -259,14 +259,14 @@ class AddLesson extends Component {
     };
     validateHour = () => {
         if (
-            parseInt(this.state.form.start_hour.split(':')[0]) >=
-            parseInt(this.state.form.end_hour.split(':')[0])
+            parseInt(this.state.form.start_hour.split(":")[0]) >=
+            parseInt(this.state.form.end_hour.split(":")[0])
         ) {
             this.MySwal.fire({
-                type: 'error',
-                position: 'top-end',
-                title: 'Oops...',
-                text: 'No se puede asignar una hora menor o igual a la inicial',
+                type: "error",
+                position: "top-end",
+                title: "Oops...",
+                text: "No se puede asignar una hora menor o igual a la inicial",
                 showConfirmButton: false,
                 timer: 1500
             });
@@ -277,21 +277,21 @@ class AddLesson extends Component {
     };
     handleSave = () => {
         if (
-            this.state.form.id_career_subject != '' &&
-            this.state.form.id_teacher != '' &&
-            this.state.form.start_hour != '' &&
-            this.state.form.end_hour != '' &&
-            this.state.form.id_classroom != ''
+            this.state.form.id_career_subject != "" &&
+            this.state.form.id_teacher != "" &&
+            this.state.form.start_hour != "" &&
+            this.state.form.end_hour != "" &&
+            this.state.form.id_classroom != ""
         ) {
             if (this.validateHour()) {
                 this.post();
             }
         } else {
             this.MySwal.fire({
-                type: 'error',
-                position: 'top-end',
-                title: 'Oops...',
-                text: 'Rellene todos los campos antes de guardar el registro',
+                type: "error",
+                position: "top-end",
+                title: "Oops...",
+                text: "Rellene todos los campos antes de guardar el registro",
                 showConfirmButton: false,
                 timer: 1500
             });
@@ -304,10 +304,10 @@ class AddLesson extends Component {
         });
         try {
             const response = await fetch(this.props.api, {
-                method: 'POST',
+                method: "POST",
                 body: JSON.stringify(this.state.form),
                 headers: {
-                    'Content-Type': 'application/json'
+                    "Content-Type": "application/json"
                 }
             });
             this.setState({
@@ -317,30 +317,30 @@ class AddLesson extends Component {
             this.get();
             const msg = await response.json();
             if (response.status === 200) {
-                if (msg.hasOwnProperty('mensaje')) {
+                if (msg.hasOwnProperty("mensaje")) {
                     this.MySwal.fire({
-                        type: 'error',
-                        position: 'top-end',
-                        title: 'Oops...',
+                        type: "error",
+                        position: "top-end",
+                        title: "Oops...",
                         text: msg.mensaje,
                         showConfirmButton: false,
                         timer: 1500
                     });
                 } else {
                     this.MySwal.fire({
-                        position: 'top-end',
-                        type: 'success',
-                        title: 'Se ha guardado la clase satsfactoriamente',
+                        position: "top-end",
+                        type: "success",
+                        title: "Se ha guardado la clase satsfactoriamente",
                         showConfirmButton: false,
                         timer: 1500
                     });
                 }
             } else {
                 this.MySwal.fire({
-                    type: 'error',
-                    position: 'top-end',
-                    title: 'Oops...',
-                    text: 'No se ha podido crear la clase ',
+                    type: "error",
+                    position: "top-end",
+                    title: "Oops...",
+                    text: "No se ha podido crear la clase ",
                     showConfirmButton: false,
                     timer: 1500
                 });
@@ -357,6 +357,7 @@ class AddLesson extends Component {
     };
     render() {
         if (
+            this.state.loading ||
             this.state.loadingSubjects ||
             this.state.loadingSemester ||
             this.state.loadingCareer ||
@@ -370,12 +371,12 @@ class AddLesson extends Component {
         });
         const subjectInfo = this.getSubjectInfo();
         return (
-            <div className="container">
-                <div className="row">
-                    <div className="col-12">
+            <div className='container'>
+                <div className='row'>
+                    <div className='col-12'>
                         <h1>Agregar horario de clase</h1>
                         <h2>
-                            {this.state.semester.title} •{' '}
+                            {this.state.semester.title} •{" "}
                             {this.state.career.name}
                         </h2>
                         <br />
@@ -396,52 +397,49 @@ class AddLesson extends Component {
                             <br />
                         </div>*/}
                     </div>
-                    <div className="col-12 col-md-6">
-                        <ul className="list-group">
+                    <div className='col-12 col-md-6'>
+                        <ul className='list-group'>
                             {subjects.map(subject => {
                                 return (
                                     <li
-                                        className="list-group-item list-group-item-action pointer alert-success"
+                                        className='list-group-item list-group-item-action pointer alert-success'
                                         onClick={this.handleItem}
                                         key={subject.id}
-                                        value={subject.id}
-                                    >
+                                        value={subject.id}>
                                         {subject.name_subject}
                                     </li>
                                 );
                             })}
                         </ul>
                     </div>
-                    <div className="col-12 col-md-6">
-                        <div className="">
+                    <div className='col-12 col-md-6'>
+                        <div className=''>
                             <h3>
                                 {subjectInfo.name_subject
                                     ? subjectInfo.name_subject
-                                    : 'Haga click en una asignatura'}
+                                    : "Haga click en una asignatura"}
                             </h3>
                             <br />
                             <strong>Docentes</strong>
                             <select
-                                className="form-control"
-                                name="teacher"
+                                className='form-control'
+                                name='teacher'
                                 onChange={this.handleSelectedChange}
-                                value={this.state.form.id_teacher}
-                            >
+                                value={this.state.form.id_teacher}>
                                 <option key={0} value={0} />
                                 {this.state.teachers.map(teacher => {
                                     return (
                                         <option
                                             key={teacher.id}
-                                            value={teacher.id}
-                                        >
+                                            value={teacher.id}>
                                             {teacher.name}
                                         </option>
                                     );
                                 })}
                             </select>
                             <br />
-                            <div className="row">
-                                <div className="col-12 col-md-12 col-lg-6">
+                            <div className='row'>
+                                <div className='col-12 col-md-12 col-lg-6'>
                                     <strong>Hora inicial</strong>
                                     <br />
                                     <TimeKeeper
@@ -450,7 +448,7 @@ class AddLesson extends Component {
                                     />
                                 </div>
                                 <br />
-                                <div className="col-12 col-md-12 col-lg-6">
+                                <div className='col-12 col-md-12 col-lg-6'>
                                     <strong>Hora final</strong>
                                     <br />
                                     <TimeKeeper
@@ -462,19 +460,17 @@ class AddLesson extends Component {
                             <br />
                             <strong>Salón de clases</strong>
                             <select
-                                className="form-control"
-                                name="classroom"
+                                className='form-control'
+                                name='classroom'
                                 onChange={this.handleSelectedChangeClass}
-                                value={this.state.form.id_classroom}
-                            >
+                                value={this.state.form.id_classroom}>
                                 <option key={0} value={0} />
                                 {this.state.classrooms.map(classroom => {
                                     return (
                                         <option
                                             key={classroom.id}
-                                            value={classroom.id}
-                                        >
-                                            {classroom.name} ->{' '}
+                                            value={classroom.id}>
+                                            {classroom.name} ->{" "}
                                             {classroom.location}
                                         </option>
                                     );
@@ -482,9 +478,8 @@ class AddLesson extends Component {
                             </select>
                             <br />
                             <button
-                                className="btn-success btn btn-block"
-                                onClick={this.handleSave}
-                            >
+                                className='btn-success btn btn-block'
+                                onClick={this.handleSave}>
                                 Guardar
                             </button>
                             <br />

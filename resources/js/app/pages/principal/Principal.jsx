@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import Loading from '../../components/loading/Loading';
-import PrincipalForm from '../../components/principal/PrincipalForm';
-import PrincipalInfo from '../../components/principal/PrincipalInfo';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import { DateUtils } from 'react-day-picker';
-import load from '../../images/loading.gif';
+import React, { Component, Fragment } from "react";
+import Loading from "../../components/loading/Loading";
+import PrincipalForm from "../../components/principal/PrincipalForm";
+import PrincipalInfo from "../../components/principal/PrincipalInfo";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import { DateUtils } from "react-day-picker";
+import load from "../../images/loading.gif";
 
 class Principal extends Component {
     validate = /\d\d\d\d-[1-2]/;
@@ -15,8 +15,8 @@ class Principal extends Component {
     }
     state = {
         form: {
-            id_semester: '',
-            id_career: ''
+            id_semester: "",
+            id_career: ""
         },
         semesters: [],
         careers: [],
@@ -64,6 +64,57 @@ class Principal extends Component {
             loadingSemesters: false
         });
     }
+    handleRemove = (e, data) => {
+        this.MySwal.fire({
+            title: "¿Está seguro?",
+            text: "¿Está seguro que desea eliminar este horario?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#808080",
+            confirmButtonText: "Sí",
+            cancelButtonText: "No"
+        }).then(result => {
+            if (result.value) {
+                this.setState({ loading: true });
+                this.remove(data);
+            }
+        });
+    };
+    remove = async data => {
+        await fetch(
+            `${this.props.api}/${data.id_classroom}/${data.id_career_subject}/${
+                data.id_semester
+            }/${data.id_teacher}`,
+            {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" }
+            }
+        ).then(response => {
+            if (response.status === 200) {
+                this.setState({
+                    loading: false
+                });
+                this.get(data.id_semester, data.id_career);
+                this.MySwal.fire({
+                    position: "top-end",
+                    type: "success",
+                    title: "Se ha eliminado el horario satsfactoriamente",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            } else {
+                this.MySwal.fire({
+                    type: "error",
+                    position: "top-end",
+                    title: "Oops...",
+                    text: "No se ha podido eliminar el horario seleccionado",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        });
+    };
     /*async addSemester() {
         const { value: semestre } = await this.MySwal.fire({
             title: 'Agregar nuevo semestre',
@@ -212,10 +263,10 @@ class Principal extends Component {
             loadingSemesters: true
         });
         await fetch(`${this.props.apiSemester}/${semestre.id}`, {
-            method: 'PUT',
+            method: "PUT",
             body: JSON.stringify(semestre),
             headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json"
             }
         }).then(res => {
             if (parseInt(res.status) === 200) {
@@ -251,11 +302,11 @@ class Principal extends Component {
     searchSemester = id => {
         var results = false;
         for (let i = 0; i < this.state.semesters.length; i++) {
-            if (parseInt(this.state.semesters[i]['id']) === parseInt(id)) {
+            if (parseInt(this.state.semesters[i]["id"]) === parseInt(id)) {
                 results = true;
                 const arr = [];
-                this.state.semesters[i]['dates'].forEach(element => {
-                    arr.push(new Date(element.split('T')[0]));
+                this.state.semesters[i]["dates"].forEach(element => {
+                    arr.push(new Date(element.split("T")[0]));
                 });
                 this.setState({
                     selectedDays: arr
@@ -272,7 +323,7 @@ class Principal extends Component {
                 [e.target.name]: e.target.value
             }
         });
-        if (e.target.name === 'id_semester') {
+        if (e.target.name === "id_semester") {
             if (parseInt(e.target.value) === 0) {
                 this.setState({
                     form: {
@@ -318,7 +369,7 @@ class Principal extends Component {
             return <Loading />;
         }
         return (
-            <div>
+            <Fragment>
                 <PrincipalForm
                     semesters={this.state.semes}
                     careers={this.state.caree}
@@ -338,11 +389,12 @@ class Principal extends Component {
                     <PrincipalInfo
                         lessons={this.state.data}
                         onDayClick={this.handleDayClick}
+                        remove={this.handleRemove}
                     />
                 ) : (
                     <h2>Seleccione un programa</h2>
                 )}
-            </div>
+            </Fragment>
         );
     }
 }

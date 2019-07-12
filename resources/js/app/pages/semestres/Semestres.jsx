@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import Loading from '../../components/loading/Loading';
-import DayPicker, { DateUtils } from 'react-day-picker';
-import MomentLocaleUtils from 'react-day-picker/moment';
-import 'moment/locale/es';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
+import React, { Component } from "react";
+import Loading from "../../components/loading/Loading";
+import DayPicker, { DateUtils } from "react-day-picker";
+import MomentLocaleUtils from "react-day-picker/moment";
+import "moment/locale/es";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 class Semestres extends Component {
     validate = /\d\d\d\d-[1-2]/;
@@ -14,13 +14,13 @@ class Semestres extends Component {
         loading: true,
         error: null,
         selected: { id: 0 },
-        locale: '',
+        locale: "",
         form: {
-            title: '',
+            title: "",
             dates: [],
             enable: true
         },
-        add: 'Agregar semestre...'
+        add: "Agregar semestre..."
     };
     componentDidMount() {
         this.get();
@@ -32,7 +32,7 @@ class Semestres extends Component {
         });
         try {
             const response = await fetch(this.props.api, {
-                mode: 'no-cors'
+                mode: "no-cors"
             });
             const data = await response.json();
             this.setState({
@@ -58,10 +58,10 @@ class Semestres extends Component {
                 dates.push(day);
             } else {
                 this.MySwal.fire({
-                    type: 'error',
-                    position: 'top-end',
-                    title: 'Oops...',
-                    text: 'No se pueden colocar más de 4 fechas al semestre',
+                    type: "error",
+                    position: "top-end",
+                    title: "Oops...",
+                    text: "No se pueden colocar más de 4 fechas al semestre",
                     showConfirmButton: false,
                     timer: 1500
                 });
@@ -77,20 +77,21 @@ class Semestres extends Component {
     searchSemester = id => {
         var results = false;
         for (let i = 0; i < this.state.data.length; i++) {
-            if (parseInt(this.state.data[i]['id']) === parseInt(id)) {
+            if (parseInt(this.state.data[i]["id"]) === parseInt(id)) {
                 results = true;
             }
         }
         return results;
     };
     handleChange = e => {
-        if (e.target.name === 'semesters') {
+        if (e.target.name === "semesters") {
             if (parseInt(e.target.value) === 9999) {
                 this.addSemester();
             } else {
+                this.setState({ loading: true });
                 if (parseInt(e.target.value) != 0) {
                     var results = {};
-                    const searchField = 'id';
+                    const searchField = "id";
                     const searchVal = e.target.value;
                     for (var i = 0; i < this.state.data.length; i++) {
                         if (this.state.data[i][searchField] == searchVal) {
@@ -103,16 +104,18 @@ class Semestres extends Component {
                         form: {
                             ...this.state.form,
                             title: results.title
-                        }
+                        },
+                        loading: false
                     });
                     if (results.dates) {
                         let dates = [];
                         results.dates.forEach(element => {
-                            dates.push(new Date(element.split('T')[0]));
+                            dates.push(new Date(element.split("T")[0]));
                         });
                         this.setState({
                             form: {
                                 ...this.state.form,
+                                loading: false,
                                 dates: dates
                             }
                         });
@@ -123,9 +126,9 @@ class Semestres extends Component {
     };
     async addSemester() {
         const { value: semestre } = await this.MySwal.fire({
-            title: 'Agregar nuevo semestre',
-            input: 'text',
-            inputPlaceholder: 'Ejemplo: 2021-2'
+            title: "Agregar nuevo semestre",
+            input: "text",
+            inputPlaceholder: "Ejemplo: 2021-2"
         });
         if (this.validate.exec(semestre)) {
             this.setState({
@@ -141,43 +144,43 @@ class Semestres extends Component {
         } else {
             this.MySwal.fire({
                 title:
-                    'El formato de semestre que ha suministrado no es válido',
-                type: 'warning'
+                    "El formato de semestre que ha suministrado no es válido",
+                type: "warning"
             });
             this.setState({
                 selected: {
                     id: 0
                 },
-                add: 'Agregar semestre...'
+                add: "Agregar semestre..."
             });
         }
     }
     post = async () => {
-        if (this.state.form.title != '' && this.state.form.dates.length === 4) {
+        if (this.state.form.title != "" && this.state.form.dates.length === 4) {
             this.setState({ loading: true });
             const response = await fetch(this.props.api, {
-                method: 'POST',
+                method: "POST",
                 body: JSON.stringify(this.state.form),
                 headers: {
-                    'Content-Type': 'application/json'
+                    "Content-Type": "application/json"
                 }
             });
             if (response.status === 200) {
                 this.MySwal.close();
                 this.MySwal.fire({
-                    position: 'top-end',
-                    type: 'success',
-                    title: 'Se ha guardado el semestre satsfactoriamente',
+                    position: "top-end",
+                    type: "success",
+                    title: "Se ha guardado el semestre satsfactoriamente",
                     showConfirmButton: false,
                     timer: 1500
                 });
             } else {
                 this.MySwal.close();
                 this.MySwal.fire({
-                    type: 'error',
-                    position: 'top-end',
-                    title: 'Oops...',
-                    text: 'No se ha podido crear el semestre ',
+                    type: "error",
+                    position: "top-end",
+                    title: "Oops...",
+                    text: "No se ha podido crear el semestre ",
                     showConfirmButton: false,
                     timer: 1500
                 });
@@ -190,10 +193,10 @@ class Semestres extends Component {
             this.clear();
         } else {
             this.MySwal.fire({
-                type: 'error',
-                position: 'top-end',
-                title: 'Oops...',
-                text: 'No se ha podido crear el semestre, revise las fechas',
+                type: "error",
+                position: "top-end",
+                title: "Oops...",
+                text: "No se ha podido crear el semestre, revise las fechas",
                 showConfirmButton: false,
                 timer: 1500
             });
@@ -202,11 +205,11 @@ class Semestres extends Component {
     clear = () => {
         this.setState({
             form: {
-                title: '',
+                title: "",
                 dates: [],
                 enable: true
             },
-            add: 'Agregar semestre...',
+            add: "Agregar semestre...",
             selected: {
                 id: 0
             }
@@ -220,24 +223,22 @@ class Semestres extends Component {
             return <Loading />;
         }
         return (
-            <div className="container">
-                <div className="row">
-                    <div className="col-12">
-                        <label htmlFor="semesters">Semestre</label>
+            <div className='container'>
+                <div className='row'>
+                    <div className='col-12'>
+                        <label htmlFor='semesters'>Semestre</label>
                         <select
-                            className="form-control"
+                            className='form-control'
                             onChange={this.handleChange}
-                            id="semesters"
-                            name="semesters"
-                            value={this.state.selected.id}
-                        >
+                            id='semesters'
+                            name='semesters'
+                            value={this.state.selected.id}>
                             <option value={0} />
                             {semestres.map(semestre => {
                                 return (
                                     <option
                                         key={semestre.id}
-                                        value={semestre.id}
-                                    >
+                                        value={semestre.id}>
                                         {semestre.title}
                                     </option>
                                 );
@@ -247,10 +248,13 @@ class Semestres extends Component {
                         <br />
                         <br />
                         {parseInt(this.state.selected.id) != 0 ? (
-                            <div className="container">
-                                <div className="row">
-                                    <div className="col-12">
+                            <div className='container'>
+                                <div className='row'>
+                                    <div className='col-12'>
                                         <DayPicker
+                                            containerProps={{
+                                                className: "col-12"
+                                            }}
                                             localeUtils={MomentLocaleUtils}
                                             locale={this.state.locale}
                                             selectedDays={this.state.form.dates}
@@ -264,8 +268,7 @@ class Semestres extends Component {
                                         ) : (
                                             <button
                                                 onClick={this.post}
-                                                className="btn btn-block btn-success"
-                                            >
+                                                className='btn btn-block btn-success'>
                                                 Guardar
                                             </button>
                                         )}

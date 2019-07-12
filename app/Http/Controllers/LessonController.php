@@ -252,17 +252,17 @@ class LessonController extends Controller
      */
     public function destroy(Request $request)
     {
-        $data = Lesson::where('id_classroom', $request->id_classroom)
-            ->where('id_career_subject', $request->id_career_subject)
-            ->where('id_semester', $request->id_semester)
-            ->where('id_teacher', $request->id_teacher)
-            ->first();
+        $data = Lesson::where('id_classroom', '=', $request->id_classroom)
+            ->where('id_career_subject', '=', $request->id_career_subject)
+            ->where('id_semester', '=', $request->id_semester)
+            ->where('id_teacher', '=', $request->id_teacher)
+            ->delete();
 
         /**$data->classroom()->detach($request->id_classroom);
         $data->semester()->detach($request->id_semester);
         $data->teacher()->detach($request->id_teacher);
         $data->carrersubject()->detach($request->id_career_subject);**/
 
-        $data->delete();
+        //return $data->delete();
     }
 }
