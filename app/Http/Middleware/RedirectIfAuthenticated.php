@@ -30,7 +30,7 @@ class RedirectIfAuthenticated
                 return redirect()->route('user.index');
             }
            // return redirect('/home');
-        }
+        }   
 
     return $next($request);
     }

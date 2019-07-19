@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Auth;
+use App\AuthRole;
 
 class RegisterController extends Controller
 {
@@ -38,7 +38,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $tProvisionhis->middleware('guest');
+        //  $tProvisionhis->middleware('guest');
     }
 
     /**
@@ -67,13 +67,15 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $user = User::create([
-        'name' => $data['name'],
-        'email' => $data['email'],
-        'password' => bcrypt($data['password']),
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => bcrypt($data['password']),
         ]);
-        $user
-        ->roles()
-        ->attach(Role::where('name', 'user')->first());
+        $us = User::where('email','=',$data['email']);
+        $role = AuthRole::create([
+            'user_id' => $us->id,
+            'role_id' => 2
+        ]);
         return $user;
     }
     
