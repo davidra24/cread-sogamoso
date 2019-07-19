@@ -12,7 +12,7 @@ class RegisterController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | Register Controller
+    | Register Controllerhome
     |--------------------------------------------------------------------------
     |
     | This controller handles the registration of new users as well as their
@@ -28,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/login';
 
     /**
      * Create a new controller instance.
@@ -37,7 +37,7 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $tProvisionhis->middleware('guest');
     }
 
     /**
