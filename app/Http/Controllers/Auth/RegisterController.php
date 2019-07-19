@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -29,7 +30,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -64,17 +65,19 @@ class RegisterController extends Controller
      */
 
     
-    protected function create(array $data)
+    protected function create(array $request)
     {
-        $user = User::create([
-        'name' => $data['name'],
-        'email' => $data['email'],
-        'password' => bcrypt($data['password']),
-        ]);
-        $user
-        ->roles()
-        ->attach(Role::where('name', 'user')->first());
-        return $user;
+        $UserD=User::where('email',$request['email'])->first();
+        if($UserD==null){
+            $role_user = Role::where('name', 'user')->first();
+            $user = new User();
+            $user->name = $request['name'];
+            $user->email = $request['email'];
+            $user->password = bcrypt($request['password']);
+            $user->save();
+            $user->roles()->attach($role_user);
+            return $user;
     }
     
+}
 }
