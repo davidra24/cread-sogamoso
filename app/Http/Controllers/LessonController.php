@@ -212,6 +212,37 @@ class LessonController extends Controller
         }
         return response()->json($array);
     }
+    public function showScheduleTeacher(Request $request)
+    {
+        /*$data = Lesson::find($lesson);
+         return response()->json($data);*/
+        $data = ViewLesson::where('id_semester', $request->id_semester)
+            ->where('id_teacher', $request->id_teacher)
+            ->get();
+        $array = array();
+        foreach ($data as $t) {
+            
+            $array[] = date('h:i A',strtotime($t->start_hour))." - ".date('h:i A',strtotime($t->end_hour));
+        }
+        asort($array);
+        return response()->json($array);
+    }
+
+    public function showScheduleClassRoom(Request $request)
+    {
+        /*$data = Lesson::find($lesson);
+         return response()->json($data);*/
+        $data = ViewLesson::where('id_semester', $request->id_semester)
+            ->where('id_classroom', $request->id_classroom)
+            ->get();
+        $array = array();
+        foreach ($data as $t) {
+           
+            $array[] = date('h:i A',strtotime($t->start_hour))." - ".date('h:i A',strtotime($t->end_hour));
+        }
+        asort($array);
+        return response()->json($array);
+    }
 
     /**
      * Show the form for editing the specified resource.

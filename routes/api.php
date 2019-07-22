@@ -28,6 +28,8 @@ Route::apiResource('users', 'UserController');
 
 Route::apiResource('lessons', 'LessonController');
 Route::get('lessons/{id_semester}/{id_career}', 'LessonController@show');
+Route::get('lessons/{id_semester}/teacher/{id_teacher}', 'LessonController@showScheduleTeacher');
+Route::get('lessons/{id_semester}/classroom/{id_classroom}', 'LessonController@showScheduleClassRoom');
 Route::delete(
     'lessons/{id_classroom}/{id_career_subject}/{id_semester}/{id_teacher}',
     'LessonController@destroy'
