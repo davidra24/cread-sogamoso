@@ -1,10 +1,11 @@
-import React, { Component } from "react";
-import Loading from "../../components/loading/Loading";
-import "moment/locale/es";
-import Collapsible from "react-collapsible";
-import TimeKeeper from "react-timekeeper";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
+import React, { Component, Fragment } from 'react';
+import Loading from '../../components/loading/Loading';
+import 'moment/locale/es';
+import Collapsible from 'react-collapsible';
+import TimeKeeper from 'react-timekeeper';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import Miniloading from '../../components/loading/Miniloading';
 
 class AddLesson extends Component {
     MySwal = withReactContent(Swal);
@@ -21,8 +22,8 @@ class AddLesson extends Component {
         classrooms: [],
         career: {},
         semester: {},
-        title_semester: "",
-        name_career: "",
+        title_semester: '',
+        name_career: '',
         loading: false,
         loadingSemester: true,
         loadingCareer: true,
@@ -34,33 +35,37 @@ class AddLesson extends Component {
         id_career: this.props.match.params.id_career,
         form: {
             id_semester: this.props.match.params.id_semester,
-            id_career_subject: "",
-            id_teacher: "",
-            id_classroom: "",
-            start_hour: "12:00",
-            end_hour: "12:00"
+            id_career_subject: '',
+            id_teacher: '',
+            id_classroom: '',
+            start_hour: '12:00',
+            end_hour: '12:00',
         },
-        init_hour: "12:00 pm",
-        final_hour: "12:00 pm",
-        selected: "",
-        locale: "es"
+        init_hour: '12:00 pm',
+        final_hour: '12:00 pm',
+        selected: '',
+        locale: 'es',
+
+        visible: false,
+        teacherloading: false,
+        timeTeacher: [],
     };
-    handleInitialTimeChange = newTime => {
+    handleInitialTimeChange = (newTime) => {
         this.setState({
             form: {
                 ...this.state.form,
-                start_hour: newTime.formatted24
+                start_hour: newTime.formatted24,
             },
-            init_hour: newTime.formatted
+            init_hour: newTime.formatted,
         });
     };
-    handleFinalTimeChange = newTime => {
+    handleFinalTimeChange = (newTime) => {
         this.setState({
             form: {
                 ...this.state.form,
-                end_hour: newTime.formatted24
+                end_hour: newTime.formatted24,
             },
-            final_hour: newTime.formatted
+            final_hour: newTime.formatted,
         });
     };
     async componentDidMount() {
@@ -73,10 +78,10 @@ class AddLesson extends Component {
         await this.getClassrooms();
     }
     validateSubjects = async () => {
-        await this.state.subjects.map(subject => {
+        await this.state.subjects.map((subject) => {
             if (!subject.enable) {
                 const index = this.state.subjects.findIndex(
-                    x => parseInt(x.id) === parseInt(subject.id)
+                    (x) => parseInt(x.id) === parseInt(subject.id),
                 );
                 this.state.subjects.splice(index, 1);
             }
@@ -85,124 +90,124 @@ class AddLesson extends Component {
     getClassrooms = async () => {
         this.setState({
             loadingClassrooms: true,
-            error: null
+            error: null,
         });
         try {
             const response = await fetch(this.props.apiClassrooms);
             const data = await response.json();
             this.setState({
                 loadingClassrooms: false,
-                classrooms: data
+                classrooms: data,
             });
         } catch (error) {
             this.setState({
                 loadingClassrooms: false,
-                error: error
+                error: error,
             });
         }
     };
     get = async () => {
         this.setState({
             loading: true,
-            error: null
+            error: null,
         });
         try {
             const response = await fetch(
                 `${this.props.api}/${this.state.form.id_semester}/${
                     this.state.id_career
-                }`
+                }`,
             );
             const data = await response.json();
             this.setState({
                 loading: false,
-                data: data
+                data: data,
             });
         } catch (error) {
             this.setState({
                 loading: false,
-                error: error
+                error: error,
             });
         }
     };
     getSubjects = async () => {
         this.setState({
             loadingSubjects: true,
-            error: null
+            error: null,
         });
         try {
             const response = await fetch(
-                `${this.props.apiPA}/${this.state.id_career}`
+                `${this.props.apiPA}/${this.state.id_career}`,
             );
             const data = await response.json();
             this.setState({
                 loadingSubjects: false,
-                subjects: data
+                subjects: data,
             });
         } catch (error) {
             this.setState({
                 loadingSubjects: false,
-                error: error
+                error: error,
             });
         }
     };
     getTeachers = async () => {
         this.setState({
             loadingTeachers: true,
-            error: null
+            error: null,
         });
         try {
             const response = await fetch(this.props.apiDocentes);
             const data = await response.json();
             this.setState({
                 loadingTeachers: false,
-                teachers: data
+                teachers: data,
             });
         } catch (error) {
             this.setState({
                 loadingTeachers: false,
-                error: error
+                error: error,
             });
         }
     };
     getSemester = async () => {
         this.setState({
             loadingSemester: true,
-            error: null
+            error: null,
         });
         try {
             const response = await fetch(
-                `${this.props.apiSemester}/${this.state.form.id_semester}`
+                `${this.props.apiSemester}/${this.state.form.id_semester}`,
             );
             const data = await response.json();
             this.setState({
                 loadingSemester: false,
-                semester: data
+                semester: data,
             });
         } catch (error) {
             this.setState({
                 loadingSemester: false,
-                error: error
+                error: error,
             });
         }
     };
     getCareer = async () => {
         this.setState({
             loadingCareer: true,
-            error: null
+            error: null,
         });
         try {
             const response = await fetch(
-                `${this.props.apiCareer}/${this.state.id_career}`
+                `${this.props.apiCareer}/${this.state.id_career}`,
             );
             const data = await response.json();
             this.setState({
                 career: data,
-                loadingCareer: false
+                loadingCareer: false,
             });
         } catch (error) {
             this.setState({
                 loadingCareer: false,
-                error: error
+                error: error,
             });
         }
     };
@@ -210,44 +215,54 @@ class AddLesson extends Component {
         this.setState({
             form: {
                 id_semester: this.props.match.params.id_semester,
-                id_career_subject: "",
-                id_teacher: "",
-                id_classroom: "",
-                start_hour: "12:00",
-                end_hour: "12:00"
+                id_career_subject: '',
+                id_teacher: '',
+                id_classroom: '',
+                start_hour: '12:00',
+                end_hour: '12:00',
             },
-            init_hour: "12:00 pm",
-            final_hour: "12:00 pm"
+            init_hour: '12:00 pm',
+            final_hour: '12:00 pm',
         });
     };
-    handleItem = e => {
+    handleItem = (e) => {
         this.setState({
             form: {
                 ...this.state.form,
                 id_teacher: 0,
-                id_career_subject: e.target.value
-            }
+                id_career_subject: e.target.value,
+            },
         });
     };
-    handleSelectedChange = e => {
+    handleSelectedChange = (e) => {
         this.setState({
             form: {
                 ...this.state.form,
-                id_teacher: e.target.value
-            }
+                id_teacher: e.target.value,
+            },
         });
+        if (e.target.value != 0) {
+            this.setState({
+                visible: true,
+            });
+            this.handleTime(e.target.value);
+        } else {
+            this.setState({
+                visible: false,
+            });
+        }
     };
-    handleSelectedChangeClass = e => {
+    handleSelectedChangeClass = (e) => {
         this.setState({
             form: {
                 ...this.state.form,
-                id_classroom: e.target.value
-            }
+                id_classroom: e.target.value,
+            },
         });
     };
     getSubjectInfo = () => {
-        var s = "";
-        this.state.subjects.map(subject => {
+        var s = '';
+        this.state.subjects.map((subject) => {
             if (
                 parseInt(subject.id) ===
                 parseInt(this.state.form.id_career_subject)
@@ -259,16 +274,16 @@ class AddLesson extends Component {
     };
     validateHour = () => {
         if (
-            parseInt(this.state.form.start_hour.split(":")[0]) >=
-            parseInt(this.state.form.end_hour.split(":")[0])
+            parseInt(this.state.form.start_hour.split(':')[0]) >=
+            parseInt(this.state.form.end_hour.split(':')[0])
         ) {
             this.MySwal.fire({
-                type: "error",
-                position: "top-end",
-                title: "Oops...",
-                text: "No se puede asignar una hora menor o igual a la inicial",
+                type: 'error',
+                position: 'top-end',
+                title: 'Oops...',
+                text: 'No se puede asignar una hora menor o igual a la inicial',
                 showConfirmButton: false,
-                timer: 1500
+                timer: 1500,
             });
             return false;
         } else {
@@ -277,81 +292,104 @@ class AddLesson extends Component {
     };
     handleSave = () => {
         if (
-            this.state.form.id_career_subject != "" &&
-            this.state.form.id_teacher != "" &&
-            this.state.form.start_hour != "" &&
-            this.state.form.end_hour != "" &&
-            this.state.form.id_classroom != ""
+            this.state.form.id_career_subject != '' &&
+            this.state.form.id_teacher != '' &&
+            this.state.form.start_hour != '' &&
+            this.state.form.end_hour != '' &&
+            this.state.form.id_classroom != ''
         ) {
             if (this.validateHour()) {
                 this.post();
             }
         } else {
             this.MySwal.fire({
-                type: "error",
-                position: "top-end",
-                title: "Oops...",
-                text: "Rellene todos los campos antes de guardar el registro",
+                type: 'error',
+                position: 'top-end',
+                title: 'Oops...',
+                text: 'Rellene todos los campos antes de guardar el registro',
                 showConfirmButton: false,
-                timer: 1500
+                timer: 1500,
+            });
+        }
+    };
+    handleTime = async (id) => {
+        this.setState({
+            teacherloading: true,
+        });
+        try {
+            const response = await fetch(
+                `/api/lessons/${
+                    this.props.match.params.id_semester
+                }/teacher/${id}`,
+            );
+            const data = await response.json();
+            await console.log(data);
+            this.setState({
+                timeTeacher: data,
+                teacherloading: false,
+            });
+        } catch (error) {
+            this.setState({
+                teacherloading: false,
+                error: error,
             });
         }
     };
     post = async () => {
         this.setState({
             loading: true,
-            error: null
+            error: null,
         });
         try {
             const response = await fetch(this.props.api, {
-                method: "POST",
+                method: 'POST',
                 body: JSON.stringify(this.state.form),
                 headers: {
-                    "Content-Type": "application/json"
-                }
+                    'Content-Type': 'application/json',
+                },
             });
             this.setState({
-                loading: true
+                loading: true,
             });
             this.clear();
             this.get();
             const msg = await response.json();
             if (response.status === 200) {
-                if (msg.hasOwnProperty("mensaje")) {
+                if (msg.hasOwnProperty('mensaje')) {
                     this.MySwal.fire({
-                        type: "error",
-                        position: "top-end",
-                        title: "Oops...",
+                        type: 'error',
+                        position: 'top-end',
+                        title: 'Oops...',
                         text: msg.mensaje,
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1500,
                     });
                 } else {
                     this.MySwal.fire({
-                        position: "top-end",
-                        type: "success",
-                        title: "Se ha guardado la clase satsfactoriamente",
+                        position: 'top-end',
+                        type: 'success',
+                        title: 'Se ha guardado la clase satsfactoriamente',
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1500,
                     });
                 }
             } else {
                 this.MySwal.fire({
-                    type: "error",
-                    position: "top-end",
-                    title: "Oops...",
-                    text: "No se ha podido crear la clase ",
+                    type: 'error',
+                    position: 'top-end',
+                    title: 'Oops...',
+                    text: 'No se ha podido crear la clase ',
                     showConfirmButton: false,
-                    timer: 1500
+                    timer: 1500,
                 });
                 this.setState({
-                    loading: false
+                    loading: false,
                 });
             }
         } catch (error) {
             this.setState({
                 loading: false,
-                error: error
+                error: error,
             });
         }
     };
@@ -376,7 +414,7 @@ class AddLesson extends Component {
                     <div className='col-12'>
                         <h1>Agregar horario de clase</h1>
                         <h2>
-                            {this.state.semester.title} •{" "}
+                            {this.state.semester.title} •{' '}
                             {this.state.career.name}
                         </h2>
                         <br />
@@ -399,7 +437,7 @@ class AddLesson extends Component {
                     </div>
                     <div className='col-12 col-md-6'>
                         <ul className='list-group'>
-                            {subjects.map(subject => {
+                            {subjects.map((subject) => {
                                 return (
                                     <li
                                         className='list-group-item list-group-item-action pointer alert-success'
@@ -417,7 +455,7 @@ class AddLesson extends Component {
                             <h3>
                                 {subjectInfo.name_subject
                                     ? subjectInfo.name_subject
-                                    : "Haga click en una asignatura"}
+                                    : 'Haga click en una asignatura'}
                             </h3>
                             <br />
                             <strong>Docentes</strong>
@@ -427,7 +465,7 @@ class AddLesson extends Component {
                                 onChange={this.handleSelectedChange}
                                 value={this.state.form.id_teacher}>
                                 <option key={0} value={0} />
-                                {this.state.teachers.map(teacher => {
+                                {this.state.teachers.map((teacher) => {
                                     return (
                                         <option
                                             key={teacher.id}
@@ -437,6 +475,48 @@ class AddLesson extends Component {
                                     );
                                 })}
                             </select>
+                            <br />
+                            <br />
+                            {this.state.visible ? (
+                                <div className='card'>
+                                    {this.state.teacherloading ? (
+                                        <Miniloading />
+                                    ) : (
+                                        <ul className='list-group'>
+                                            {this.state.timeTeacher != [] &&
+                                            this.state.timeTeacher.length ? (
+                                                <Fragment>
+                                                    <strong>
+                                                        Los horarios del docente
+                                                        son:
+                                                    </strong>
+                                                    {this.state.timeTeacher.map(
+                                                        (time, index) => {
+                                                            return (
+                                                                <li
+                                                                    className='list-group-item'
+                                                                    key={index}>
+                                                                    <strong>
+                                                                        {time}
+                                                                    </strong>
+                                                                </li>
+                                                            );
+                                                        },
+                                                    )}
+                                                </Fragment>
+                                            ) : (
+                                                <strong>
+                                                    El docente no tiene horarios
+                                                    asignados
+                                                </strong>
+                                            )}
+                                        </ul>
+                                    )}
+                                </div>
+                            ) : (
+                                <br />
+                            )}
+                            {/** TODO */}
                             <br />
                             <div className='row'>
                                 <div className='col-12 col-md-12 col-lg-6'>
@@ -465,12 +545,12 @@ class AddLesson extends Component {
                                 onChange={this.handleSelectedChangeClass}
                                 value={this.state.form.id_classroom}>
                                 <option key={0} value={0} />
-                                {this.state.classrooms.map(classroom => {
+                                {this.state.classrooms.map((classroom) => {
                                     return (
                                         <option
                                             key={classroom.id}
                                             value={classroom.id}>
-                                            {classroom.name} ->{" "}
+                                            {classroom.name} ->{' '}
                                             {classroom.location}
                                         </option>
                                     );
