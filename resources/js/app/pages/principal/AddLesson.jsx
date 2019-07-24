@@ -49,6 +49,10 @@ class AddLesson extends Component {
         visible: false,
         teacherloading: false,
         timeTeacher: [],
+
+        visibleclass: false,
+        classloading: false,
+        timeClass: [],
     };
     handleInitialTimeChange = (newTime) => {
         this.setState({
@@ -234,6 +238,28 @@ class AddLesson extends Component {
             },
         });
     };
+    handleClass = async (id) => {
+        this.setState({
+            classloading: true,
+        });
+        try {
+            const response = await fetch(
+                `/api/lessons/${
+                    this.props.match.params.id_semester
+                }/classroom/${id}`,
+            );
+            const data = await response.json();
+            this.setState({
+                timeClass: data,
+                classloading: false,
+            });
+        } catch (error) {
+            this.setState({
+                classloading: false,
+                error: error,
+            });
+        }
+    };
     handleSelectedChange = (e) => {
         this.setState({
             form: {
@@ -259,6 +285,16 @@ class AddLesson extends Component {
                 id_classroom: e.target.value,
             },
         });
+        if (e.target.value != 0) {
+            this.setState({
+                visibleclass: true,
+            });
+            this.handleClass(e.target.value);
+        } else {
+            this.setState({
+                visibleclass: false,
+            });
+        }
     };
     getSubjectInfo = () => {
         var s = '';
@@ -323,7 +359,6 @@ class AddLesson extends Component {
                 }/teacher/${id}`,
             );
             const data = await response.json();
-            await console.log(data);
             this.setState({
                 timeTeacher: data,
                 teacherloading: false,
@@ -476,7 +511,6 @@ class AddLesson extends Component {
                                 })}
                             </select>
                             <br />
-                            <br />
                             {this.state.visible ? (
                                 <div className='card'>
                                     {this.state.teacherloading ? (
@@ -514,9 +548,8 @@ class AddLesson extends Component {
                                     )}
                                 </div>
                             ) : (
-                                <br />
+                                <Fragment />
                             )}
-                            {/** TODO */}
                             <br />
                             <div className='row'>
                                 <div className='col-12 col-md-12 col-lg-6'>
@@ -550,12 +583,52 @@ class AddLesson extends Component {
                                         <option
                                             key={classroom.id}
                                             value={classroom.id}>
-                                            {classroom.name} ->{' '}
-                                            {classroom.location}
+                                            {classroom.name} =>
+                                            {' ' + classroom.location}
                                         </option>
                                     );
                                 })}
                             </select>
+                            <br />
+                            {this.state.visibleclass ? (
+                                <div className='card'>
+                                    {this.state.classloading ? (
+                                        <Miniloading />
+                                    ) : (
+                                        <ul className='list-group'>
+                                            {this.state.timeClass != [] &&
+                                            this.state.timeClass.length ? (
+                                                <Fragment>
+                                                    <strong>
+                                                        Los horarios del salón
+                                                        son:
+                                                    </strong>
+                                                    {this.state.timeClass.map(
+                                                        (time, index) => {
+                                                            return (
+                                                                <li
+                                                                    className='list-group-item'
+                                                                    key={index}>
+                                                                    <strong>
+                                                                        {time}
+                                                                    </strong>
+                                                                </li>
+                                                            );
+                                                        },
+                                                    )}
+                                                </Fragment>
+                                            ) : (
+                                                <strong>
+                                                    El salón no tiene horarios
+                                                    asignados
+                                                </strong>
+                                            )}
+                                        </ul>
+                                    )}
+                                </div>
+                            ) : (
+                                <Fragment />
+                            )}
                             <br />
                             <button
                                 className='btn-success btn btn-block'
