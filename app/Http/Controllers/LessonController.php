@@ -224,8 +224,11 @@ class LessonController extends Controller
             
             $array[] = date('h:i A',strtotime($t->start_hour))." - ".date('h:i A',strtotime($t->end_hour));
         }
-        asort($array);
-        return response()->json($array);
+        //asort($array);
+        //dd($array);
+        $array=json_encode($array);
+        
+        return response($array);
     }
 
     public function showScheduleClassRoom(Request $request)
@@ -240,8 +243,11 @@ class LessonController extends Controller
            
             $array[] = date('h:i A',strtotime($t->start_hour))." - ".date('h:i A',strtotime($t->end_hour));
         }
-        asort($array);
-        return response()->json($array);
+        //asort($array);
+        //dd($array);
+        $array=json_encode($array);
+        
+        return response($array);
     }
 
     /**
