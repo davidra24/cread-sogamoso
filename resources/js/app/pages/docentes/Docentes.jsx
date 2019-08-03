@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import AgregarDocente from "../../components/docentes/AgregarDocente";
-import ConsultarDocente from "../../components/docentes/ConsultarDocente";
-import Loading from "../../components/loading/Loading";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
+import React, { Component } from 'react';
+import AgregarDocente from '../../components/docentes/AgregarDocente';
+import ConsultarDocente from '../../components/docentes/ConsultarDocente';
+import Loading from '../../components/loading/Loading';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 class Docentes extends Component {
     MySwal = withReactContent(Swal);
@@ -16,11 +16,11 @@ class Docentes extends Component {
         loading: true,
         error: null,
         form: {
-            name: "",
-            mail: "",
-            phone: "",
-            enable: true
-        }
+            name: '',
+            mail: '',
+            phone: '',
+            enable: true,
+        },
     };
     componentDidMount() {
         this.get();
@@ -28,19 +28,19 @@ class Docentes extends Component {
     get = async () => {
         this.setState({
             loading: true,
-            error: null
+            error: null,
         });
         try {
             const response = await fetch(this.props.api);
             const data = await response.json();
             this.setState({
                 loading: false,
-                data: data
+                data: data,
             });
         } catch (error) {
             this.setState({
                 loading: false,
-                error: error
+                error: error,
             });
         }
     };
@@ -51,107 +51,107 @@ class Docentes extends Component {
     create = async () => {
         this.setState({
             loading: true,
-            error: null
+            error: null,
         });
         if (
-            this.state.form.name != "" &&
-            this.state.form.mail != "" &&
-            this.state.form.phone != ""
+            this.state.form.name != '' &&
+            this.state.form.mail != '' &&
+            this.state.form.phone != ''
         ) {
             try {
                 const response = await fetch(this.props.api, {
-                    method: "POST",
+                    method: 'POST',
                     body: JSON.stringify(this.state.form),
                     headers: {
-                        "Content-Type": "application/json"
-                    }
+                        'Content-Type': 'application/json',
+                    },
                 });
                 this.setState({
-                    loading: true
+                    loading: true,
                 });
                 this.clear();
                 this.get();
                 if (response.status === 200) {
                     this.MySwal.fire({
-                        position: "top-end",
-                        type: "success",
-                        title: "Se ha guardado el docente satsfactoriamente",
+                        position: 'top-end',
+                        type: 'success',
+                        title: 'Se ha guardado el docente satsfactoriamente',
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1500,
                     });
                 } else {
                     this.MySwal.fire({
-                        type: "error",
-                        position: "top-end",
-                        title: "Oops...",
-                        text: "No se ha podido crear el docente ",
+                        type: 'error',
+                        position: 'top-end',
+                        title: 'Oops...',
+                        text: 'No se ha podido crear el docente ',
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1500,
                     });
                     return false;
                 }
                 return true;
             } catch (error) {
                 this.setState({
-                    loading: false
+                    loading: false,
                 });
                 return false;
             }
         } else {
             this.MySwal.fire({
-                type: "error",
-                position: "top-end",
-                title: "Oops...",
-                text: "No se ha podido crear el docente ",
+                type: 'error',
+                position: 'top-end',
+                title: 'Oops...',
+                text: 'No se ha podido crear el docente ',
                 showConfirmButton: false,
-                timer: 1500
+                timer: 1500,
             });
         }
     };
     clear = () => {
         this.setState({
             form: {
-                name: "",
-                mail: "",
-                phone: "",
-                enable: true
-            }
+                name: '',
+                mail: '',
+                phone: '',
+                enable: true,
+            },
         });
     };
-    handleChange = e => {
-        if (e.target.name === "name") {
-            const re = /^[a-zA-Záéíóúñü\b]+$/;
+    handleChange = (e) => {
+        if (e.target.name === 'name') {
+            const re = /^[a-zA-Záéíóúñü\b\s]+$/;
             if (
                 re.exec(e.target.value) ||
-                e.nativeEvent.inputType === "deleteContentBackward"
+                e.nativeEvent.inputType === 'deleteContentBackward'
             ) {
                 this.setState({
                     form: {
                         ...this.state.form,
-                        [e.target.name]: e.target.value
-                    }
+                        [e.target.name]: e.target.value,
+                    },
                 });
             }
         } else {
             this.setState({
                 form: {
                     ...this.state.form,
-                    [e.target.name]: e.target.value
-                }
+                    [e.target.name]: e.target.value,
+                },
             });
         }
     };
     handleRemove = (e, data) => {
         this.MySwal.fire({
-            title: "¿Está seguro?",
-            text: "¿Está seguro que desea eliminar este docente?",
-            type: "warning",
+            title: '¿Está seguro?',
+            text: '¿Está seguro que desea eliminar este docente?',
+            type: 'warning',
             showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#808080",
-            confirmButtonText: "Sí",
-            cancelButtonText: "No"
-        }).then(result => {
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#808080',
+            confirmButtonText: 'Sí',
+            cancelButtonText: 'No',
+        }).then((result) => {
             if (result.value) {
                 this.remove(data.id);
             }
@@ -159,40 +159,40 @@ class Docentes extends Component {
     };
     handleEdit = async (e, data) => {
         await this.MySwal.fire({
-            title: "Editar docente",
+            title: 'Editar docente',
             html:
-                "<label>Nombre:</label>" +
+                '<label>Nombre:</label>' +
                 `<input id="nombre_docente" class="swal2-input" placeholder="Nombre" value="${
                     data.name
                 }"/>` +
-                "<label>Correo:</label>" +
+                '<label>Correo:</label>' +
                 `<input id="correo_docente" class="swal2-input" placeholder="Correo" value="${
                     data.mail
                 }"/>` +
-                "<label>Teléfono:</label>" +
+                '<label>Teléfono:</label>' +
                 `<input id="telefono_docente" class="swal2-input" placeholder="Teléfono" value="${
                     data.phone
                 }"/>`,
             focusConfirm: false,
             preConfirm: () => {
-                const name = document.getElementById("nombre_docente").value;
-                const mail = document.getElementById("correo_docente").value;
-                const phone = document.getElementById("telefono_docente").value;
+                const name = document.getElementById('nombre_docente').value;
+                const mail = document.getElementById('correo_docente').value;
+                const phone = document.getElementById('telefono_docente').value;
                 const enable = this.state.enable;
                 this.setState({
                     form: {
                         name: name,
                         mail: mail,
                         phone: phone,
-                        enable: enable
-                    }
+                        enable: enable,
+                    },
                 });
-            }
+            },
         });
         if (
-            this.state.form.name != "" &&
-            this.state.form.mail != "" &&
-            this.state.form.phone != ""
+            this.state.form.name != '' &&
+            this.state.form.mail != '' &&
+            this.state.form.phone != ''
         ) {
             this.edit(data.id);
         }
@@ -203,8 +203,8 @@ class Docentes extends Component {
                 name: data.name,
                 mail: data.mail,
                 phone: data.phone,
-                enable: true
-            }
+                enable: true,
+            },
         });
         this.edit(data.id);
     };
@@ -214,109 +214,109 @@ class Docentes extends Component {
                 name: data.name,
                 mail: data.mail,
                 phone: data.phone,
-                enable: false
-            }
+                enable: false,
+            },
         });
         this.edit(data.id);
     };
-    edit = async id => {
+    edit = async (id) => {
         this.setState({
             loading: true,
-            error: null
+            error: null,
         });
         if (
-            this.state.form.name != "" &&
-            this.state.form.mail != "" &&
-            this.state.form.phone != ""
+            this.state.form.name != '' &&
+            this.state.form.mail != '' &&
+            this.state.form.phone != ''
         ) {
             try {
                 const response = await fetch(`${this.props.api}/${id}`, {
-                    method: "PUT",
+                    method: 'PUT',
                     body: JSON.stringify(this.state.form),
                     headers: {
-                        "Content-Type": "application/json"
-                    }
+                        'Content-Type': 'application/json',
+                    },
                 });
                 this.clear();
                 this.get();
                 if (response.status === 200) {
                     this.MySwal.fire({
-                        position: "top-end",
-                        type: "success",
+                        position: 'top-end',
+                        type: 'success',
                         title:
-                            "Se ha actualizado el docente satisfactoriamente",
+                            'Se ha actualizado el docente satisfactoriamente',
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1500,
                     });
                 } else {
                     this.MySwal.fire({
-                        type: "error",
-                        position: "top-end",
-                        title: "Oops...",
-                        text: "No se ha podido editar el docente ",
+                        type: 'error',
+                        position: 'top-end',
+                        title: 'Oops...',
+                        text: 'No se ha podido editar el docente ',
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1500,
                     });
                     this.setState({
                         loading: false,
-                        error: error
+                        error: error,
                     });
                 }
             } catch (error) {
                 this.setState({
                     loading: false,
-                    error: error
+                    error: error,
                 });
             }
         } else {
             this.MySwal.fire({
-                type: "error",
-                position: "top-end",
-                title: "Oops...",
-                text: "No se ha podidos editar el docente ",
+                type: 'error',
+                position: 'top-end',
+                title: 'Oops...',
+                text: 'No se ha podidos editar el docente ',
                 showConfirmButton: false,
-                timer: 1500
+                timer: 1500,
             });
         }
     };
-    remove = async id => {
+    remove = async (id) => {
         await fetch(`${this.props.api}/${id}`, {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" }
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
         })
-            .then(res => {
+            .then((res) => {
                 if (res.status === 200) {
                     this.setState({
-                        loading: true
+                        loading: true,
                     });
                     this.get();
                     this.MySwal.fire({
-                        position: "top-end",
-                        type: "success",
-                        title: "Se ha eliminado el docente satsfactoriamente",
+                        position: 'top-end',
+                        type: 'success',
+                        title: 'Se ha eliminado el docente satsfactoriamente',
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1500,
                     });
                 } else {
                     this.MySwal.fire({
-                        type: "error",
-                        position: "top-end",
-                        title: "Oops...",
+                        type: 'error',
+                        position: 'top-end',
+                        title: 'Oops...',
                         text:
-                            "No se ha podido eliminar el docente seleccionado",
+                            'No se ha podido eliminar el docente seleccionado',
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1500,
                     });
                 }
             })
-            .catch(error => {
+            .catch((error) => {
                 this.MySwal.fire({
-                    type: "error",
-                    position: "top-end",
-                    title: "Oops...",
-                    text: "No se ha podido eliminar el docente seleccionado",
+                    type: 'error',
+                    position: 'top-end',
+                    title: 'Oops...',
+                    text: 'No se ha podido eliminar el docente seleccionado',
                     showConfirmButton: false,
-                    timer: 1500
+                    timer: 1500,
                 });
             });
     };

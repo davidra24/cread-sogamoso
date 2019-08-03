@@ -1,11 +1,11 @@
-import React, { Fragment } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Error from "../error/Error";
-import { Link } from "react-router-dom";
+import React, { Fragment } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Error from '../error/Error';
+import { Link } from 'react-router-dom';
 
 function ProgramaItem(props) {
     return (
-        <div className='alert alert-info '>
+        <div className='alert alert-custom '>
             <div className='row'>
                 <div className='col-12 col-md-6'>
                     <strong>{props.career.name}</strong>
@@ -30,12 +30,14 @@ function ProgramaItem(props) {
     );
 }
 function useSearchCareers(careers) {
-    const [query, setQuery] = React.useState("");
+    const [query, setQuery] = React.useState('');
     const [filteredCareers, setFilteredCareers] = React.useState(careers);
 
     React.useMemo(() => {
-        const result = careers.filter(career => {
-            return `${career.name}`.toLowerCase().includes(query.toLowerCase());
+        const result = careers.filter((career) => {
+            return `${career.name}${career.semesters}`
+                .toLowerCase()
+                .includes(query.toLowerCase());
         });
         setFilteredCareers(result);
     }, [careers, query]);
@@ -59,7 +61,7 @@ function ConsultarPrograma(props) {
                         className='mainLoginInput form-control'
                         placeholder='&#61442;'
                         value={query}
-                        onChange={e => {
+                        onChange={(e) => {
                             setQuery(e.target.value);
                         }}
                     />
@@ -77,29 +79,29 @@ function ConsultarPrograma(props) {
                 className='mainLoginInput form-control'
                 placeholder='&#61442;'
                 value={query}
-                onChange={e => {
+                onChange={(e) => {
                     setQuery(e.target.value);
                 }}
             />
             <br />
             <ul className='list-unstyled'>
-                {filteredCareers.map(career => {
+                {filteredCareers.map((career) => {
                     return (
-                        <li key={career.id} style={{ listStyleType: "none" }}>
+                        <li key={career.id} style={{ listStyleType: 'none' }}>
                             <Link
                                 className='text-reset text-decoration-none'
                                 to={{
                                     pathname: `/careers/${career.id}`,
                                     state: {
-                                        semesters: career.semesters
-                                    }
+                                        semesters: career.semesters,
+                                    },
                                 }}>
                                 <ProgramaItem
                                     career={career}
-                                    handleRemove={e =>
+                                    handleRemove={(e) =>
                                         props.handleRemove(e, career)
                                     }
-                                    handleEdit={e =>
+                                    handleEdit={(e) =>
                                         props.handleEdit(e, career)
                                     }
                                 />

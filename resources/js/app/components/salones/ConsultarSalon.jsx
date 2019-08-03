@@ -17,7 +17,9 @@ function SalonItem(props) {
             </button>
         );
     }
-    const color = props.salon.enable ? 'alert alert-info' : 'alert alert-dark';
+    const color = props.salon.enable
+        ? 'alert alert-custom'
+        : 'alert alert-dark';
     return (
         <div className={color}>
             <div className='row'>
@@ -40,12 +42,12 @@ function SalonItem(props) {
 function useSearchClassRooms(classRooms) {
     const [query, setQuery] = React.useState('');
     const [filteredClassRooms, setFilteredClassRooms] = React.useState(
-        classRooms
+        classRooms,
     );
 
     React.useMemo(() => {
         const result = classRooms.filter((classRoom) => {
-            return `${classRoom.name}`
+            return `${classRoom.name} ${classRoom.location}`
                 .toLowerCase()
                 .includes(query.toLowerCase());
         });
@@ -57,7 +59,7 @@ function useSearchClassRooms(classRooms) {
 function ConsultarSalon(props) {
     const classRooms = props.classrooms;
     const { query, setQuery, filteredClassRooms } = useSearchClassRooms(
-        classRooms
+        classRooms,
     );
     if (props.error) {
         return <Error error={props.error.message} />;

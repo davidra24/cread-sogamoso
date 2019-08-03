@@ -1,10 +1,10 @@
-import React, { Fragment } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Error from "../error/Error";
+import React, { Fragment } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Error from '../error/Error';
 
 function AsignaturaItem(props) {
     return (
-        <div className='alert alert-info '>
+        <div className='alert alert-custom '>
             <div className='row'>
                 <div className='col-12 col-md-10'>
                     <strong>{props.subject.name}</strong>
@@ -26,11 +26,11 @@ function AsignaturaItem(props) {
     );
 }
 function useSearchSubjects(subjects) {
-    const [query, setQuery] = React.useState("");
+    const [query, setQuery] = React.useState('');
     const [filteredSubjects, setFilteredSubjects] = React.useState(subjects);
 
     React.useMemo(() => {
-        const result = subjects.filter(subject => {
+        const result = subjects.filter((subject) => {
             return `${subject.name}`
                 .toLowerCase()
                 .includes(query.toLowerCase());
@@ -57,7 +57,7 @@ function ConsultarAsignatura(props) {
                         className='mainLoginInput form-control'
                         placeholder='&#61442;'
                         value={query}
-                        onChange={e => {
+                        onChange={(e) => {
                             setQuery(e.target.value);
                         }}
                     />
@@ -75,21 +75,21 @@ function ConsultarAsignatura(props) {
                 className='mainLoginInput form-control'
                 placeholder='&#61442;'
                 value={query}
-                onChange={e => {
+                onChange={(e) => {
                     setQuery(e.target.value);
                 }}
             />
             <br />
             <ul className='list-unstyled'>
-                {filteredSubjects.map(subject => {
+                {filteredSubjects.map((subject) => {
                     return (
-                        <li key={subject.id} style={{ listStyleType: "none" }}>
+                        <li key={subject.id} style={{ listStyleType: 'none' }}>
                             <AsignaturaItem
                                 subject={subject}
-                                handleRemove={e =>
+                                handleRemove={(e) =>
                                     props.handleRemove(e, subject)
                                 }
-                                handleEdit={e => props.handleEdit(e, subject)}
+                                handleEdit={(e) => props.handleEdit(e, subject)}
                             />
                         </li>
                     );

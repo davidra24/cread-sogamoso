@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import AgregarAsignatura from "../../components/asignaturas/AgregarAsignatura";
-import ConsultarAsignatura from "../../components/asignaturas/ConsultarAsignatura";
-import Loading from "../../components/loading/Loading";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
+import React, { Component } from 'react';
+import AgregarAsignatura from '../../components/asignaturas/AgregarAsignatura';
+import ConsultarAsignatura from '../../components/asignaturas/ConsultarAsignatura';
+import Loading from '../../components/loading/Loading';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 class Asignaturas extends Component {
     MySwal = withReactContent(Swal);
@@ -16,8 +16,8 @@ class Asignaturas extends Component {
         loading: true,
         error: null,
         form: {
-            name: ""
-        }
+            name: '',
+        },
     };
     componentDidMount() {
         this.get();
@@ -25,21 +25,21 @@ class Asignaturas extends Component {
     get = async () => {
         this.setState({
             loading: true,
-            error: null
+            error: null,
         });
         try {
             const response = await fetch(this.props.api, {
-                mode: "no-cors"
+                mode: 'no-cors',
             });
             const data = await response.json();
             this.setState({
                 loading: false,
-                data: data
+                data: data,
             });
         } catch (error) {
             this.setState({
                 loading: false,
-                error: error
+                error: error,
             });
         }
     };
@@ -50,41 +50,41 @@ class Asignaturas extends Component {
     create = async () => {
         this.setState({
             loading: true,
-            error: null
+            error: null,
         });
-        if (this.state.form.name != "") {
+        if (this.state.form.name != '') {
             try {
                 const response = await fetch(this.props.api, {
-                    method: "POST",
+                    method: 'POST',
                     body: JSON.stringify(this.state.form),
                     headers: {
-                        "Content-Type": "application/json"
-                    }
+                        'Content-Type': 'application/json',
+                    },
                 });
                 this.setState({
-                    loading: true
+                    loading: true,
                 });
                 this.clear();
                 this.get();
                 if (response.status === 200) {
                     this.MySwal.fire({
-                        position: "top-end",
-                        type: "success",
-                        title: "Se ha guardado la asignatura satsfactoriamente",
+                        position: 'top-end',
+                        type: 'success',
+                        title: 'Se ha guardado la asignatura satsfactoriamente',
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1500,
                     });
                 } else {
                     this.MySwal.fire({
-                        type: "error",
-                        position: "top-end",
-                        title: "Oops...",
-                        text: "No se ha podido crear la asignatura ",
+                        type: 'error',
+                        position: 'top-end',
+                        title: 'Oops...',
+                        text: 'No se ha podido crear la asignatura ',
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1500,
                     });
                     this.setState({
-                        loading: false
+                        loading: false,
                     });
                     return false;
                 }
@@ -92,53 +92,53 @@ class Asignaturas extends Component {
             } catch (error) {
                 this.setState({
                     loading: false,
-                    error: error
+                    error: error,
                 });
                 return false;
             }
         } else {
             this.MySwal.fire({
-                type: "error",
-                position: "top-end",
-                title: "Oops...",
-                text: "No se ha podido crear la asignatura ",
+                type: 'error',
+                position: 'top-end',
+                title: 'Oops...',
+                text: 'No se ha podido crear la asignatura ',
                 showConfirmButton: false,
-                timer: 1500
+                timer: 1500,
             });
         }
     };
     clear = () => {
         this.setState({
             form: {
-                name: ""
-            }
+                name: '',
+            },
         });
     };
-    handleChange = e => {
-        const re = /^[a-zA-Záéíóúñü\b]+$/;
+    handleChange = (e) => {
+        const re = /^[a-zA-Záéíóúñü\b\s]+$/;
         if (
             re.exec(e.target.value) ||
-            e.nativeEvent.inputType === "deleteContentBackward"
+            e.nativeEvent.inputType === 'deleteContentBackward'
         ) {
             this.setState({
                 form: {
                     ...this.state.form,
-                    [e.target.name]: e.target.value
-                }
+                    [e.target.name]: e.target.value,
+                },
             });
         }
     };
     handleRemove = (e, data) => {
         this.MySwal.fire({
-            title: "¿Está seguro?",
-            text: "¿Está seguro que desea eliminar esta asignatura?",
-            type: "warning",
+            title: '¿Está seguro?',
+            text: '¿Está seguro que desea eliminar esta asignatura?',
+            type: 'warning',
             showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#808080",
-            confirmButtonText: "Sí",
-            cancelButtonText: "No"
-        }).then(result => {
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#808080',
+            confirmButtonText: 'Sí',
+            cancelButtonText: 'No',
+        }).then((result) => {
             if (result.value) {
                 this.remove(data.id);
             }
@@ -146,120 +146,120 @@ class Asignaturas extends Component {
     };
     handleEdit = async (e, data) => {
         await this.MySwal.fire({
-            title: "Editar asignatura",
+            title: 'Editar asignatura',
             html:
-                "<label>Nombre:</label>" +
+                '<label>Nombre:</label>' +
                 `<input id="nombre_asignatura" class="swal2-input" placeholder="Nombre" value="${
                     data.name
                 }"/>`,
             focusConfirm: false,
             preConfirm: () => {
-                const name = document.getElementById("nombre_asignatura").value;
+                const name = document.getElementById('nombre_asignatura').value;
                 this.setState({
                     form: {
-                        name: name
-                    }
+                        name: name,
+                    },
                 });
-            }
+            },
         });
-        if (this.state.form.name != "") {
+        if (this.state.form.name != '') {
             this.edit(data.id);
         }
     };
-    edit = async id => {
+    edit = async (id) => {
         this.setState({
             loading: true,
-            error: null
+            error: null,
         });
-        if (this.state.form.name != "") {
+        if (this.state.form.name != '') {
             try {
                 const response = await fetch(`${this.props.api}/${id}`, {
-                    method: "PUT",
+                    method: 'PUT',
                     body: JSON.stringify(this.state.form),
                     headers: {
-                        "Content-Type": "application/json"
-                    }
+                        'Content-Type': 'application/json',
+                    },
                 });
                 this.setState({
-                    loading: false
+                    loading: false,
                 });
                 this.clear();
                 this.get();
                 if (response.status === 200) {
                     this.MySwal.fire({
-                        position: "top-end",
-                        type: "success",
+                        position: 'top-end',
+                        type: 'success',
                         title:
-                            "Se ha actualizado la asignatura satsfactoriamente",
+                            'Se ha actualizado la asignatura satsfactoriamente',
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1500,
                     });
                 } else {
                     this.MySwal.fire({
-                        type: "error",
-                        position: "top-end",
-                        title: "Oops...",
-                        text: "No se ha podido editar la asignatura ",
+                        type: 'error',
+                        position: 'top-end',
+                        title: 'Oops...',
+                        text: 'No se ha podido editar la asignatura ',
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1500,
                     });
                 }
             } catch (error) {
                 this.setState({
                     loading: false,
-                    error: error
+                    error: error,
                 });
             }
         } else {
             this.MySwal.fire({
-                type: "error",
-                position: "top-end",
-                title: "Oops...",
-                text: "No se ha podido editar la asignatura",
+                type: 'error',
+                position: 'top-end',
+                title: 'Oops...',
+                text: 'No se ha podido editar la asignatura',
                 showConfirmButton: false,
-                timer: 1500
+                timer: 1500,
             });
         }
     };
-    remove = async id => {
+    remove = async (id) => {
         await fetch(`${this.props.api}/${id}`, {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json" }
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
         })
-            .then(res => {
+            .then((res) => {
                 if (res.status === 200) {
                     this.setState({
-                        loading: true
+                        loading: true,
                     });
                     this.get();
                     this.MySwal.fire({
-                        position: "top-end",
-                        type: "success",
+                        position: 'top-end',
+                        type: 'success',
                         title:
-                            "Se ha eliminado la asignatura satsfactoriamente",
+                            'Se ha eliminado la asignatura satsfactoriamente',
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1500,
                     });
                 } else {
                     this.MySwal.fire({
-                        type: "error",
-                        position: "top-end",
-                        title: "Oops...",
+                        type: 'error',
+                        position: 'top-end',
+                        title: 'Oops...',
                         text:
-                            "No se ha podido eliminar la asignatura seleccionada",
+                            'No se ha podido eliminar la asignatura seleccionada',
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 1500,
                     });
                 }
             })
-            .catch(error => {
+            .catch((error) => {
                 this.MySwal.fire({
-                    type: "error",
-                    position: "top-end",
-                    title: "Oops...",
-                    text: "No se ha podido eliminar la asignatura seleccionada",
+                    type: 'error',
+                    position: 'top-end',
+                    title: 'Oops...',
+                    text: 'No se ha podido eliminar la asignatura seleccionada',
                     showConfirmButton: false,
-                    timer: 1500
+                    timer: 1500,
                 });
             });
     };

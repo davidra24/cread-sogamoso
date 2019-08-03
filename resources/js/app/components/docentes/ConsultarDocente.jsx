@@ -1,6 +1,6 @@
-import React, { Fragment } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Error from "../error/Error";
+import React, { Fragment } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Error from '../error/Error';
 
 function AsignaturaItem(props) {
     var renderEnable;
@@ -18,8 +18,8 @@ function AsignaturaItem(props) {
         );
     }
     const color = props.teacher.enable
-        ? "alert alert-info"
-        : "alert alert-dark";
+        ? 'alert alert-custom'
+        : 'alert alert-dark';
     return (
         <div className={color}>
             <div className='row'>
@@ -43,12 +43,12 @@ function AsignaturaItem(props) {
     );
 }
 function useSearchTeachers(teachers) {
-    const [query, setQuery] = React.useState("");
+    const [query, setQuery] = React.useState('');
     const [filteredTeachers, setFilteredTeachers] = React.useState(teachers);
 
     React.useMemo(() => {
-        const result = teachers.filter(teacher => {
-            return `${teacher.name}`
+        const result = teachers.filter((teacher) => {
+            return `${teacher.name} ${teacher.phone}`
                 .toLowerCase()
                 .includes(query.toLowerCase());
         });
@@ -74,7 +74,7 @@ function ConsultarAsignatura(props) {
                         className='mainLoginInput form-control'
                         placeholder='&#61442;'
                         value={query}
-                        onChange={e => {
+                        onChange={(e) => {
                             setQuery(e.target.value);
                         }}
                     />
@@ -95,27 +95,27 @@ function ConsultarAsignatura(props) {
                 className='mainLoginInput form-control'
                 placeholder='&#61442;'
                 value={query}
-                onChange={e => {
+                onChange={(e) => {
                     setQuery(e.target.value);
                 }}
             />
             <br />
             <ul className='list-unstyled'>
-                {teach.map(teacher => {
+                {teach.map((teacher) => {
                     return (
-                        <li key={teacher.id} style={{ listStyleType: "none" }}>
+                        <li key={teacher.id} style={{ listStyleType: 'none' }}>
                             <AsignaturaItem
                                 teacher={teacher}
-                                handleRemove={e =>
+                                handleRemove={(e) =>
                                     props.handleRemove(e, teacher)
                                 }
-                                handleEnable={e =>
+                                handleEnable={(e) =>
                                     props.handleEnable(e, teacher)
                                 }
-                                handleDisable={e =>
+                                handleDisable={(e) =>
                                     props.handleDisable(e, teacher)
                                 }
-                                handleEdit={e => props.handleEdit(e, teacher)}
+                                handleEdit={(e) => props.handleEdit(e, teacher)}
                             />
                         </li>
                     );
