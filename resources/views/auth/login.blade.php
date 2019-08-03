@@ -4,9 +4,9 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Iniciar sesión') }}</div>
-                <div class="card-body">
+            <div class="card bg1">
+                <div class="card-header bg1">{{ __('Iniciar sesión') }}</div>
+                <div class="card-body bg1">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
@@ -56,11 +56,11 @@
                                     {{ __('Iniciar sesión') }}
                                 </button>
 
-                                @if (Route::has('password.request'))
+                               <!-- @if (Route::has('password.request'))
                                     <a class="btn btn-link" href="{{ route('password.request') }}">
                                         {{ __('¿Has olvidado tu contraseña?') }}
                                     </a>
-                                @endif
+                                @endif-->
                             </div>
                         </div>
                     </form>
