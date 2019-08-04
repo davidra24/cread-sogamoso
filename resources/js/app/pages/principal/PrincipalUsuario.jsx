@@ -18,13 +18,13 @@ class PrincipalUsuario extends Component {
         selectedDays: [],
         form: {
             id_semester: '',
-            id_career: 0
-        }
+            id_career: 0,
+        },
     };
-    handleOpenModal = e => {
+    handleOpenModal = (e) => {
         this.setState({ modalIsOpen: true });
     };
-    handleCloseModal = e => {
+    handleCloseModal = (e) => {
         this.setState({ modalIsOpen: false });
     };
     fillSemesters() {
@@ -32,40 +32,40 @@ class PrincipalUsuario extends Component {
         const semestres = this.state.semesters.sort(function(a, b) {
             return a.id - b.id;
         });
-        semestres.map(semestre => {
+        semestres.map((semestre) => {
             arr.push(
                 <option key={semestre.id} value={semestre.id}>
                     {semestre.title}
-                </option>
+                </option>,
             );
             if (semestre.enable) {
                 this.setState({
                     form: {
                         ...this.state.form,
-                        id_semester: semestre.id
-                    }
+                        id_semester: semestre.id,
+                    },
                 });
                 this.searchSemester(semestre.id);
             }
         });
         this.setState({
             semes: arr,
-            loadingSemesters: false
+            loadingSemesters: false,
         });
     }
     fillCareers() {
         let arr = new Array();
         arr.push(<option key={0} value={0} />);
-        this.state.careers.map(career => {
+        this.state.careers.map((career) => {
             arr.push(
                 <option key={career.id} value={career.id}>
                     {career.name}
-                </option>
+                </option>,
             );
         });
         this.setState({
             caree: arr,
-            loadingCareers: false
+            loadingCareers: false,
         });
     }
     async componentDidMount() {
@@ -77,92 +77,92 @@ class PrincipalUsuario extends Component {
     getSemester = async () => {
         this.setState({
             loadingSemesters: true,
-            error: null
+            error: null,
         });
         try {
             const response = await fetch(this.props.apiSemester);
             const data = await response.json();
             this.setState({
-                semesters: data
+                semesters: data,
             });
             await this.fillSemesters();
         } catch (error) {
             this.setState({
                 loadingSemesters: false,
-                error: error
+                error: error,
             });
         }
     };
     getCareer = async () => {
         this.setState({
             loadingCareers: true,
-            error: null
+            error: null,
         });
         try {
             const response = await fetch(this.props.apiCareer);
             const data = await response.json();
             this.setState({
-                careers: data
+                careers: data,
             });
             await this.fillCareers();
         } catch (error) {
             this.setState({
                 loadingCareers: false,
-                error: error
+                error: error,
             });
         }
     };
     get = async (id_semester, id_career) => {
         this.setState({
-            data: []
+            data: [],
         });
         try {
             const response = await fetch(
-                `${this.props.api}/${id_semester}/${id_career}`
+                `${this.props.api}/${id_semester}/${id_career}`,
             );
             const data = await response.json();
             this.setState({
                 loading: false,
-                data: data
+                data: data,
             });
         } catch (error) {
             this.setState({
                 loading: false,
-                error: error
+                error: error,
             });
         }
     };
-    searchSemester = id => {
+    searchSemester = (id) => {
         var results = false;
         for (let i = 0; i < this.state.semesters.length; i++) {
             if (parseInt(this.state.semesters[i]['id']) === parseInt(id)) {
                 results = true;
                 const arr = [];
-                this.state.semesters[i]['dates'].forEach(element => {
+                this.state.semesters[i]['dates'].forEach((element) => {
                     arr.push(new Date(element.split('T')[0]));
                 });
                 this.setState({
-                    selectedDays: arr
+                    selectedDays: arr,
                 });
             }
         }
         this.setState({ loading: false });
         return results;
     };
-    handleChange = e => {
+    handleChange = (e) => {
         this.setState({
             form: {
                 ...this.state.form,
-                [e.target.name]: e.target.value
-            }
+                [e.target.name]: e.target.value,
+            },
         });
         if (e.target.name === 'id_semester') {
             this.setState({
                 form: {
                     id_semester: e.target.value,
-                    id_career: 0
+                    id_career: 0,
                 },
-                data: []
+                data: [],
             });
             this.searchSemester(e.target.value);
         } else {
@@ -172,7 +172,7 @@ class PrincipalUsuario extends Component {
             ) {
                 this.setState({
                     loading: true,
-                    error: null
+                    error: null,
                 });
                 this.get(this.state.form.id_semester, e.target.value);
             }
@@ -180,7 +180,7 @@ class PrincipalUsuario extends Component {
     };
     openModal = () => {
         this.setState({
-            modalIsOpen: !this.state.modalIsOpen
+            modalIsOpen: !this.state.modalIsOpen,
         });
     };
     render() {
@@ -197,24 +197,22 @@ class PrincipalUsuario extends Component {
         }
         return (
             <Fragment>
-                <div className="container">
-                    <div className="row">
-                        <div className="col-11">
+                <div className='container'>
+                    <div className='row'>
+                        <div className='col-11'>
                             <select
-                                name="id_semester"
-                                className="form-control"
+                                name='id_semester'
+                                className='form-control'
                                 onChange={this.handleChange}
-                                value={this.state.form.id_semester}
-                            >
+                                value={this.state.form.id_semester}>
                                 {semesters}
                             </select>
                         </div>
-                        <div className="col-1">
+                        <div className='col-1'>
                             <button
-                                className="btn btn-info"
-                                onClick={this.openModal}
-                            >
-                                <FontAwesomeIcon icon="calendar-alt" />
+                                className='btn btn-info'
+                                onClick={this.openModal}>
+                                <FontAwesomeIcon icon='calendar-alt' />
                             </button>
                             <CalendarModal
                                 onCloseModal={this.handleCloseModal}
@@ -224,39 +222,40 @@ class PrincipalUsuario extends Component {
                                 selectedDays={this.state.selectedDays}
                             />
                         </div>
-                        <div className="col-12">
+                        <div className='col-12'>
                             <br />
                             <select
-                                name="id_career"
-                                className="form-control"
+                                name='id_career'
+                                className='form-control'
                                 onChange={this.handleChange}
-                                value={this.state.form.id_career}
-                            >
+                                value={this.state.form.id_career}>
                                 {careers}
                             </select>
                             <br />
                         </div>
                     </div>
                 </div>
-                <div className="container">
-                    <div className="row">
-                        <div className="col-12">
+                <div className='container'>
+                    <div className='row'>
+                        <div className='col-12'>
                             {this.state.data === [] ? (
                                 <h1>Aún no hay horarios asignados</h1>
                             ) : (
                                 <Fragment>
-                                    <table className="table table-bordered">
-                                        <thead>
+                                    <table className='bg1 table table-bordered'>
+                                        <thead className='bg1'>
                                             <tr>
-                                                <th scope="col">Semestre</th>
-                                                <th scope="col">Asignatura</th>
-                                                <th scope="col">Docente</th>
-                                                <th scope="col">Teléfono</th>
-                                                <th scope="col">Aula</th>
-                                                <th scope="col">Hora</th>
+                                                <th scope='col'>Semestre</th>
+                                                <th scope='col'>Asignatura</th>
+                                                <th scope='col'>Docente</th>
+                                                <th scope='col'>Teléfono</th>
+                                                <th scope='col'>Aula</th>
+                                                <th scope='col'>Hora</th>
                                             </tr>
                                         </thead>
-                                        <tbody>{getRows(this.state)}</tbody>
+                                        <tbody className='bg1'>
+                                            {getRows(this.state)}
+                                        </tbody>
                                     </table>
                                 </Fragment>
                             )}
@@ -270,14 +269,13 @@ class PrincipalUsuario extends Component {
 
 function getRows(props) {
     let arr = [];
-    props.data.map(lesson => {
+    props.data.map((lesson) => {
         arr.push(
             <tr
                 key={`${lesson.id_subject}0${lesson.start_hour}0${
                     lesson.end_hour
-                }`}
-            >
-                <th scope="row">{lesson.subject_semster}</th>
+                }`}>
+                <th scope='row'>{lesson.subject_semster}</th>
                 <td>{lesson.name_subject}</td>
                 <td>{lesson.name_teacher}</td>
                 <td>{lesson.phone_teacher}</td>
@@ -285,7 +283,7 @@ function getRows(props) {
                     {lesson.name_classroom} - {lesson.location_classroom}
                 </td>
                 <td>{`${lesson.start_hour} - ${lesson.end_hour}`}</td>
-            </tr>
+            </tr>,
         );
     });
     return arr;

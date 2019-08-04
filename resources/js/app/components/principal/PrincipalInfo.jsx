@@ -1,9 +1,9 @@
-import React, { Fragment } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { Fragment } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function getRows(props) {
     let arr = [];
-    props.lessons.map(lesson => {
+    props.lessons.map((lesson) => {
         arr.push(
             <tr
                 key={`${lesson.id_subject}0${lesson.start_hour}0${
@@ -20,11 +20,11 @@ function getRows(props) {
                 <td>
                     <button
                         className='btn btn-danger'
-                        onClick={e => props.remove(e, lesson)}>
+                        onClick={(e) => props.remove(e, lesson)}>
                         <FontAwesomeIcon icon='trash' />
                     </button>
                 </td>
-            </tr>
+            </tr>,
         );
     });
     return arr;
@@ -39,8 +39,8 @@ function PrincipalInfo(props) {
                         <h1>Aún no hay horarios asignados</h1>
                     ) : (
                         <Fragment>
-                            <table className='table table-bordered'>
-                                <thead>
+                            <table className='bg1 table table-bordered'>
+                                <thead className='bg1'>
                                     <tr>
                                         <th scope='col'>Semestre</th>
                                         <th scope='col'>Asignatura</th>
@@ -51,7 +51,7 @@ function PrincipalInfo(props) {
                                         <th scope='col'>Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody>{getRows(props)}</tbody>
+                                <tbody className='bg1'>{getRows(props)}</tbody>
                             </table>
                         </Fragment>
                     )}
