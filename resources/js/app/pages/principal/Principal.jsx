@@ -1,11 +1,14 @@
-import React, { Component, Fragment } from "react";
-import Loading from "../../components/loading/Loading";
-import PrincipalForm from "../../components/principal/PrincipalForm";
-import PrincipalInfo from "../../components/principal/PrincipalInfo";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-import { DateUtils } from "react-day-picker";
-import load from "../../images/loading.gif";
+import React, { Component, Fragment } from 'react';
+import Loading from '../../components/loading/Loading';
+import PrincipalForm from '../../components/principal/PrincipalForm';
+import PrincipalInfo from '../../components/principal/PrincipalInfo';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import { DateUtils } from 'react-day-picker';
+import load from '../../images/loading.gif';
+import { PDFViewer } from '@react-pdf/renderer';
+import MyDocument from '../pdf/MyDocument';
+import ReactPDF from '@react-pdf/renderer';
 
 class Principal extends Component {
     validate = /\d\d\d\d-[1-2]/;
@@ -15,8 +18,8 @@ class Principal extends Component {
     }
     state = {
         form: {
-            id_semester: "",
-            id_career: ""
+            id_semester: '',
+            id_career: '',
         },
         semesters: [],
         careers: [],
@@ -30,87 +33,88 @@ class Principal extends Component {
         responseUpdated: false,
         modalIsOpen: false,
         selectedDays: [],
-        selected: {}
+        selected: {},
     };
-    handleOpenModal = e => {
+    handleOpenModal = (e) => {
         this.setState({ modalIsOpen: true });
     };
-    handleCloseModal = e => {
+    handleCloseModal = (e) => {
         this.setState({ modalIsOpen: false });
     };
+
     fillSemesters() {
         let arr = new Array();
         const semestres = this.state.semesters.sort(function(a, b) {
             return a.id - b.id;
         });
-        semestres.map(semestre => {
+        semestres.map((semestre) => {
             arr.push(
                 <option key={semestre.id} value={semestre.id}>
                     {semestre.title}
-                </option>
+                </option>,
             );
             if (semestre.enable) {
                 this.setState({
                     form: {
                         ...this.state.form,
-                        id_semester: semestre.id
-                    }
+                        id_semester: semestre.id,
+                    },
                 });
                 this.searchSemester(semestre.id);
             }
         });
         this.setState({
             semes: arr,
-            loadingSemesters: false
+            loadingSemesters: false,
         });
     }
     handleRemove = (e, data) => {
         this.MySwal.fire({
-            title: "¿Está seguro?",
-            text: "¿Está seguro que desea eliminar este horario?",
-            type: "warning",
+            title: '¿Está seguro?',
+            text: '¿Está seguro que desea eliminar este horario?',
+            type: 'warning',
             showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#808080",
-            confirmButtonText: "Sí",
-            cancelButtonText: "No"
-        }).then(result => {
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#808080',
+            confirmButtonText: 'Sí',
+            cancelButtonText: 'No',
+        }).then((result) => {
             if (result.value) {
                 this.setState({ loading: true });
                 this.remove(data);
             }
         });
     };
-    remove = async data => {
+    remove = async (data) => {
         await fetch(
             `${this.props.api}/${data.id_classroom}/${data.id_career_subject}/${
                 data.id_semester
             }/${data.id_teacher}`,
             {
-                method: "DELETE",
-                headers: { "Content-Type": "application/json" }
-            }
-        ).then(response => {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+            },
+        ).then((response) => {
             if (response.status === 200) {
                 this.setState({
-                    loading: false
+                    loading: false,
                 });
                 this.get(data.id_semester, data.id_career);
                 this.MySwal.fire({
-                    position: "top-end",
-                    type: "success",
-                    title: "Se ha eliminado el horario satsfactoriamente",
+                    position: 'top-end',
+                    type: 'success',
+                    title: 'Se ha eliminado el horario satsfactoriamente',
                     showConfirmButton: false,
-                    timer: 1500
+                    timer: 1500,
                 });
             } else {
                 this.MySwal.fire({
-                    type: "error",
-                    position: "top-end",
-                    title: "Oops...",
-                    text: "No se ha podido eliminar el horario seleccionado",
+                    type: 'error',
+                    position: 'top-end',
+                    title: 'Oops...',
+                    text: 'No se ha podido eliminar el horario seleccionado',
                     showConfirmButton: false,
-                    timer: 1500
+                    timer: 1500,
                 });
             }
         });
@@ -184,16 +188,16 @@ class Principal extends Component {
     fillCareers() {
         let arr = new Array();
         arr.push(<option key={0} value={0} />);
-        this.state.careers.map(career => {
+        this.state.careers.map((career) => {
             arr.push(
                 <option key={career.id} value={career.id}>
                     {career.name}
-                </option>
+                </option>,
             );
         });
         this.setState({
             caree: arr,
-            loadingCareers: false
+            loadingCareers: false,
         });
     }
     componentDidMount() {
@@ -203,141 +207,141 @@ class Principal extends Component {
     getSemester = async () => {
         this.setState({
             loadingSemesters: true,
-            error: null
+            error: null,
         });
         try {
             const response = await fetch(this.props.apiSemester);
             const data = await response.json();
             this.setState({
-                semesters: data
+                semesters: data,
             });
             await this.fillSemesters();
         } catch (error) {
             this.setState({
                 loadingSemesters: false,
-                error: error
+                error: error,
             });
         }
     };
     getCareer = async () => {
         this.setState({
             loadingCareers: true,
-            error: null
+            error: null,
         });
         try {
             const response = await fetch(this.props.apiCareer);
             const data = await response.json();
             this.setState({
-                careers: data
+                careers: data,
             });
             await this.fillCareers();
         } catch (error) {
             this.setState({
                 loadingCareers: false,
-                error: error
+                error: error,
             });
         }
     };
     get = async (id_semester, id_career) => {
         this.setState({
-            data: []
+            data: [],
         });
         try {
             const response = await fetch(
-                `${this.props.api}/${id_semester}/${id_career}`
+                `${this.props.api}/${id_semester}/${id_career}`,
             );
             const data = await response.json();
             this.setState({
                 loading: false,
-                data: data
+                data: data,
             });
         } catch (error) {
             this.setState({
                 loading: false,
-                error: error
+                error: error,
             });
         }
     };
-    updateSemester = async semestre => {
+    updateSemester = async (semestre) => {
         this.setState({
-            loadingSemesters: true
+            loadingSemesters: true,
         });
         await fetch(`${this.props.apiSemester}/${semestre.id}`, {
-            method: "PUT",
+            method: 'PUT',
             body: JSON.stringify(semestre),
             headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(res => {
+                'Content-Type': 'application/json',
+            },
+        }).then((res) => {
             if (parseInt(res.status) === 200) {
                 this.setState({
-                    responseUpdated: true
+                    responseUpdated: true,
                 });
             } else {
                 this.setState({
-                    responseUpdated: false
+                    responseUpdated: false,
                 });
             }
         });
     };
-    updateSemesters = id_semestre => {
-        this.state.semesters.map(semestre => {
+    updateSemesters = (id_semestre) => {
+        this.state.semesters.map((semestre) => {
             if (parseInt(id_semestre) === parseInt(semestre.id)) {
                 semestre = { ...semestre, enable: true };
                 this.updateSemester(semestre);
                 this.setState({
-                    loadingSemesters: false
+                    loadingSemesters: false,
                 });
             } else {
                 if (semestre.enable) {
                     semestre = { ...semestre, enable: false };
                     this.updateSemester(semestre);
                     this.setState({
-                        loadingSemesters: false
+                        loadingSemesters: false,
                     });
                 }
             }
         });
     };
-    searchSemester = id => {
+    searchSemester = (id) => {
         var results = false;
         for (let i = 0; i < this.state.semesters.length; i++) {
-            if (parseInt(this.state.semesters[i]["id"]) === parseInt(id)) {
+            if (parseInt(this.state.semesters[i]['id']) === parseInt(id)) {
                 results = true;
                 const arr = [];
-                this.state.semesters[i]["dates"].forEach(element => {
-                    arr.push(new Date(element.split("T")[0]));
+                this.state.semesters[i]['dates'].forEach((element) => {
+                    arr.push(new Date(element.split('T')[0]));
                 });
                 this.setState({
-                    selectedDays: arr
+                    selectedDays: arr,
                 });
             }
         }
         return results;
     };
-    handleChange = e => {
+    handleChange = (e) => {
         const historySemester = this.state.form.id_semester;
         this.setState({
             form: {
                 ...this.state.form,
-                [e.target.name]: e.target.value
-            }
+                [e.target.name]: e.target.value,
+            },
         });
-        if (e.target.name === "id_semester") {
+        if (e.target.name === 'id_semester') {
             if (parseInt(e.target.value) === 0) {
                 this.setState({
                     form: {
                         ...this.state.form,
-                        id_semester: historySemester
-                    }
+                        id_semester: historySemester,
+                    },
                 });
             } else {
                 this.setState({
                     loadingSemesters: true,
                     form: {
                         id_semester: e.target.value,
-                        id_career: 0
-                    }
+                        id_career: 0,
+                    },
                 });
                 this.searchSemester(e.target.value);
                 this.updateSemesters(e.target.value);
@@ -349,7 +353,7 @@ class Principal extends Component {
             ) {
                 this.setState({
                     loading: true,
-                    error: null
+                    error: null,
                 });
                 this.get(this.state.form.id_semester, e.target.value);
             }
@@ -357,7 +361,7 @@ class Principal extends Component {
     };
     openModal = () => {
         this.setState({
-            modalIsOpen: !this.state.modalIsOpen
+            modalIsOpen: !this.state.modalIsOpen,
         });
     };
     render() {
@@ -381,6 +385,8 @@ class Principal extends Component {
                     modalIsOpen={this.state.modalIsOpen}
                     openModal={this.openModal}
                     selectedDays={this.state.selectedDays}
+                    showPDF={this.state.data != [] && this.state.data.length}
+                    lessons={this.state.data}
                 />
                 <br />
                 {this.loading ? (

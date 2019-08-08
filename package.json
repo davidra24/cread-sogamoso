@@ -35,6 +35,7 @@
         "sweetalert2-react-content": "^1.1.0"
     },
     "dependencies": {
+        "@react-pdf/renderer": "^1.6.3",
         "aws-sdk": "^2.488.0",
         "moment": "^2.24.0",
         "react-collapsible": "^2.6.0",

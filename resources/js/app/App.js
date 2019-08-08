@@ -11,27 +11,28 @@ import {
     faTrash,
     faEyeSlash,
     faEye,
-    faCalendarAlt
+    faCalendarAlt,
+    faFilePdf,
 } from '@fortawesome/free-solid-svg-icons';
 import 'react-day-picker/lib/style.css';
 
-library.add(faEye, faEyeSlash, faEdit, faTrash, faCalendarAlt);
+library.add(faEye, faEyeSlash, faEdit, faTrash, faCalendarAlt, faFilePdf);
 export default class App extends Component {
     state = {
         user: {
-            id: user
-        }
+            id: user,
+        },
     };
     render() {
         if (role == 'admin') {
             return (
-                <BrowserRouter location="/">
+                <BrowserRouter location='/'>
                     <Index user={this.state.user} />
                 </BrowserRouter>
             );
         } else {
             return (
-                <BrowserRouter location="/">
+                <BrowserRouter location='/'>
                     <Client user={this.state.user} />
                 </BrowserRouter>
             );
