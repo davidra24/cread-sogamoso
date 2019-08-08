@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     },
     tableRow: { margin: 'auto', flexDirection: 'row' },
     tableCol: {
-        width: '25%',
+        width: '20%',
         borderStyle: 'solid',
         borderWidth: 1,
         borderLeftWidth: 0,
@@ -32,24 +32,26 @@ const styles = StyleSheet.create({
 });
 
 function getRows(props) {
-    let arr = [];
+    let arr = []
     props.lessons.map((lesson) => {
         arr.push(
-            <View
+            <View style={styles.tableRow}
                 key={`${lesson.id_subject}0${lesson.start_hour}0${
                     lesson.end_hour
                 }`}>
-                <Text style={styles.tableCell}>{lesson.subject_semster}</Text>
-                <Text style={styles.tableCell}>{lesson.name_subject}</Text>
-                <Text style={styles.tableCell}>{lesson.name_teacher}</Text>
-                <Text style={styles.tableCell}>{lesson.phone_teacher}</Text>
-                <Text style={styles.tableCell}>
+                
+                    <View style={styles.tableCol}><Text style={styles.tableCell}>{lesson.subject_semster}</Text></View>
+                    <View style={styles.tableCol}><Text style={styles.tableCell}>{lesson.name_subject}</Text></View>
+                    <View style={styles.tableCol}><Text style={styles.tableCell}>{lesson.name_teacher}</Text></View>
+                    <View style={styles.tableCol}><Text style={styles.tableCell}>{lesson.phone_teacher}</Text></View>
+                    <View style={styles.tableCol}><Text style={styles.tableCell}>
                     {' '}
                     {lesson.name_classroom} - {lesson.location_classroom}
                 </Text>
                 <Text style={styles.tableCell}>{`${lesson.start_hour} - ${
                     lesson.end_hour
-                }`}</Text>
+                }`}</Text></View>
+                
             </View>,
         );
     });
@@ -68,10 +70,9 @@ const MyDocument = (props) => {
                         <Text style={styles.tableCol}>Asignatura</Text>
                         <Text style={styles.tableCol}>Docente</Text>
                         <Text style={styles.tableCol}>Teléfono</Text>
-                        <Text style={styles.tableCol}>Aula</Text>
-                        <Text style={styles.tableCol}>Hora</Text>
+                        <Text style={styles.tableCol}>Aula - Hora</Text>
                     </View>
-                    <View>{getRows(props)}</View>
+                    <View >{getRows(props)}</View>
                 </View>
             </Page>
         </Document>
