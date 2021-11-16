@@ -37,7 +37,7 @@
     "dependencies": {
         "@react-pdf/renderer": "^1.6.3",
         "@react-pdf/styled-components": "^1.4.0",
-        "aws-sdk": "^2.488.0",
+        "aws-sdk": "^2.814.0",
         "moment": "^2.24.0",
         "react-collapsible": "^2.6.0",
         "react-day-picker": "^7.3.0",
