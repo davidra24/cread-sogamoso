@@ -38,7 +38,7 @@
         "@react-pdf/renderer": "^1.6.3",
         "@react-pdf/styled-components": "^1.4.0",
         "aws-sdk": "^2.488.0",
-        "moment": "^2.24.0",
+        "moment": "^2.29.2",
         "react-collapsible": "^2.6.0",
         "react-day-picker": "^7.3.0",
         "react-timekeeper": "^1.1.0"
